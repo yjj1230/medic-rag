@@ -1,0 +1,95 @@
+{
+  "split": "test",
+  "status": "frozen_for_final_evaluation",
+  "created_at": "2026-10-08",
+  "case_count": 30,
+  "category_counts": {
+    "quality": 17,
+    "rejection": 10,
+    "safety": 3
+  },
+  "source_snapshot": "medical-rag-public-local=18, medical-rag-private-local=2",
+  "embedding_model": "BAAI/bge-small-zh-v1.5",
+  "evidence_annotation_policy": "only direct answer-supporting evidence is gold; related background alone is not gold",
+  "medical_source_reviewer": "俞家俊",
+  "dev_set": "eval/rag_cases.dev.jsonl",
+  "usage": "do not tune retrieval parameters against this file; use only for final regression/acceptance",
+  "private_note": "Private records are synthetic; duplicate content is represented by canonical evidence ID 822690e4-42ad-474d-9851-4f6462c23168, and placeholder records are excluded from retrieval.",
+  "annotation_revision": "2026-10-08 private cleanup: canonicalized duplicate content and excluded placeholder records",
+  "validation": {
+    "exact_question_overlap_with_dev": 0,
+    "id_overlap_with_dev": 0,
+    "referenced_evidence_ids_missing": 0,
+    "last_smoke_run": "eval_out/test_run_after_private_cleanup_v2/retrieval_eval_results.json",
+    "last_smoke_config": "A3-hybrid-rrf60",
+    "last_smoke_metrics": {
+      "quality_n": 17,
+      "hit_rate": 1.0,
+      "recall_at_3": 0.9706,
+      "mrr": 0.8333,
+      "ndcg_at_3": 0.8617,
+      "safety_permission_violations": 0
+    },
+    "rejection_note": "rejection rows require cosine-gate/分流评估; plain retrieval may still return related documents.",
+    "canonicalization": {
+      "removed_duplicate_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b"
+      ],
+      "excluded_garbled_ids": [
+        "7092ee1e-9302-49ea-8262-270de97fd144",
+        "9c907073-ae8d-4f9e-950f-0e217e2b47a5"
+      ],
+      "canonical_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "policy": "same content_hash keeps newest eligible record; placeholder text is retrieval-ineligible"
+    }
+  },
+  "rejection_threshold_validation": {
+    "result_file": "eval_out/test_rejection/rejection_threshold_sweep.json",
+    "thresholds_tested": [
+      0.5,
+      0.52
+    ],
+    "selection_note": "0.52 was preselected from dev experiments; this test run is confirmation, not threshold tuning.",
+    "at_0.50": {
+      "rejection_correct": "4/10",
+      "quality_kept": "17/17",
+      "quality_gold_kept": "17/17",
+      "forbidden_leaks": 0,
+      "risk_layer_misses": 6
+    },
+    "at_0.52": {
+      "rejection_correct": "6/10",
+      "quality_kept": "17/17",
+      "quality_gold_kept": "17/17",
+      "forbidden_leaks": 0,
+      "risk_layer_misses": 4
+    },
+    "remaining_failures": [
+      "test-priv-reject-liver",
+      "test-pub-reject-device",
+      "test-pub-reject-pregnancy",
+      "test-pub-reject-diagnosis"
+    ],
+    "interpretation": "0.52 improved medical rejection without false-rejecting any quality case, but edge cases remain; add scope/intent routing."
+  },
+  "coverage_router_validation": {
+    "module": "src/medical_rag/query/coverage.py",
+    "pipeline_integration": "src/medical_rag/query/pipeline.py",
+    "orchestrator_integration": "src/medical_rag/chat/orchestrator.py",
+    "quality_false_rejects": "0/17",
+    "known_rejection_cases_blocked": "10/10",
+    "target_cases_blocked": [
+      "test-priv-reject-liver",
+      "test-pub-reject-device",
+      "test-pub-reject-pregnancy",
+      "test-pub-reject-diagnosis"
+    ],
+    "orchestrator_short_circuit_verified": true,
+    "diagnostic_key": "coverage_gate_reason"
+  }
+}

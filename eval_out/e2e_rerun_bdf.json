@@ -1,0 +1,73 @@
+{
+  "B-01": {
+    "http": 200,
+    "latency_s": 40.5,
+    "status": "answered",
+    "citations": 6,
+    "sections": 1,
+    "session_id": "3da8252f-767d-49ef-bb6b-413b7a1b5c55",
+    "passed": true
+  },
+  "D-01": {
+    "http": 200,
+    "latency_s": 43.8,
+    "status": "degraded",
+    "citations": 0,
+    "same_session": false,
+    "passed": false
+  },
+  "D-02": {
+    "http": 200,
+    "message_count": 2,
+    "roles": [
+      "user",
+      "assistant"
+    ],
+    "has_trace_meta": true,
+    "passed": false
+  },
+  "D-04": {
+    "session_a": null,
+    "session_b": null,
+    "distinct": false,
+    "b_status": "insufficient_evidence",
+    "passed": false
+  },
+  "F-01": {
+    "http": 200,
+    "latency_s": 5.5,
+    "status": "insufficient_evidence",
+    "citations": 0,
+    "sections": [
+      {
+        "title": "暂无法回答",
+        "text": "当前没有足够且可定位的医学证据，暂时无法可靠回答。请携带相关资料咨询医生。"
+      }
+    ],
+    "passed": true
+  },
+  "F-02": {
+    "http": 200,
+    "status": "insufficient_evidence",
+    "safety_notice": "当前知识库没有覆盖该疾病或主题，暂时无法可靠回答。",
+    "citations": 0,
+    "passed": true,
+    "note": "非医学问句须经 RAG；casual_chat_enabled=false 时不得直答"
+  },
+  "F-03": {
+    "gate_policy": null,
+    "gate_score_space": null,
+    "gate_passed_candidates": null,
+    "gate_skipped_reason": null,
+    "passed": false
+  },
+  "_latency": {
+    "median_s": 40.5,
+    "n": 3,
+    "samples": [
+      5.5,
+      40.5,
+      43.8
+    ]
+  }
+}

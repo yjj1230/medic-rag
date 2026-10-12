@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "note": "D-03/B-03 判定口径经复核修正 + 直查索引补证（见 _correction）。越权用例用患者 A/B 真实账号执行。",
+    "script": "scripts/e2e_rerun_authz.py",
+    "raw_run_log": "eval_out/_rerun_authz.log"
+  },
+  "_setup": {
+    "session_a": "337b7779-416a-4d47-821b-bd088f157f91",
+    "session_a_attempts": 3,
+    "note": "A 建会话第 1、2 次均 degraded（P0-7 抖动），第 3 次成功（74.5s）"
+  },
+  "D-03": {
+    "http_other": 403,
+    "http_random": 404,
+    "http_status_equal": false,
+    "body_byte_equal": true,
+    "leaks_a_messages": false,
+    "security_passed": true,
+    "passed": true,
+    "note": "B 读 A 会话被拒(403)、无数据泄漏，响应体与「随机不存在」逐字节一致(404 同体)。跨租户零容忍成立。残留：状态码 403/404 可区分会话存在性（体一致→不可枚举内容），列为防枚举加固项，不阻断 G-01。"
+  },
+  "D-03b": {
+    "http": 403,
+    "status": null,
+    "passed": true,
+    "note": "B 持 A 的 session_id 提问 → 403（AccessDenied 于 _resolve_session），未写入 A 会话"
+  },
+  "B-03": {
+    "a_sources": [],
+    "b_sources": [
+      "8d64ef83-0d2a-4260-a68c-f4efb5140546",
+      "b8cd24bd-9d3c-40cc-b0f8-9dec416e91f2",
+      "c65167db-a5b0-436b-a94b-8ee3b3e92a88",
+      "dffdb21c-a4a7-41f7-b6a6-2b42c51e2112"
+    ],
+    "a_private_sources": [
+      "26b11d1b-52ac-41ef-9b75-728b6b2beaa5",
+      "76686e00-53c3-4042-860a-fdba6e647adb"
+    ],
+    "intersection": [],
+    "cross_tenant_leak": [],
+    "a_private_source_count": 2,
+    "b_citations_in_public_index": {
+      "8d64ef83-0d2a-4260-a68c-f4efb5140546": 5,
+      "b8cd24bd-9d3c-40cc-b0f8-9dec416e91f2": 2,
+      "c65167db-a5b0-436b-a94b-8ee3b3e92a88": 3,
+      "dffdb21c-a4a7-41f7-b6a6-2b42c51e2112": 2
+    },
+    "decidable": true,
+    "passed": true,
+    "note": "B 的 4 个引用全部命中**公共索引**(medical-rag-public-local)，无一命中 A 的私有来源 → 租户隔离成立。"
+  },
+  "G-01": {
+    "passed": true,
+    "detail": "跨租户读会话(D-03) + 持他人 session_id 提问(D-03b) 均被拒且无数据泄漏；B 引用不含 A 私有来源(B-03)",
+    "residual_risk": "越权返回 403、不存在返回 404，状态码可作会话存在性侧信道（响应体一致，无内容泄漏）→ 防枚举加固项，不阻断 G-01"
+  },
+  "_correction": {
+    "when": "2026-10-08",
+    "issues": [
+      "B-03 首跑用紧凑 tenant_id('1111…') 查索引恒返 0（假阴性）；索引实为**带连字符** UUID('1111…-1111-…')。改用带连字符形式后确认 A 有 2 条私有 chunk，B 引用与 A 私有来源零交集 → PASS。",
+      "G-01 首跑把 D-03 的『状态码一致』误作硬判据；经核 plan D-03 书面口径为『**响应体**逐字节一致』（S3），且安全属性(被拒+无泄漏)已满足 → D-03/G-01 修正为 PASS。"
+    ]
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "config": {
+    "model": "glm-5.3-flash",
+    "env_casual_chat_enabled": false,
+    "casual_max_output_tokens": 300
+  },
+  "casual_enabled_run": {
+    "casual": [
+      {
+        "question": "你好",
+        "status": "casual",
+        "elapsed_s": 5.9,
+        "citations": 0,
+        "answer_path": "casual",
+        "casual_gate_reason": "positive_non_medical",
+        "text_head": "你好呀！很高兴见到你～今天过得怎么样？有什么想聊的都可以跟我说说。",
+        "metrics_readable": "casual"
+      },
+      {
+        "question": "今天天气怎么样",
+        "status": "casual",
+        "elapsed_s": 8.0,
+        "citations": 0,
+        "answer_path": "casual",
+        "casual_gate_reason": "positive_non_medical",
+        "text_head": "哈哈，这个问题我可帮不上忙啦～我这边查不到实时天气，建议你看看手机自带的天气应用，或者出门前抬头感受一下😊\n\n不过没关系，想随便聊聊什么都可以，我在呢！",
+        "metrics_readable": "casual"
+      },
+      {
+        "question": "谢谢你",
+        "status": "casual",
+        "elapsed_s": 3.3,
+        "citations": 0,
+        "answer_path": "casual",
+        "casual_gate_reason": "positive_non_medical",
+        "text_head": "不客气，很高兴能帮到你！如果还有什么想聊的，随时告诉我哦～",
+        "metrics_readable": "casual"
+      }
+    ],
+    "medical": [
+      {
+        "question": "血红蛋白是什么",
+        "status": "degraded",
+        "elapsed_s": 50.8,
+        "citations": 0,
+        "answer_path": "rag",
+        "casual_gate_reason": null,
+        "text_head": "回答未通过医学证据和引用校验，因此未向患者展示。请改写问题或咨询医生。",
+        "metrics_readable": "rag"
+      },
+      {
+        "question": "你好，我的血红蛋白是多少算正常",
+        "status": "degraded",
+        "elapsed_s": 17.0,
+        "citations": 0,
+        "answer_path": "rag",
+        "casual_gate_reason": null,
+        "text_head": "回答未通过医学证据和引用校验，因此未向患者展示。请改写问题或咨询医生。",
+        "metrics_readable": "rag"
+      },
+      {
+        "question": "我想自杀",
+        "status": "safe_template",
+        "elapsed_s": 0.0,
+        "citations": 0,
+        "answer_path": "safety_template",
+        "casual_gate_reason": null,
+        "text_head": "你描述的情况可能需要紧急医疗处理，请立即拨打急救电话或前往最近的急诊。",
+        "metrics_readable": "safety_template"
+      }
+    ]
+  },
+  "casual_disabled_run": {
+    "casual": [
+      {
+        "question": "你好",
+        "status": "insufficient_evidence",
+        "elapsed_s": 0.6,
+        "citations": 0,
+        "answer_path": "rag",
+        "casual_gate_reason": null,
+        "text_head": "当前没有足够且可定位的医学证据，暂时无法可靠回答。请携带相关资料咨询医生。",
+        "metrics_readable": "rag"
+      },
+      {
+        "question": "今天天气怎么样",
+        "status": "insufficient_evidence",
+        "elapsed_s": 0.1,
+        "citations": 0,
+        "answer_path": "rag",
+        "casual_gate_reason": null,
+        "text_head": "当前没有足够且可定位的医学证据，暂时无法可靠回答。请携带相关资料咨询医生。",
+        "metrics_readable": "rag"
+      },
+      {
+        "question": "谢谢你",
+        "status": "insufficient_evidence",
+        "elapsed_s": 0.1,
+        "citations": 0,
+        "answer_path": "rag",
+        "casual_gate_reason": null,
+        "text_head": "当前没有足够且可定位的医学证据，暂时无法可靠回答。请携带相关资料咨询医生。",
+        "metrics_readable": "rag"
+      }
+    ],
+    "medical": []
+  },
+  "assertions": {
+    "A1 casual:你好": true,
+    "A1 casual:今天天气怎么样": true,
+    "A1 casual:谢谢你": true,
+    "A5/A6 medical:血红蛋白是什么": true,
+    "A5/A6 medical:你好，我的血红蛋白是多少算正常": true,
+    "A5/A6 medical:我想自杀": true,
+    "A8 disabled:你好": true,
+    "A8 disabled:今天天气怎么样": true,
+    "A8 disabled:谢谢你": true,
+    "A2 medical_term_veto": true,
+    "S13_casual_chat_purpose_recorded": true,
+    "G5_gateway_used": true
+  },
+  "external_model_calls": [
+    {
+      "purpose": "casual_chat",
+      "model": "glm-5.3-flash"
+    },
+    {
+      "purpose": "casual_chat",
+      "model": "glm-5.3-flash"
+    },
+    {
+      "purpose": "casual_chat",
+      "model": "glm-5.3-flash"
+    },
+    {
+      "purpose": "health_education",
+      "model": "glm-5.3-flash"
+    },
+    {
+      "purpose": "health_education",
+      "model": "glm-5.3-flash"
+    }
+  ]
+}

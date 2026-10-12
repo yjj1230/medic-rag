@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-10-08",
+  "provenance": "observed_local_chain_only",
+  "production_log_status": "not_present_in_workspace",
+  "sources": [
+    "eval_out/chat_e2e_acceptance.json",
+    "eval_out/casual_routing_live_acceptance.json",
+    "eval_out/probe_citation_flake.json",
+    "eval_out/faithfulness_eval.json",
+    "eval_out/coverage_router_log_eval.json"
+  ],
+  "metrics": {
+    "chat_e2e": {
+      "runs": 10,
+      "citation_validation_pass": 10,
+      "median_latency_s": 58.5,
+      "p95_latency_s": 83.6
+    },
+    "citation_repeat_probe": {
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "runs": 8,
+      "answered": 5,
+      "degraded": 3,
+      "degraded_rate": 0.375,
+      "median_latency_s": 49.5
+    },
+    "faithfulness": {
+      "answers": 20,
+      "answers_scored": 8,
+      "claims_total": 66,
+      "abstained_claims": 62,
+      "abstention_rate": 0.9393939394,
+      "verdict_state": "undecidable"
+    },
+    "coverage_router": {
+      "total": 19,
+      "passed": 19,
+      "observed_local_chat": 9,
+      "synthetic_boundary": 10
+    }
+  },
+  "interpretation": "These are local acceptance and probe results, not production traffic metrics. No production log export was found in the workspace."
+}

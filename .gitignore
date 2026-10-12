@@ -1,0 +1,57 @@
+# --- secrets / local environment ---
+.env
+.env.*
+!.env.example
+
+# --- local databases & scratch artifacts ---
+.tmp_test/
+*.db
+*.db.bak
+*.sqlite
+*.sqlite3
+.pwcheck.txt
+.gwstate.txt
+.keyprobe.txt
+.reliability.txt
+.e2e_verify.py
+.e2e_verify.txt
+.schema_diff.txt
+.inspect_out.txt
+.parked
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- node / frontend ---
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# --- tooling scratch ---
+.playwright-cli/
+.superpowers/
+
+# --- 事故取证与恢复副本（2026-10-12）--------------------------------
+# 损坏的对象库归档：保留 index 与 reflog 作为丢失文件的唯一证据，勿删除。
+.git-broken-*/
+# i18n 备份副本与 src/ 重复，不入库。
+.i18n_backup_src_medical_rag/
+# 含私有索引/数据库备份，涉 PHI，不入库。
+backups/
+# AI 协作工具的本地项目数据。
+.workbuddy/
+
+# --- 忠实度评估 PHI 缓存（D-3 = 方案 B）-------------------------------
+# 证据/答案**正文**只落这里（key = sha256），绝不进 eval_out/ 入库产物。
+# 目录名与 scripts/faithfulness_answers.py:PHI_CACHE_DIR 必须一致。
+.faithfulness_phi_cache/

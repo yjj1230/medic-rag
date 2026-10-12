@@ -1,0 +1,7 @@
+﻿[indep-1] http=200 status=answered 33.8s cites=5 path=rag sid=a6f3d139-9b07-4255-87f3-05f18a3d66f1
+[indep-2] http=200 status=degraded 43.2s cites=0 path=rag sid=None
+[indep-3] http=200 status=degraded 36.8s cites=0 path=rag sid=None
+[turn-1] status=answered sid=ae14176e-d52f-40e6-b23c-2ae0c7be045d
+[turn-2] status=degraded path=rag gate_skip=None notice=鍥炵瓟鏈€氳繃鍖诲璇佹嵁鍜屽紩鐢ㄦ牎楠岋紝鍥犳鏈悜鎮ｈ€呭睍绀恒€傝鏀瑰啓闂鎴栧挩璇㈠尰鐢熴€?
+鎶ュ憡: C:\Users\lyx\Desktop\RAG\eval_out\probe_degraded.json
+exit=0

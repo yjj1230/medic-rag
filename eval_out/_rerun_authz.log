@@ -1,0 +1,11 @@
+﻿鐧诲綍 A/B OK
+  A 绗?1 娆?status=degraded锛?7.2s锛夐噸璇?
+  A 绗?2 娆?status=degraded锛?22.2s锛夐噸璇?
+A 寤轰細璇?OK锛堢 3 娆★紝74.5s锛塻id=337b7779-416a-4d47-821b-bd088f157f91
+[D-03] B 璇?A 鍘嗗彶=403 璇婚殢鏈?404 鐘舵€佷竴鑷?False 浣撲竴鑷?True
+[D-03b] B 鎸?A 鐨?session_id 鎻愰棶 http=403
+[B-03] A 鏉ユ簮=0 B 鏉ユ簮=4 A 绉佹湁鏉ユ簮=0 璺ㄧ鎴锋硠婕?0
+[G-01] 瓒婃潈闆跺蹇?passed=False
+
+鎶ュ憡锛欳:\Users\lyx\Desktop\RAG\eval_out\e2e_rerun_authz.json
+exit=1

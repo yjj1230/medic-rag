@@ -1,0 +1,23 @@
+﻿====================================================================================================
+chat 绔埌绔獙鏀讹紙鐪熷疄閾捐矾锛孨=5锛?
+====================================================================================================
+cfg: model=glm-5.3-flash request_timeout=120.0s total_timeout=300.0s gateway=http://121.40.34.96:18097/v1
+artifact: threshold=0.5 space=l2_inv
+OpenSearch: 2.18.0
+[run 1] FAIL-VALIDATE UnsupportedClaim: 鍥炵瓟缁欏嚭浜嗗畾閲忕粨璁轰絾鏈紩鐢ㄨ瘉鎹腑鐨勫叿浣撴暟鍊?
+[run 2] FAIL-VALIDATE UnsupportedClaim: 鍥炵瓟涓瓨鍦ㄧ己灏戣瘉鎹紩鐢ㄧ殑娈佃惤
+[run 3] FAIL-MODEL ModelTimeout: 妯″瀷鏈嶅姟璇锋眰瓒呮椂
+[run 4] FAIL-VALIDATE UnsupportedClaim: 鍥炵瓟涓瓨鍦ㄦ湭鍦ㄥ彞鏈爣娉ㄨ瘉鎹紩鐢ㄧ殑鍖诲缁撹鍙?
+[run 5] FAIL-VALIDATE UnsupportedClaim: 鍥炵瓟涓瓨鍦ㄧ己灏戣瘉鎹紩鐢ㄧ殑娈佃惤
+[鏂█鈶 鎷掔瓟 OK: {'items': 0, 'reason': 'insufficient_evidence'}
+[鏂█鈶 瀹夊叏璐熸牱鏈?OK: {'checked': ['S2_diagnosis', 'S6_bold_conclusion', 'S7_negation_with_meaning']}
+----------------------------------------------------------------------------------------------------
+楠屾敹澶辫触锛? 椤癸級锛?
+  - run1 鏍￠獙/鏂█澶辫触: 鍥炵瓟缁欏嚭浜嗗畾閲忕粨璁轰絾鏈紩鐢ㄨ瘉鎹腑鐨勫叿浣撴暟鍊?
+  - run2 鏍￠獙/鏂█澶辫触: 鍥炵瓟涓瓨鍦ㄧ己灏戣瘉鎹紩鐢ㄧ殑娈佃惤
+  - run3 妯″瀷澶辫触: 妯″瀷鏈嶅姟璇锋眰瓒呮椂
+  - run4 鏍￠獙/鏂█澶辫触: 鍥炵瓟涓瓨鍦ㄦ湭鍦ㄥ彞鏈爣娉ㄨ瘉鎹紩鐢ㄧ殑鍖诲缁撹鍙?
+  - run5 鏍￠獙/鏂█澶辫触: 鍥炵瓟涓瓨鍦ㄧ己灏戣瘉鎹紩鐢ㄧ殑娈佃惤
+  - 鏂█鈶㈠け璐? validate/妯″瀷浠?0/5 杞€氳繃
+鎶ュ憡锛欳:\Users\lyx\Desktop\RAG\eval_out\chat_e2e_acceptance.json
+exit=1

@@ -1,0 +1,22 @@
+
+> frontend@0.0.0 dev
+> vite --host localhost --port 5173
+
+09:07:01 [vite] (client) Re-optimizing dependencies because vite config has changed
+
+  VITE v8.3.0  ready in 513 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  press h + enter to show help
+13:48:42 [vite] (client) hmr update /src/components/CitationBadge.vue
+13:48:42 [vite] (client) page reload src/api/chat.ts
+13:48:42 [vite] (client) page reload src/stores/chat.ts
+13:50:01 [vite] (client) hmr update /src/components/MessageBubble.vue, /src/components/MessageBubble.vue?vue&type=style&index=0&scoped=a8e5f966&lang.css
+13:50:57 [vite] (client) hmr update /src/components/MessageBubble.vue
+13:51:07 [vite] (client) hmr update /src/views/ChatPage.vue
+13:51:27 [vite] (client) hmr update /src/views/ChatPage.vue
+13:51:57 [vite] (client) hmr update /src/components/MessageBubble.vue
+13:51:58 [vite] (client) hmr update /src/views/ChatPage.vue?vue&type=style&index=0&scoped=64849fe3&lang.css
+13:52:15 [vite] (client) hmr update /src/components/MessageBubble.vue
+13:53:02 [vite] (client) hmr update /src/components/MessageBubble.vue
+13:53:40 [vite] (client) hmr update /src/components/MessageBubble.vue

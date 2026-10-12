@@ -1,0 +1,33 @@
+{
+  "dataset": "eval/rag_cases.revision.v1.jsonl",
+  "index_snapshot": {
+    "public_docs": 30,
+    "private_docs": 2,
+    "public_source_count": 10
+  },
+  "hybrid_rrf60": {
+    "quality": {
+      "n": 7,
+      "hit_rate": 1.0,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.3333,
+      "mrr": 0.6429,
+      "ndcg_at_k": 0.733,
+      "top1_accuracy": 0.4286
+    },
+    "safety": {
+      "n": 0,
+      "permission_violations": 0,
+      "deletion_residuals": 0,
+      "review_leakage": 0,
+      "all_zero": true
+    },
+    "rejection": {
+      "n": 0,
+      "correct_empty": 0,
+      "accuracy": 0.0
+    },
+    "error_ids": []
+  },
+  "interpretation": "小样本修订集仅用于验证标注修订和内容补充方向，不替代冻结 Test v2。"
+}

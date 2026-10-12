@@ -1,0 +1,130 @@
+{
+  "generated_at": "2026-10-08 13:47:53",
+  "environment": {
+    "backend": "http://localhost:8000",
+    "opensearch": "http://localhost:9200",
+    "os_version": "2.18.0",
+    "account": "13800138000",
+    "private_index": "medical-rag-private-local"
+  },
+  "cases": {
+    "B-01": {
+      "http": 200,
+      "latency_s": 52.5,
+      "answer_status": "answered",
+      "sections": 1,
+      "citations": 7,
+      "safety_notice": null,
+      "session_id": "7e6c8395-86d8-413a-b992-9710796725cc",
+      "diagnostics": {
+        "candidate_limit": 50,
+        "embedding_model": "BAAI/bge-small-zh-v1.5",
+        "index_version": "public-v1",
+        "stage_elapsed_ms": {
+          "lexical": 216.01069997996092,
+          "vector": 192.21380003727973,
+          "fusion": 0.2169000217691064,
+          "rerank": 0.000400003045797348,
+          "total": 763.3198000257835
+        },
+        "gate_policy": "cosine_absolute",
+        "gate_threshold": 0.5,
+        "gate_score_space": "l2_inv",
+        "rank_gate": null,
+        "vector_candidates_gated_out": 7,
+        "lexical_gated_out": 1,
+        "gate_skipped_reason": null,
+        "calibration_artifact": {
+          "index_version": "artifact-2026-09-26",
+          "embedding_model": "BAAI/bge-small-zh-v1.5",
+          "rrf_k": 60,
+          "threshold": 0.42,
+          "eval_dataset_version": "cosine-gate-2026-09-26"
+        },
+        "lexical_candidates": 11,
+        "vector_candidates": 11,
+        "fused_candidates": 11,
+        "gate_passed_candidates": 11,
+        "reranked_candidates": 11,
+        "status": "ok"
+      },
+      "passed": true
+    },
+    "B-04": {
+      "required_keys": [
+        "gate_policy",
+        "gate_score_space",
+        "gate_threshold",
+        "gate_skipped_reason",
+        "gate_passed_candidates",
+        "embedding_degraded",
+        "embedding_model",
+        "index_version",
+        "calibration_artifact"
+      ],
+      "missing_keys": [
+        "embedding_degraded"
+      ],
+      "observed": {
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "gate_threshold": 0.5,
+        "gate_skipped_reason": null,
+        "gate_passed_candidates": 11,
+        "embedding_model": "BAAI/bge-small-zh-v1.5",
+        "index_version": "public-v1",
+        "calibration_artifact": {
+          "index_version": "artifact-2026-09-26",
+          "embedding_model": "BAAI/bge-small-zh-v1.5",
+          "rrf_k": 60,
+          "threshold": 0.42,
+          "eval_dataset_version": "cosine-gate-2026-09-26"
+        }
+      },
+      "passed": false
+    },
+    "B-03": {
+      "passed": null,
+      "blocked": "本机仅有患者账号（13800138000），无第二角色账号，无法执行公共/私有隔离对照"
+    },
+    "A-01": {
+      "http": 201,
+      "document_id": "b1e37791-0d21-45b8-9b17-aa4662b3bde9",
+      "doc_status": "uploaded",
+      "quality_status": "READY",
+      "passed": true
+    },
+    "A-02": {
+      "doc_state_after_parse": {
+        "id": "b1e37791-0d21-45b8-9b17-aa4662b3bde9",
+        "filename": "e2e_smoke_doc.pdf",
+        "content_type": "application/pdf",
+        "status": "ready",
+        "quality_status": "READY",
+        "failure_reason_code": null,
+        "failure_reason_label": null
+      },
+      "review_http": 404,
+      "review_body": "{\"detail\":\"Not Found\"}",
+      "index_chunk_count": 1,
+      "passed": false
+    },
+    "B-02": {
+      "http": 200,
+      "latency_s": 17.9,
+      "answer_status": "answered",
+      "citations": 1,
+      "cited_source_ids": [
+        "b1e37791-0d21-45b8-9b17-aa4662b3bde9"
+      ],
+      "passed": true,
+      "note": "answered 且引用指向本文档为最优；insufficient_evidence 在上传文档未入库（A-02 不过）时为正确拒答"
+    },
+    "A-03": {
+      "http": 500,
+      "delete_body": "Internal Server Error",
+      "index_residual_count": 1,
+      "passed": false
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "calibration_file": "eval/faithfulness_calibration.jsonl",
+  "public_index": "medical-rag-public-local",
+  "row_count": 30,
+  "expected_row_count": 30,
+  "verdict_counts": {
+    "entailed": 20,
+    "contradicted": 5,
+    "insufficient": 5
+  },
+  "expected_verdict_counts": {
+    "entailed": 20,
+    "contradicted": 5,
+    "insufficient": 5
+  },
+  "unique_annotation_ids": 30,
+  "evidence_id_count": 7,
+  "evidence_ids_missing_from_public": [],
+  "reviewer": "俞家俊",
+  "errors": []
+}

@@ -1,0 +1,11 @@
+﻿
+
+ProcessId   : 44864
+CommandLine : C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe -m uvicorn medical_rag.api.app:create_app --factory --host 127.0.0.1 --port 8000 --log-level info
+
+ProcessId   : 41968
+CommandLine : "C:\Users\lyx\AppData\Local\Programs\Python\Python312\python.exe" -m uvicorn medical_rag.api.app:create_app --factory --host 127.0.0.1 --port 8000 --log-level info
+
+
+
+

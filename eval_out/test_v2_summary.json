@@ -1,0 +1,199 @@
+{
+  "dataset": "eval/rag_cases.test.v2.jsonl",
+  "dataset_sha256": "f93b8e45c18457af67a17de0426332a34ecaeb3c5843bd1d528d1c66d6f3b91b",
+  "public_docs": 24,
+  "private_docs": 2,
+  "new_public_chunks": 6,
+  "configs": [
+    {
+      "name": "A1-pure-lexical",
+      "quality": {
+        "n": 70,
+        "hit_rate": 0.8143,
+        "recall_at_k": 0.7857,
+        "precision_at_k": 0.2905,
+        "mrr": 0.681,
+        "ndcg_at_k": 0.7002,
+        "top1_accuracy": 0.5714
+      },
+      "rejection": {
+        "n": 30,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 20,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 4,
+        "p50_ms": 50.16,
+        "p95_ms": 50.77,
+        "p99_ms": 50.77,
+        "mean_ms": 50.12,
+        "by_stage": {
+          "fusion": 0.14,
+          "lexical": 50.51,
+          "rerank": 0.0,
+          "total": 50.77,
+          "vector": 0.0
+        }
+      }
+    },
+    {
+      "name": "A2-pure-vector",
+      "quality": {
+        "n": 70,
+        "hit_rate": 0.8571,
+        "recall_at_k": 0.8429,
+        "precision_at_k": 0.3238,
+        "mrr": 0.7548,
+        "ndcg_at_k": 0.7713,
+        "top1_accuracy": 0.6714
+      },
+      "rejection": {
+        "n": 30,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 20,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 4,
+        "p50_ms": 57.3,
+        "p95_ms": 63.57,
+        "p99_ms": 63.57,
+        "mean_ms": 58.96,
+        "by_stage": {
+          "fusion": 0.24,
+          "lexical": 0.0,
+          "rerank": 0.0,
+          "total": 63.57,
+          "vector": 53.25
+        }
+      }
+    },
+    {
+      "name": "A3-hybrid-rrf60",
+      "quality": {
+        "n": 70,
+        "hit_rate": 0.9143,
+        "recall_at_k": 0.8643,
+        "precision_at_k": 0.319,
+        "mrr": 0.7952,
+        "ndcg_at_k": 0.7942,
+        "top1_accuracy": 0.7
+      },
+      "rejection": {
+        "n": 30,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 20,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 4,
+        "p50_ms": 53.07,
+        "p95_ms": 61.52,
+        "p99_ms": 61.52,
+        "mean_ms": 55.85,
+        "by_stage": {
+          "fusion": 0.41,
+          "lexical": 56.63,
+          "rerank": 0.0,
+          "total": 61.52,
+          "vector": 20.77
+        }
+      }
+    },
+    {
+      "name": "B3-rrf30",
+      "quality": {
+        "n": 70,
+        "hit_rate": 0.9143,
+        "recall_at_k": 0.8714,
+        "precision_at_k": 0.3238,
+        "mrr": 0.7952,
+        "ndcg_at_k": 0.7986,
+        "top1_accuracy": 0.7
+      },
+      "rejection": {
+        "n": 30,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 20,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 4,
+        "p50_ms": 55.96,
+        "p95_ms": 61.66,
+        "p99_ms": 61.66,
+        "mean_ms": 57.73,
+        "by_stage": {
+          "fusion": 0.34,
+          "lexical": 56.39,
+          "rerank": 0.0,
+          "total": 61.66,
+          "vector": 15.3
+        }
+      }
+    },
+    {
+      "name": "D2-cand20",
+      "quality": {
+        "n": 70,
+        "hit_rate": 0.9143,
+        "recall_at_k": 0.8643,
+        "precision_at_k": 0.319,
+        "mrr": 0.7952,
+        "ndcg_at_k": 0.7942,
+        "top1_accuracy": 0.7
+      },
+      "rejection": {
+        "n": 30,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 20,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 4,
+        "p50_ms": 54.89,
+        "p95_ms": 56.87,
+        "p99_ms": 56.87,
+        "mean_ms": 55.32,
+        "by_stage": {
+          "fusion": 0.32,
+          "lexical": 51.72,
+          "rerank": 0.0,
+          "total": 56.87,
+          "vector": 12.76
+        }
+      }
+    }
+  ]
+}

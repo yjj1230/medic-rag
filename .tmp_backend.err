@@ -1,0 +1,6 @@
+INFO:     Started server process [41564]
+INFO:     Waiting for application startup.
+OCR_SERVICE_URL 使用明文 HTTP 且指向非本机地址（http://192.168.254.35:18080）
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+JWT_SECRET 未配置，开发环境使用进程内随机密钥；重启后既有令牌全部失效。非开发环境将拒绝启动。

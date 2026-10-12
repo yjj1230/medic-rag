@@ -1,0 +1,84 @@
+{
+  "generated_at": "2026-10-08T09:00:10.317024+00:00",
+  "source": "medical_rag.db original answer/evidence pairs",
+  "scope": "manual evidence-consistency review of the four rule flags across three hemoglobin answers",
+  "original_rule_contradicted": 4,
+  "reviewed_flags": 4,
+  "reclassified_as_false_positive": 4,
+  "actual_evidence_contradictions_found": 0,
+  "overall_gate": "undecidable",
+  "overall_gate_reason": "This review only resolves the four numeric rule flags. The full 27-answer run still has 89.2% rule abstention and n=27, so it cannot be promoted to a production faithfulness pass.",
+  "pattern": "reported laboratory value is lower than the cited reference range; lower-than-range is expected when the answer says the result is low.",
+  "reviews": [
+    {
+      "question_message_id": "cf4752c6336e4db98875adf7869414d9",
+      "answer_message_id": "345ff57a43144ad89100a8359d1afd4b",
+      "question": "血红蛋白是多少？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "evidence_ids_resolved": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "checks": {
+        "hemoglobin_value_supported": true,
+        "hemoglobin_reference_supported": true,
+        "rbc_value_supported": true,
+        "rbc_reference_supported": true,
+        "cited_evidence_currently_retrieval_eligible": true
+      },
+      "manual_verdict": "evidence_supported",
+      "clinical_gold_standard_status": "not_assessed",
+      "explanation": "The answer reports a value below the cited reference interval. That is consistent with the evidence and is not a contradiction; the prior rule appears to have treated the relation value < lower_bound as a contradiction."
+    },
+    {
+      "question_message_id": "b4bb792ae82b45ceb1f4959492138932",
+      "answer_message_id": "e26c9ef9bd0f4534b941e91abcd7e948",
+      "question": "血红蛋白是多少？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "evidence_ids_resolved": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "checks": {
+        "hemoglobin_value_supported": true,
+        "hemoglobin_reference_supported": true,
+        "rbc_value_supported": true,
+        "rbc_reference_supported": true,
+        "cited_evidence_currently_retrieval_eligible": true
+      },
+      "manual_verdict": "evidence_supported",
+      "clinical_gold_standard_status": "not_assessed",
+      "explanation": "The answer reports a value below the cited reference interval. That is consistent with the evidence and is not a contradiction; the prior rule appears to have treated the relation value < lower_bound as a contradiction."
+    },
+    {
+      "question_message_id": "58baa982b2c54f2997ba0820a8a25c17",
+      "answer_message_id": "fb1c3f5285754d4284f15eff32b757bf",
+      "question": "血红蛋白的参考范围是什么？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "evidence_ids_resolved": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "checks": {
+        "hemoglobin_value_supported": true,
+        "hemoglobin_reference_supported": true,
+        "rbc_value_supported": true,
+        "rbc_reference_supported": true,
+        "cited_evidence_currently_retrieval_eligible": true
+      },
+      "manual_verdict": "evidence_supported",
+      "clinical_gold_standard_status": "not_assessed",
+      "explanation": "The answer reports a value below the cited reference interval. That is consistent with the evidence and is not a contradiction; the prior rule appears to have treated the relation value < lower_bound as a contradiction."
+    }
+  ],
+  "note": "This is an evidence-consistency review, not a medical diagnosis or a fabricated human-medical signoff."
+}

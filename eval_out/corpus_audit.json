@@ -1,0 +1,26 @@
+{
+  "audit_date": "2026-10-08",
+  "source_result": "eval_out/retrieval_eval_results.json",
+  "real_cases": 18,
+  "quality_cases": 14,
+  "rejection_cases": 2,
+  "safety_cases": 2,
+  "public_docs": 5,
+  "private_docs": 7,
+  "private_unique_contents": 3,
+  "private_duplicate_group_sizes": [
+    4,
+    2,
+    1
+  ],
+  "garbled_records": [
+    "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+    "7092ee1e-9302-49ea-8262-270de97fd144"
+  ],
+  "deleted_records": "not_covered_by_current_corpus",
+  "review_ineligible_records": "not_covered_by_current_corpus",
+  "independent_test_set": "missing",
+  "placeholder_case_file": "tests/eval/cases.jsonl",
+  "placeholder_case_file_usable_for_current_opensearch": false,
+  "decision": "dev_only_until_independent_test_set_is_annotated"
+}

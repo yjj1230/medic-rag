@@ -1,0 +1,15 @@
+﻿鐧诲綍 OK
+[1/8] answered             cites=5 37.9s path=rag notice=None
+[2/8] degraded             cites=0 43.9s path=rag notice=鍥炵瓟鏈€氳繃鍖诲璇佹嵁鍜屽紩鐢ㄦ牎楠岋紝鍥犳鏈悜鎮ｈ€呭睍绀恒€?
+[3/8] answered             cites=6 41.3s path=rag notice=None
+[4/8] degraded             cites=0 72.7s path=rag notice=鍥炵瓟鏈€氳繃鍖诲璇佹嵁鍜屽紩鐢ㄦ牎楠岋紝鍥犳鏈悜鎮ｈ€呭睍绀恒€?
+[5/8] degraded             cites=0 57.3s path=rag notice=鍥炵瓟鏈€氳繃鍖诲璇佹嵁鍜屽紩鐢ㄦ牎楠岋紝鍥犳鏈悜鎮ｈ€呭睍绀恒€?
+[6/8] answered             cites=6 54.1s path=rag notice=None
+[7/8] answered             cites=6 45.0s path=rag notice=None
+[8/8] answered             cites=7 60.4s path=rag notice=None
+
+======================================================================
+answered=5 degraded=3 flake_rate=38%
+寤惰繜 median=49.5s min=37.9s max=72.7s
+鎶ュ憡锛欳:\Users\lyx\Desktop\RAG\eval_out\probe_citation_flake.json
+exit=0

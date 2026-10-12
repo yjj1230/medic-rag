@@ -1,0 +1,26 @@
+{
+  "index": "medical-rag-lifecycle-eval-a15c8026c471",
+  "query": "lab result",
+  "expected_visible": [
+    "lifecycle-active"
+  ],
+  "cases": [
+    {
+      "id": "lifecycle-deleted",
+      "deleted": true
+    },
+    {
+      "id": "lifecycle-ineligible",
+      "retrieval_eligible": false
+    },
+    {
+      "id": "lifecycle-inactive",
+      "source_active": false
+    }
+  ],
+  "visible_ids": [
+    "lifecycle-active"
+  ],
+  "forbidden_returned": [],
+  "passed": true
+}

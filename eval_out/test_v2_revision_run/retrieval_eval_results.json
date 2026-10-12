@@ -1,0 +1,1428 @@
+{
+  "meta": {
+    "opensearch_url": "http://localhost:9200",
+    "public_index": "medical-rag-public-local",
+    "private_index": "medical-rag-private-local",
+    "embedding_model": "BAAI/bge-small-zh-v1.5",
+    "embedding_dimensions": 512,
+    "case_count": 7,
+    "latency_rounds": 5,
+    "quick": true
+  },
+  "corpus_integrity": {
+    "public_docs": 30,
+    "private_docs": 2,
+    "private_unique_contents": 2,
+    "private_duplicate_group_sizes": [
+      1,
+      1
+    ],
+    "garbled_records": [
+      "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+      "7092ee1e-9302-49ea-8262-270de97fd144"
+    ],
+    "visibility_scan": {
+      "medical-rag-public-local": {
+        "expected_visibility": "public",
+        "total": 30,
+        "mismatched": 0
+      },
+      "medical-rag-private-local": {
+        "expected_visibility": "private",
+        "total": 2,
+        "mismatched": 0
+      }
+    }
+  },
+  "configs": [
+    {
+      "name": "A1-pure-lexical",
+      "config": {
+        "name": "A1-pure-lexical",
+        "mode": "lexical",
+        "rrf_k": 60,
+        "candidate_limit": 50,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=lexical rrf_k=60 top_k=3 cand=50",
+      "quality": {
+        "n": 7,
+        "hit_rate": 0.8571,
+        "recall_at_k": 0.8571,
+        "precision_at_k": 0.2857,
+        "mrr": 0.619,
+        "ndcg_at_k": 0.6803,
+        "top1_accuracy": 0.4286
+      },
+      "rejection": {
+        "n": 0,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 15,
+        "p50_ms": 50.4,
+        "p95_ms": 53.87,
+        "p99_ms": 55.09,
+        "mean_ms": 50.85,
+        "by_stage": {
+          "fusion": 0.13,
+          "lexical": 53.68,
+          "rerank": 0.0,
+          "total": 53.87,
+          "vector": 0.0
+        }
+      },
+      "cases": [
+        {
+          "case_id": "who-numbers-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:b8902fa04a23",
+            "h:7c7dac096f3b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.59110005944967,
+          "gate_policy": "top_k",
+          "gate_passed": 19,
+          "candidates_lexical": 19,
+          "candidates_vector": 0,
+          "fused_candidates": 19
+        },
+        {
+          "case_id": "who-organ-risk-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+          ],
+          "returned_dedup": [
+            "h:58e6e6a7ed24",
+            "h:97bfd88b9490",
+            "h:09a7e446755c"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.863599922508,
+          "gate_policy": "top_k",
+          "gate_passed": 19,
+          "candidates_lexical": 19,
+          "candidates_vector": 0,
+          "fused_candidates": 19
+        },
+        {
+          "case_id": "who-sodium-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "returned_dedup": [
+            "h:e59fc76b3b74",
+            "h:afac8f56f02b",
+            "h:a123e70d9554"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.14799998793751,
+          "gate_policy": "top_k",
+          "gate_passed": 14,
+          "candidates_lexical": 14,
+          "candidates_vector": 0,
+          "fused_candidates": 14
+        },
+        {
+          "case_id": "emergency-vision-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:97bfd88b9490",
+            "h:c229201d6e95"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.49409996718168,
+          "gate_policy": "top_k",
+          "gate_passed": 17,
+          "candidates_lexical": 17,
+          "candidates_vector": 0,
+          "fused_candidates": 17
+        },
+        {
+          "case_id": "symptom-single-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+            "1f18737d-6471-4de4-a790-867fdf9034b8",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "returned_dedup": [
+            "h:97bfd88b9490",
+            "h:c229201d6e95",
+            "h:022af5d165a1"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.73310004081577,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 18,
+          "candidates_vector": 0,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "priv-hgb-equivalent-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:846bffbc0bac",
+            "h:97bfd88b9490"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.2024000743404,
+          "gate_policy": "top_k",
+          "gate_passed": 13,
+          "candidates_lexical": 13,
+          "candidates_vector": 0,
+          "fused_candidates": 13
+        },
+        {
+          "case_id": "who-definition-control-v1",
+          "category": "quality",
+          "returned_ids": [
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "1f18737d-6471-4de4-a790-867fdf9034b8",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:b8902fa04a23",
+            "h:c229201d6e95",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.89879990555346,
+          "gate_policy": "top_k",
+          "gate_passed": 23,
+          "candidates_lexical": 23,
+          "candidates_vector": 0,
+          "fused_candidates": 23
+        }
+      ]
+    },
+    {
+      "name": "A2-pure-vector",
+      "config": {
+        "name": "A2-pure-vector",
+        "mode": "vector",
+        "rrf_k": 60,
+        "candidate_limit": 50,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=vector rrf_k=60 top_k=3 cand=50",
+      "quality": {
+        "n": 7,
+        "hit_rate": 0.7143,
+        "recall_at_k": 0.7143,
+        "precision_at_k": 0.2381,
+        "mrr": 0.6429,
+        "ndcg_at_k": 0.6616,
+        "top1_accuracy": 0.5714
+      },
+      "rejection": {
+        "n": 0,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 15,
+        "p50_ms": 58.43,
+        "p95_ms": 59.89,
+        "p99_ms": 61.6,
+        "mean_ms": 58.1,
+        "by_stage": {
+          "fusion": 0.27,
+          "lexical": 0.0,
+          "rerank": 0.0,
+          "total": 59.89,
+          "vector": 55.36
+        }
+      },
+      "cases": [
+        {
+          "case_id": "who-numbers-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "returned_dedup": [
+            "h:b8902fa04a23",
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 1021.3998999679461,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 0,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "who-organ-risk-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+          ],
+          "returned_dedup": [
+            "h:58e6e6a7ed24",
+            "h:08c1a6a10eb2",
+            "h:09a7e446755c"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 61.22409994713962,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 0,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "who-sodium-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+            "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "returned_dedup": [
+            "h:e59fc76b3b74",
+            "h:44fbad89ca46",
+            "h:354a59128ce6"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 60.16019999515265,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 0,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "emergency-vision-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:09a7e446755c",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.89640005584806,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 0,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "symptom-single-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 14.71829996444285,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 0,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "priv-hgb-equivalent-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:6912681b2859",
+            "h:40b152721349",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 58.002699981443584,
+          "gate_policy": "top_k",
+          "gate_passed": 32,
+          "candidates_lexical": 0,
+          "candidates_vector": 32,
+          "fused_candidates": 32
+        },
+        {
+          "case_id": "who-definition-control-v1",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "1f18737d-6471-4de4-a790-867fdf9034b8",
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:c229201d6e95",
+            "h:b8902fa04a23"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.923899984918535,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 0,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        }
+      ]
+    },
+    {
+      "name": "A3-hybrid-rrf60",
+      "config": {
+        "name": "A3-hybrid-rrf60",
+        "mode": "hybrid",
+        "rrf_k": 60,
+        "candidate_limit": 50,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=hybrid rrf_k=60 top_k=3 cand=50",
+      "quality": {
+        "n": 7,
+        "hit_rate": 1.0,
+        "recall_at_k": 1.0,
+        "precision_at_k": 0.3333,
+        "mrr": 0.6429,
+        "ndcg_at_k": 0.733,
+        "top1_accuracy": 0.4286
+      },
+      "rejection": {
+        "n": 0,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 15,
+        "p50_ms": 56.15,
+        "p95_ms": 59.1,
+        "p99_ms": 60.84,
+        "mean_ms": 56.09,
+        "by_stage": {
+          "fusion": 0.42,
+          "lexical": 54.9,
+          "rerank": 0.0,
+          "total": 59.1,
+          "vector": 35.41
+        }
+      },
+      "cases": [
+        {
+          "case_id": "who-numbers-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:b8902fa04a23",
+            "h:08c1a6a10eb2",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 252.5694000069052,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 19,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "who-organ-risk-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:58e6e6a7ed24",
+            "h:09a7e446755c",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.39869999140501,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 19,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "who-sodium-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "returned_dedup": [
+            "h:e59fc76b3b74",
+            "h:a123e70d9554",
+            "h:354a59128ce6"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.63739994633943,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 14,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "emergency-vision-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:09a7e446755c",
+            "h:c229201d6e95"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 57.05229996237904,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 17,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "symptom-single-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "1f18737d-6471-4de4-a790-867fdf9034b8",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:c229201d6e95",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.392300059087574,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 18,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "priv-hgb-equivalent-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:08c1a6a10eb2",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.337100009433925,
+          "gate_policy": "top_k",
+          "gate_passed": 32,
+          "candidates_lexical": 13,
+          "candidates_vector": 32,
+          "fused_candidates": 32
+        },
+        {
+          "case_id": "who-definition-control-v1",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:b8902fa04a23",
+            "h:c229201d6e95"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 58.402599999681115,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 23,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        }
+      ]
+    },
+    {
+      "name": "B3-rrf30",
+      "config": {
+        "name": "B3-rrf30",
+        "mode": "hybrid",
+        "rrf_k": 30,
+        "candidate_limit": 50,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=hybrid rrf_k=30 top_k=3 cand=50",
+      "quality": {
+        "n": 7,
+        "hit_rate": 1.0,
+        "recall_at_k": 1.0,
+        "precision_at_k": 0.3333,
+        "mrr": 0.6429,
+        "ndcg_at_k": 0.733,
+        "top1_accuracy": 0.4286
+      },
+      "rejection": {
+        "n": 0,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 15,
+        "p50_ms": 55.52,
+        "p95_ms": 59.14,
+        "p99_ms": 62.52,
+        "mean_ms": 56.19,
+        "by_stage": {
+          "fusion": 0.32,
+          "lexical": 54.59,
+          "rerank": 0.0,
+          "total": 59.14,
+          "vector": 30.99
+        }
+      },
+      "cases": [
+        {
+          "case_id": "who-numbers-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:b8902fa04a23",
+            "h:08c1a6a10eb2",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 228.4429999999702,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 19,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "who-organ-risk-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:58e6e6a7ed24",
+            "h:09a7e446755c",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.40780001319945,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 19,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "who-sodium-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "returned_dedup": [
+            "h:e59fc76b3b74",
+            "h:a123e70d9554",
+            "h:354a59128ce6"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.870299947448075,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 14,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "emergency-vision-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:09a7e446755c",
+            "h:c229201d6e95"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.612600011751056,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 17,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "symptom-single-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "1f18737d-6471-4de4-a790-867fdf9034b8",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:c229201d6e95",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.25030004698783,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 18,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        },
+        {
+          "case_id": "priv-hgb-equivalent-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:08c1a6a10eb2",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.00650003179908,
+          "gate_policy": "top_k",
+          "gate_passed": 32,
+          "candidates_lexical": 13,
+          "candidates_vector": 32,
+          "fused_candidates": 32
+        },
+        {
+          "case_id": "who-definition-control-v1",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:b8902fa04a23",
+            "h:c229201d6e95"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 58.35750000551343,
+          "gate_policy": "top_k",
+          "gate_passed": 30,
+          "candidates_lexical": 23,
+          "candidates_vector": 30,
+          "fused_candidates": 30
+        }
+      ]
+    },
+    {
+      "name": "D2-cand20",
+      "config": {
+        "name": "D2-cand20",
+        "mode": "hybrid",
+        "rrf_k": 60,
+        "candidate_limit": 20,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=hybrid rrf_k=60 top_k=3 cand=20",
+      "quality": {
+        "n": 7,
+        "hit_rate": 1.0,
+        "recall_at_k": 1.0,
+        "precision_at_k": 0.3333,
+        "mrr": 0.6429,
+        "ndcg_at_k": 0.733,
+        "top1_accuracy": 0.4286
+      },
+      "rejection": {
+        "n": 0,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 15,
+        "p50_ms": 54.74,
+        "p95_ms": 56.7,
+        "p99_ms": 57.1,
+        "mean_ms": 55.17,
+        "by_stage": {
+          "fusion": 0.27,
+          "lexical": 52.5,
+          "rerank": 0.0,
+          "total": 56.7,
+          "vector": 26.9
+        }
+      },
+      "cases": [
+        {
+          "case_id": "who-numbers-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:b8902fa04a23",
+            "h:08c1a6a10eb2",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 247.22029990516603,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 19,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "who-organ-risk-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:58e6e6a7ed24",
+            "h:09a7e446755c",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.669300025328994,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 19,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "who-sodium-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "returned_dedup": [
+            "h:e59fc76b3b74",
+            "h:a123e70d9554",
+            "h:354a59128ce6"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.61759998090565,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 14,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "emergency-vision-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:09a7e446755c",
+            "h:c229201d6e95"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.51229992508888,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 17,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "symptom-single-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "1f18737d-6471-4de4-a790-867fdf9034b8",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:c229201d6e95",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.473599979653955,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 18,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "priv-hgb-equivalent-revision-v1",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:08c1a6a10eb2",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.00120008178055,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 13,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "who-definition-control-v1",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:b8902fa04a23",
+            "h:c229201d6e95"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.601100040599704,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 20,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "who-numbers-revision-v1",
+      "question": "血压读数中的两个数字分别表示什么？",
+      "scope": "public",
+      "gold": [
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "WHO 结构化补充来源：收缩压与舒张压"
+    },
+    {
+      "id": "who-organ-risk-revision-v1",
+      "question": "长期高血压可能损伤哪些重要器官？",
+      "scope": "public",
+      "gold": [
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "WHO 结构化补充来源：心脏、脑和肾脏"
+    },
+    {
+      "id": "who-sodium-revision-v1",
+      "question": "WHO 对每日盐/钠摄入控制提出了什么一般方向？",
+      "scope": "public",
+      "gold": [
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "WHO 结构化补充来源：低盐和每日 2 克钠方向"
+    },
+    {
+      "id": "emergency-vision-revision-v1",
+      "question": "高血压伴视力变化为什么需要升级处理？",
+      "scope": "public",
+      "gold": [
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "WHO 等价证据修订后的急症回归"
+    },
+    {
+      "id": "symptom-single-revision-v1",
+      "question": "一次家庭读数可以直接确诊高血压吗？",
+      "scope": "public",
+      "gold": [
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "WHO 等价证据修订后的单次读数边界回归"
+    },
+    {
+      "id": "priv-hgb-equivalent-revision-v1",
+      "question": "血红蛋白结果是否低于报告参考范围？",
+      "scope": "private",
+      "gold": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "修订集选用短版 canonical 证据；完整报告 822 在 proposal 中作为同组等价证据"
+    },
+    {
+      "id": "who-definition-control-v1",
+      "question": "WHO 页面如何定义成人高血压？",
+      "scope": "public",
+      "gold": [
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "新增来源后的基线控制项"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e ".[dev,live]"
+      - name: Lint (E, F, W, B, S)
+        # Rule families are pinned in pyproject.toml; tests/contract/test_lint_gate.py
+        # fails if the selection is weakened.
+        run: ruff check --no-cache src tests
+      - name: Tests
+        # A repo-local scratch directory is used instead of pytest's tmp_path
+        # because the OS temp directory is not writable in every environment.
+        run: pytest -q -p no:cacheprovider
+
+  migrations:
+    # The API could not be provisioned from scratch: 0001 builds the schema from
+    # the current models, so 0002's add_column aborted with "duplicate column
+    # name: password_hash".  This job proves a fresh database can be built,
+    # rolled back and rebuilt -- on PostgreSQL, not only SQLite.
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: medical_rag
+          POSTGRES_USER: medical_rag
+          POSTGRES_PASSWORD: medical_rag
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U medical_rag -d medical_rag"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql+psycopg://medical_rag:medical_rag@localhost:5432/medical_rag
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Upgrade, roll back, upgrade again
+        run: |
+          alembic upgrade head
+          alembic downgrade base
+          alembic upgrade head
+      - name: Migrations match the models
+        run: alembic check
+
+  deployment:
+    # There was no backend image, no console script and no `api` service even
+    # though nginx proxied /v1/ to api:8000, so the API could not be started.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compose file is valid and all required variables are documented
+        env:
+          POSTGRES_PASSWORD: ci-placeholder
+          REDIS_PASSWORD: ci-placeholder
+          MINIO_ROOT_USER: ci-placeholder
+          MINIO_ROOT_PASSWORD: ci-placeholder
+          JWT_SECRET: ci-placeholder-jwt-secret-at-least-32-bytes
+          MODEL_GATEWAY_URL: https://gateway.example.invalid/v1
+          MODEL_GATEWAY_API_KEY: ci-placeholder
+        run: docker compose config --quiet
+      - name: Backend image builds
+        run: docker build --tag medical-rag-api:ci .
+      - name: The image exposes the API entrypoint
+        run: |
+          docker run --rm --entrypoint python medical-rag-api:ci -c \
+            "import importlib; importlib.import_module('medical_rag.api.serve').main; print('entrypoint importable')"
+      # Importing the entrypoint is NOT enough: FastAPI resolves UploadFile/Form
+      # while registering routes, so a missing python-multipart makes create_app()
+      # raise while `import medical_rag.api.serve` still succeeds.  That is exactly
+      # how the API shipped in an image that could not start, because the package
+      # was present in every development virtualenv but absent from the declared
+      # dependencies.  Construct the application and serve a request instead.
+      - name: The image can construct the app and serve /health
+        run: |
+          docker run --rm --entrypoint python \
+            -e ENVIRONMENT=local \
+            -e DATABASE_URL=sqlite+pysqlite:///:memory: \
+            -e JWT_SECRET=ci-only-secret-value-at-least-32-bytes \
+            medical-rag-api:ci -c "import fastapi.testclient as t, medical_rag.api.app as a; c = t.TestClient(a.create_app()); c.__enter__(); s = c.get('/health').status_code; assert s == 200, s; print('image serves /health:', s); c.__exit__(None, None, None)"

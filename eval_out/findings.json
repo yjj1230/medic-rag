@@ -1,0 +1,1146 @@
+{
+  "conclusions": [
+    "**混合检索优于任一单路**：MRR 词法 0.774 / 向量 0.917 / 混合 0.964。混合相对词法提升 +0.191，相对向量提升 +0.048。",
+    "**RRF k 在本语料上几乎不敏感**：MRR 取值 {10: 0.964, 30: 0.964, 60: 0.964, 100: 0.964}，极差 0.000。原因是最优候选在两路中排名都很靠前，1/(k+rank) 的相对关系不随 k 变化。k=10 略优，但差异在噪声量级。",
+    "**top_k 影响召回上限与上下文冗余**：k=1 → 召回 0.929 / 查准 0.929；k=3 → 召回 0.929 / 查准 0.429；k=5 → 召回 0.964 / 查准 0.271。召回随 k 单调上升，但查准与信息密度下降。**查准率（P@K）同时受 `min(1, |gold|/K)` 上界约束**——本评估集多数用例 `|gold| < K`，其 P@K 数值在口径上被封顶，见「分母可及性体检」一节，不能单以阈值判其达标与否。",
+    "**candidate_limit 在当前语料上无区分度**：MRR 恒为 0.964。原因是候选池（public 18 + private 7）本身就小于任何被测上限，截断从未生效。**该参数的推荐值必须等语料规模上来后重新标定**，当前测得的'最优值'没有意义。",
+    "**硬门禁会直接砍掉召回**：rank_gate=2 使召回降至 0.929、rank_gate=1 降至 0.714（无门禁为 0.929）。门禁语义必须显式声明（`GatePolicy`），且未标定时不应启用——否则 top_k 退化会被误读为低召回。",
+    "**bge 查询指令前缀收益有限**：纯向量 MRR 0.917 → 0.845，混合 0.964 → 0.929。该前缀面向「短查询检索长文章」（s2p），而本项目 query 已是完整问句、文档块也只有百余字，场景不匹配。",
+    "**向量缓存对单次延迟无改善**（P50 50ms vs 53ms）：每个 query 只编码一次，缓存命中率恒为 0。它的价值在多用户重复提问的场景。",
+    "**零容忍安全项全配置通过**：20 个配置累计违规 0 次。越权用例以真实的不同患者/租户身份触发，ACL 过滤在候选生成阶段即生效（`_is_authorized` + OpenSearch filter），不依赖后置过滤。",
+    "**删除残留 / 复核泄漏未真实覆盖**：当前语料中没有 `deleted=true` 或 `retrieval_eligible=false` 的记录，因此这两项只能证明「过滤逻辑未误伤」，不能证明「残留会被拦住」。需要专门的负样本集才能验证。",
+    "**评估结论的边界（语料缺陷）**：私有库 7 条中仅 3 组唯一内容，其中 2 条为无中文字形的乱码记录（■ 占位）。这使：(a) 召回率必须在去重口径下解读；(b) 乱码记录因向量接近而可能挤占 top_k 槽位；(c) 本评估集规模偏小，结论的统计置信度有限。",
+    "**样本量不足以确认召回达标**：默认配置 Recall@K = 0.929，但 n=14（<30）时 95% t 区间 [0.824, 1.000] 下界 < 阈值 0.90，结论：**n<30 暂不判定**。要达到「区间下界 ≥ 0.90」需把评估集扩到 ~1000 量级（按比例检验样本量公式估算），当前结论只能算「未观测到失败」，不能算「已确认达标」。",
+    "**P@K「未达标」主要是口径封顶，不是检索缺陷**：14 条 quality 用例中 12 条满足 `|gold| < K`（去重后 |gold| 多为 1，K=3），查准率上界仅 0.333。这 12 条用例的 P@K **恰好压在上界**、召回均为 1.000——它们一条都没丢。用二元阈值判「未达标」犯了把标注缺陷当检索缺陷的错误；要真正评估 P@K，需把每条 gold 标注数提到 ≥ K。"
+  ],
+  "corpus_integrity": {
+    "public_docs": 18,
+    "private_docs": 7,
+    "private_unique_contents": 3,
+    "private_duplicate_group_sizes": [
+      4,
+      2,
+      1
+    ],
+    "garbled_records": [
+      "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+      "7092ee1e-9302-49ea-8262-270de97fd144"
+    ],
+    "visibility_scan": {
+      "medical-rag-public-local": {
+        "expected_visibility": "public",
+        "total": 18,
+        "mismatched": 0
+      },
+      "medical-rag-private-local": {
+        "expected_visibility": "private",
+        "total": 7,
+        "mismatched": 0
+      }
+    }
+  },
+  "significance": {
+    "A1-pure-lexical": {
+      "recall": {
+        "point": 0.75,
+        "low": 0.5307,
+        "high": 0.9693,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 0.8571,
+        "low": 0.6006,
+        "high": 0.9599,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "A2-pure-vector": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "A3-hybrid-rrf60": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "B-rrf10": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "B-rrf30": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "B-rrf60": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "B-rrf100": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "C-topk1": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.7743,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 0.9286,
+        "low": 0.6853,
+        "high": 0.9873,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "C-topk3": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "C-topk5": {
+      "recall": {
+        "point": 0.9643,
+        "low": 0.8871,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "D-cand5": {
+      "recall": {
+        "point": 0.8929,
+        "low": 0.7699,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "D-cand10": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "D-cand20": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "D-cand50": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "D-cand100": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "E1-rank-gate-2": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "E2-rank-gate-1": {
+      "recall": {
+        "point": 0.7143,
+        "low": 0.5277,
+        "high": 0.9008,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 0.9286,
+        "low": 0.6853,
+        "high": 0.9873,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "F1-prefix-vector": {
+      "recall": {
+        "point": 0.8929,
+        "low": 0.7699,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "F2-prefix-hybrid": {
+      "recall": {
+        "point": 0.8929,
+        "low": 0.7699,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    },
+    "G1-cache-on": {
+      "recall": {
+        "point": 0.9286,
+        "low": 0.8237,
+        "high": 1.0,
+        "method": "t",
+        "n": 14,
+        "verdict": "n<30 暂不判定"
+      },
+      "hit_rate": {
+        "point": 1.0,
+        "low": 0.7847,
+        "high": 1.0,
+        "method": "wilson",
+        "n": 14
+      }
+    }
+  },
+  "metrics_by_config": {
+    "A1-pure-lexical": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 0.8571,
+        "recall_at_k": 0.75,
+        "precision_at_k": 0.3571,
+        "mrr": 0.7738,
+        "ndcg_at_k": 0.7122,
+        "top1_accuracy": 0.7143
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 48.7,
+        "p95_ms": 52.45,
+        "p99_ms": 52.96,
+        "mean_ms": 48.53,
+        "by_stage": {
+          "fusion": 0.14,
+          "lexical": 52.27,
+          "rerank": 0.0,
+          "total": 52.45,
+          "vector": 0.0
+        }
+      },
+      "context_redundancy": 0.0714
+    },
+    "A2-pure-vector": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9167,
+        "ndcg_at_k": 0.8769,
+        "top1_accuracy": 0.8571
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 55.55,
+        "p95_ms": 59.09,
+        "p99_ms": 62.11,
+        "mean_ms": 55.66,
+        "by_stage": {
+          "fusion": 0.2,
+          "lexical": 0.0,
+          "rerank": 0.0,
+          "total": 59.09,
+          "vector": 53.98
+        }
+      },
+      "context_redundancy": 0.2143
+    },
+    "A3-hybrid-rrf60": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 52.97,
+        "p95_ms": 56.86,
+        "p99_ms": 58.13,
+        "mean_ms": 53.58,
+        "by_stage": {
+          "fusion": 0.26,
+          "lexical": 52.46,
+          "rerank": 0.0,
+          "total": 56.86,
+          "vector": 30.41
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "B-rrf10": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 52.79,
+        "p95_ms": 57.28,
+        "p99_ms": 58.34,
+        "mean_ms": 53.38,
+        "by_stage": {
+          "fusion": 0.29,
+          "lexical": 52.82,
+          "rerank": 0.0,
+          "total": 57.28,
+          "vector": 31.5
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "B-rrf30": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 52.9,
+        "p95_ms": 57.2,
+        "p99_ms": 59.26,
+        "mean_ms": 53.46,
+        "by_stage": {
+          "fusion": 0.29,
+          "lexical": 52.62,
+          "rerank": 0.0,
+          "total": 57.2,
+          "vector": 28.87
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "B-rrf60": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 53.43,
+        "p95_ms": 57.62,
+        "p99_ms": 59.93,
+        "mean_ms": 53.87,
+        "by_stage": {
+          "fusion": 0.3,
+          "lexical": 53.28,
+          "rerank": 0.0,
+          "total": 57.62,
+          "vector": 31.05
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "B-rrf100": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 53.29,
+        "p95_ms": 57.8,
+        "p99_ms": 58.75,
+        "mean_ms": 53.77,
+        "by_stage": {
+          "fusion": 0.3,
+          "lexical": 52.65,
+          "rerank": 0.0,
+          "total": 57.8,
+          "vector": 32.55
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "C-topk1": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 0.9286,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.9286,
+        "mrr": 0.9286,
+        "ndcg_at_k": 0.9286,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 53.23,
+        "p95_ms": 58.24,
+        "p99_ms": 62.04,
+        "mean_ms": 53.82,
+        "by_stage": {
+          "fusion": 0.29,
+          "lexical": 53.17,
+          "rerank": 0.0,
+          "total": 58.24,
+          "vector": 32.81
+        }
+      },
+      "context_redundancy": 0.0
+    },
+    "C-topk3": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 53.64,
+        "p95_ms": 57.96,
+        "p99_ms": 63.18,
+        "mean_ms": 60.89,
+        "by_stage": {
+          "fusion": 0.3,
+          "lexical": 53.75,
+          "rerank": 0.0,
+          "total": 57.96,
+          "vector": 31.55
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "C-topk5": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9643,
+        "precision_at_k": 0.2714,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9353,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 53.14,
+        "p95_ms": 57.09,
+        "p99_ms": 57.54,
+        "mean_ms": 53.64,
+        "by_stage": {
+          "fusion": 0.3,
+          "lexical": 52.16,
+          "rerank": 0.0,
+          "total": 57.09,
+          "vector": 31.3
+        }
+      },
+      "context_redundancy": 0.2
+    },
+    "D-cand5": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.8929,
+        "precision_at_k": 0.4048,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.8907,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 52.14,
+        "p95_ms": 56.46,
+        "p99_ms": 57.11,
+        "mean_ms": 52.71,
+        "by_stage": {
+          "fusion": 0.13,
+          "lexical": 52.31,
+          "rerank": 0.0,
+          "total": 56.46,
+          "vector": 27.07
+        }
+      },
+      "context_redundancy": 0.1667
+    },
+    "D-cand10": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 52.68,
+        "p95_ms": 56.73,
+        "p99_ms": 59.55,
+        "mean_ms": 53.23,
+        "by_stage": {
+          "fusion": 0.17,
+          "lexical": 52.31,
+          "rerank": 0.0,
+          "total": 56.73,
+          "vector": 28.03
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "D-cand20": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 53.19,
+        "p95_ms": 58.14,
+        "p99_ms": 59.94,
+        "mean_ms": 53.86,
+        "by_stage": {
+          "fusion": 0.28,
+          "lexical": 52.84,
+          "rerank": 0.0,
+          "total": 58.14,
+          "vector": 28.07
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "D-cand50": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 54.45,
+        "p95_ms": 60.71,
+        "p99_ms": 68.91,
+        "mean_ms": 55.14,
+        "by_stage": {
+          "fusion": 0.3,
+          "lexical": 53.42,
+          "rerank": 0.0,
+          "total": 60.71,
+          "vector": 32.24
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "D-cand100": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 54.13,
+        "p95_ms": 58.12,
+        "p99_ms": 60.61,
+        "mean_ms": 54.29,
+        "by_stage": {
+          "fusion": 0.31,
+          "lexical": 52.28,
+          "rerank": 0.0,
+          "total": 58.12,
+          "vector": 31.79
+        }
+      },
+      "context_redundancy": 0.1428
+    },
+    "E1-rank-gate-2": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.6429,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 54.12,
+        "p95_ms": 59.23,
+        "p99_ms": 61.2,
+        "mean_ms": 54.58,
+        "by_stage": {
+          "fusion": 0.31,
+          "lexical": 53.26,
+          "rerank": 0.0,
+          "total": 59.23,
+          "vector": 32.98
+        }
+      },
+      "context_redundancy": 0.1429
+    },
+    "E2-rank-gate-1": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 0.9286,
+        "recall_at_k": 0.7143,
+        "precision_at_k": 0.9286,
+        "mrr": 0.9286,
+        "ndcg_at_k": 0.9286,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 54.46,
+        "p95_ms": 58.75,
+        "p99_ms": 59.24,
+        "mean_ms": 54.61,
+        "by_stage": {
+          "fusion": 0.31,
+          "lexical": 52.77,
+          "rerank": 0.0,
+          "total": 58.75,
+          "vector": 31.92
+        }
+      },
+      "context_redundancy": 0.0
+    },
+    "F1-prefix-vector": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.8929,
+        "precision_at_k": 0.4048,
+        "mrr": 0.8452,
+        "ndcg_at_k": 0.8023,
+        "top1_accuracy": 0.7143
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 57.67,
+        "p95_ms": 61.83,
+        "p99_ms": 67.17,
+        "mean_ms": 57.96,
+        "by_stage": {
+          "fusion": 0.24,
+          "lexical": 0.0,
+          "rerank": 0.0,
+          "total": 61.83,
+          "vector": 55.44
+        }
+      },
+      "context_redundancy": 0.1667
+    },
+    "F2-prefix-hybrid": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.8929,
+        "precision_at_k": 0.4048,
+        "mrr": 0.9286,
+        "ndcg_at_k": 0.8644,
+        "top1_accuracy": 0.8571
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 54.53,
+        "p95_ms": 57.89,
+        "p99_ms": 60.05,
+        "mean_ms": 54.54,
+        "by_stage": {
+          "fusion": 0.26,
+          "lexical": 52.14,
+          "rerank": 0.0,
+          "total": 57.89,
+          "vector": 31.77
+        }
+      },
+      "context_redundancy": 0.1667
+    },
+    "G1-cache-on": {
+      "quality": {
+        "n": 14,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9286,
+        "precision_at_k": 0.4286,
+        "mrr": 0.9643,
+        "ndcg_at_k": 0.9184,
+        "top1_accuracy": 0.9286
+      },
+      "rejection": {
+        "n": 2,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 2,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 100,
+        "p50_ms": 49.56,
+        "p95_ms": 53.85,
+        "p99_ms": 56.29,
+        "mean_ms": 49.83,
+        "by_stage": {
+          "fusion": 0.27,
+          "lexical": 53.4,
+          "rerank": 0.0,
+          "total": 53.85,
+          "vector": 33.87
+        }
+      },
+      "context_redundancy": 0.1428
+    }
+  }
+}

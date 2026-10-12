@@ -1,0 +1,35 @@
+{
+  "A-02": {
+    "http": 403,
+    "body": "{\"detail\":\"当前身份没有医学复核权限\"}",
+    "doc_state": {
+      "id": "10311239-e845-4672-8ca2-ce6d1109e465",
+      "filename": "e2e_smoke_doc.pdf",
+      "content_type": "application/pdf",
+      "status": "ready",
+      "quality_status": "READY",
+      "failure_reason_code": null,
+      "failure_reason_label": null
+    },
+    "index_chunk_count": 1,
+    "passed": true
+  },
+  "A-03": {
+    "http": 500,
+    "body": "Internal Server Error",
+    "index_residual": 1,
+    "db_state": [
+      "READY",
+      null
+    ],
+    "passed": false,
+    "verdict": "P0-6 复现"
+  },
+  "cleanup": {
+    "index_deleted": 1,
+    "db_documents_tombstoned": 1,
+    "db_versions_tombstoned": 1,
+    "post_residual": 0
+  },
+  "doc_id": "10311239-e845-4672-8ca2-ce6d1109e465"
+}

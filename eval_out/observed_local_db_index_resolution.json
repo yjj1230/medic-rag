@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-10-08T08:59:15.531335+00:00",
+  "source": "observed_local_db + live OpenSearch read-only verification",
+  "citation_id": "6e8a499b-f28c-471b-97aa-e80cd4285157",
+  "affected_question_message": {
+    "id": "c6fe61c0996041f38554479a7a2f7c56",
+    "session_id": "ac1212e723514162b64db94531beb5e7",
+    "created_at": "2026-10-08 05:47:48.009467"
+  },
+  "sqlite": {
+    "evidence_unit": {
+      "id": "6e8a499bf28c471b97aae80cd4285157",
+      "document_version_id": "d088293274df459baa53aee9fcc74425",
+      "retrieval_eligible": 1,
+      "deleted_at": null
+    },
+    "document_version": {
+      "id": "d088293274df459baa53aee9fcc74425",
+      "document_id": "b1e377910d2145b89b17aa4662b3bde9",
+      "status": "deleted",
+      "deleted_at": "2026-10-08 05:53:11",
+      "version_number": 1
+    },
+    "document": {
+      "id": "b1e377910d2145b89b17aa4662b3bde9",
+      "status": "deleted",
+      "deleted_at": "2026-10-08 05:53:11",
+      "filename": "e2e_smoke_doc.pdf"
+    },
+    "latest_index_job": {
+      "id": "df8c043848bc4b9ebad208c05dbbc746",
+      "status": "SUCCEEDED",
+      "finished_at": "2026-10-08 05:47:25.154542",
+      "index_version": "private-v1",
+      "parser_version": "pdf-parser-v2",
+      "embedding_model": "BAAI/bge-small-zh-v1.5",
+      "embedding_dimensions": 512
+    }
+  },
+  "opensearch": {
+    "medical-rag-public": {
+      "found": false
+    },
+    "medical-rag-private": {
+      "found": false
+    },
+    "private_evidence_unit_search": {
+      "hits": 0
+    }
+  },
+  "repair_decision": {
+    "action": "no_reindex_deleted_source",
+    "status": "resolved_as_expected_deletion",
+    "reason": "The evidence was indexed successfully before the answer, then its parent document/version was deleted during local test cleanup. Re-indexing it would resurrect deleted patient data.",
+    "historical_answer_may_reference_deleted_evidence": true
+  },
+  "code_followup": "scripts/e2e_retest_a02a03.py now writes DELETED, matching SQLAlchemy Enum storage and preventing future reconciliation LookupError.",
+  "reconciliation_verification": {
+    "method": "official ReconciliationService private scan against the live local database and read alias, after audited enum compatibility normalization",
+    "scope": "private",
+    "scanned": 11,
+    "residuals": 0,
+    "missing": 0,
+    "stale": 0,
+    "result": "clean"
+  },
+  "database_normalization_audit": "eval_out/db_enum_compatibility_repair_2026-10-08.json"
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "804e02e8-026f-46fd-96f3-d61d3d3f5a75",
+    "text": "---\nsource_id: WHO-HTN-EXPLICIT-2025\ninstitution: World Health Organization\ntitle: Hypertension explicit concepts supplement\nauthoritative_url: https://www.who.int/news-room/fact-sheets/detail/hypertension\nupdated: 2025-09-25\nlicense_note: WHO 页面内容按 CC BY-NC-SA 3.0 IGO 及页面说明使用;本文件仅保留归因明确的中文摘要,不复制页面全文。\nstatus: reviewed_and_indexed\nreviewer: 俞家俊\n---",
+    "content_hash": "fdeb79985c64cb5b8d0ef69f2817b9ba8da9b1c39695ea29eae31aa431512adc",
+    "source_id": "be9ec2fe-797c-411b-a4cc-acead437bdc6",
+    "source_version": "updated-2025-09-25-explicit-v1"
+  },
+  {
+    "id": "86a89913-374a-4a84-b520-da26d89e6d85",
+    "text": "本文件是 WHO《Hypertension》事实页的结构化补充版本,用来保留原摘要中对术语和并发症的明确表述。它不替代原有 `WHO-HTN-FACTSHEET` 来源,也不把一般健康教育改写成个体诊断或处方。",
+    "content_hash": "3fb00f3349f96ab826a60016c3848c6782216048dd1789cc579a826de323965a",
+    "source_id": "be9ec2fe-797c-411b-a4cc-acead437bdc6",
+    "source_version": "updated-2025-09-25-explicit-v1"
+  },
+  {
+    "id": "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+    "text": "血压写成两个数字。第一个是收缩压(systolic blood pressure),表示心脏收缩或跳动时血管内的压力;第二个是舒张压(diastolic blood pressure),表示心脏在两次跳动之间舒张时血管内的压力。WHO 页面同时说明,成人高血压的诊断需要在不同日期测量,并结合收缩压和/或舒张压达到相应阈值的情况;该阈值不能脱离来源和测量场景解释。",
+    "content_hash": "b8902fa04a23cb8c86c0b82f4157f24df80021bfb81eaaae8a1f106f3922c3e0",
+    "source_id": "be9ec2fe-797c-411b-a4cc-acead437bdc6",
+    "source_version": "updated-2025-09-25-explicit-v1"
+  },
+  {
+    "id": "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+    "text": "WHO 页面指出,未治疗的高血压可能导致肾脏疾病、心脏疾病和卒中。长期压力会损害心脏和供给脑部的血管,也可能造成肾脏损害并进展到肾功能衰竭。这里是一般风险教育,不能据此判断某个具体人的器官已经受损。",
+    "content_hash": "58e6e6a7ed24095de0d1b66d8892bca6d99c0a166632c5043572fdf061d823be",
+    "source_id": "be9ec2fe-797c-411b-a4cc-acead437bdc6",
+    "source_version": "updated-2025-09-25-explicit-v1"
+  },
+  {
+    "id": "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+    "text": "WHO 将高盐饮食列为高血压风险因素,并建议采用低盐饮食。其事实页的自我管理段落还给出“尽量低于每日 2 克”的表述。该数字按页面上下文保留为钠摄入方向;本摘要不把钠的克数直接改写成食盐克数,也不把一般方向当作个人处方。用户询问“盐/钠”时,回答应明确单位和来源上下文。",
+    "content_hash": "e59fc76b3b741819b94a8429657367e46f472cf1ea3ee98e8d75c821d5a320d5",
+    "source_id": "be9ec2fe-797c-411b-a4cc-acead437bdc6",
+    "source_version": "updated-2025-09-25-explicit-v1"
+  },
+  {
+    "id": "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+    "text": "本补充来源适合解释收缩压/舒张压、心脏/脑/肾脏风险和 WHO 页面中的盐/钠方向。它不用于个体化药物选择、剂量调整、妊娠期治疗或单次读数的确诊。\n\n来源:<https://www.who.int/news-room/fact-sheets/detail/hypertension>",
+    "content_hash": "44fbad89ca46740bb62e4f216fd9df29e6bba9407c564ac3c88ad19af9ae11dc",
+    "source_id": "be9ec2fe-797c-411b-a4cc-acead437bdc6",
+    "source_version": "updated-2025-09-25-explicit-v1"
+  }
+]

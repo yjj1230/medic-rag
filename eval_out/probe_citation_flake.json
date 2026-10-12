@@ -1,0 +1,120 @@
+{
+  "question": "高血压患者在生活方式上有哪些注意事项？",
+  "n": 8,
+  "status_counts": {
+    "answered": 5,
+    "degraded": 3
+  },
+  "answered": 5,
+  "degraded": 3,
+  "flake_rate": 0.375,
+  "latency_median_s": 49.5,
+  "latency_min_s": 37.9,
+  "latency_max_s": 72.7,
+  "rows": [
+    {
+      "i": 1,
+      "http": 200,
+      "latency_s": 37.9,
+      "status": "answered",
+      "citations": 5,
+      "session_id": "689f6750-a909-4e4c-9355-d9f804da5dc4",
+      "safety_notice": null,
+      "answer_path": "rag",
+      "gate_policy": "cosine_absolute",
+      "trace_id": "b82db997-da98-49f8-8716-9a05efe963b2",
+      "text_head": "## 高血压患者生活方式注意事项\n\n**饮食方面：**\n- 控制钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf94"
+    },
+    {
+      "i": 2,
+      "http": 200,
+      "latency_s": 43.9,
+      "status": "degraded",
+      "citations": 0,
+      "session_id": null,
+      "safety_notice": "回答未通过医学证据和引用校验，因此未向患者展示。请改写问题或咨询医生。",
+      "answer_path": "rag",
+      "gate_policy": null,
+      "trace_id": "0d9dd748-a90f-47bc-9272-5cfa60584316",
+      "text_head": "回答未通过医学证据和引用校验，因此未向患者展示。请改写问题或咨询医生。"
+    },
+    {
+      "i": 3,
+      "http": 200,
+      "latency_s": 41.3,
+      "status": "answered",
+      "citations": 6,
+      "session_id": "813982a9-88ae-4c70-8458-c31612144639",
+      "safety_notice": null,
+      "answer_path": "rag",
+      "gate_policy": "cosine_absolute",
+      "trace_id": "2a8b6543-0741-4c43-8b8b-44f32f9af2f3",
+      "text_head": "以下是高血压患者在生活方式上主要的注意事项：\n\n## 饮食\n\n减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf9"
+    },
+    {
+      "i": 4,
+      "http": 200,
+      "latency_s": 72.7,
+      "status": "degraded",
+      "citations": 0,
+      "session_id": null,
+      "safety_notice": "回答未通过医学证据和引用校验，因此未向患者展示。请改写问题或咨询医生。",
+      "answer_path": "rag",
+      "gate_policy": null,
+      "trace_id": "033ebb5d-f6dd-4ad1-a1b1-f026492727a6",
+      "text_head": "回答未通过医学证据和引用校验，因此未向患者展示。请改写问题或咨询医生。"
+    },
+    {
+      "i": 5,
+      "http": 200,
+      "latency_s": 57.3,
+      "status": "degraded",
+      "citations": 0,
+      "session_id": null,
+      "safety_notice": "回答未通过医学证据和引用校验，因此未向患者展示。请改写问题或咨询医生。",
+      "answer_path": "rag",
+      "gate_policy": null,
+      "trace_id": "b587ef97-cd65-431f-b34a-222d7d5b878d",
+      "text_head": "回答未通过医学证据和引用校验，因此未向患者展示。请改写问题或咨询医生。"
+    },
+    {
+      "i": 6,
+      "http": 200,
+      "latency_s": 54.1,
+      "status": "answered",
+      "citations": 6,
+      "session_id": "5f34267e-5486-41c8-9db8-c9ef6235f5a8",
+      "safety_notice": null,
+      "answer_path": "rag",
+      "gate_policy": "cosine_absolute",
+      "trace_id": "40b313ab-45b7-45ec-89b0-70038121627c",
+      "text_head": "高血压患者在生活方式上主要有以下几个方面的注意事项：\n\n### 饮食方面\n\n- 减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f"
+    },
+    {
+      "i": 7,
+      "http": 200,
+      "latency_s": 45.0,
+      "status": "answered",
+      "citations": 6,
+      "session_id": "32e210da-1119-436a-8304-dfc78afdb51d",
+      "safety_notice": null,
+      "answer_path": "rag",
+      "gate_policy": "cosine_absolute",
+      "trace_id": "2ef95b7c-ad1b-46cc-ac56-79afaf6a0152",
+      "text_head": "## 高血压患者的生活方式注意事项\n\n高血压管理通常包括生活方式调整和必要时的药物治疗 [4d34b07f-7cae-47f6-9d9d-71b1663a4f5"
+    },
+    {
+      "i": 8,
+      "http": 200,
+      "latency_s": 60.4,
+      "status": "answered",
+      "citations": 7,
+      "session_id": "dabd9f77-5290-4d47-9657-dd749a682729",
+      "safety_notice": null,
+      "answer_path": "rag",
+      "gate_policy": "cosine_absolute",
+      "trace_id": "087ef4af-759b-4660-84d1-e81bc52a6c20",
+      "text_head": "根据现有资料，高血压患者在生活方式上主要包括以下几方面注意事项：\n\n### 饮食\n- 减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克，并"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+﻿routes:
+  GET          /health
+  GET          /health/ready
+  POST         /v1/auth/login
+  POST         /v1/chat/answers
+  GET          /v1/chat/sessions/{session_id}/messages
+  GET          /v1/consents
+  DELETE,POST  /v1/consents/{purpose}
+  GET,POST     /v1/documents
+  DELETE,GET   /v1/documents/{document_id}
+  POST         /v1/documents/{document_id}/review

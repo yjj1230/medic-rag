@@ -1,0 +1,929 @@
+{
+  "generated_at": "2026-10-08T09:13:49.013864+00:00",
+  "source": "medical_rag.db raw chat_messages + SQLite lifecycle tables + live citation IDs",
+  "records": 27,
+  "unique_questions": 11,
+  "answers_with_citations": 27,
+  "answers_without_citations": 0,
+  "citation_status_counts": {
+    "private_active": 16,
+    "public_active": 86,
+    "private_historical_deleted": 1
+  },
+  "historical_deleted_citation_answers": 1,
+  "unresolved_citation_answers": 0,
+  "active_index_drift_cases": 0,
+  "note": "Local development database only; the missing OpenSearch citation is classified as a historical deleted source after lifecycle verification.",
+  "cases": [
+    {
+      "assistant_message_id": "e689c32570c24a23b3d9a572c3195ea2",
+      "question": "白细胞计数正常吗？",
+      "citation_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "a3ff0b7e4fb441e09b9137287fb960af",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "citation_statuses": [
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "21fb2e97f0e447bc916ef8eb5c84ad97",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "citation_statuses": [
+        {
+          "id": "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+          "status": "public_active"
+        },
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "fb1c3f5285754d4284f15eff32b757bf",
+      "question": "血红蛋白的参考范围是什么？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "5ce892d81b734f7bb61e23b2bf912363",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "citation_statuses": [
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "c55ee79c2e414e2a9a5efee453c57114",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "citation_statuses": [
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "a4f3d205dc1c42bf9e3d2597d2defbcf",
+      "question": "报告日期是哪天？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "8d368f2a7fe547aabb62ff58d6fa7153",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "citation_statuses": [
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "385c72fc975c4f0d8004683ce0500355",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "citation_statuses": [
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "e26c9ef9bd0f4534b941e91abcd7e948",
+      "question": "血红蛋白是多少？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "e02f67085cb34b0997b16fc6eaa72fc1",
+      "question": "高血压患者生活方式注意事项有哪些？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "citation_statuses": [
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "status": "public_active"
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "ff1ac1a2327e4a67b672fedf62173d54",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "citation_statuses": [
+        {
+          "id": "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+          "status": "public_active"
+        },
+        {
+          "id": "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "d065c2f2dee24d649605d79986be517d",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "citation_statuses": [
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "2d4218816dfc4766b59fe1c6db8bce4f",
+      "question": "血小板计数是多少？",
+      "citation_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "citation_statuses": [
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "5eafa654c35b4fab92c3ba54fb066fc8",
+      "question": "高血压患者的生活方式要注意什么",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "citation_statuses": [
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "status": "public_active"
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "69b21ddbceee49d194db14833d60b93b",
+      "question": "高血压患者的生活方式干预有哪些要点？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "citation_statuses": [
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "status": "public_active"
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "752839e4348540879c5553b3b540d0ed",
+      "question": "报告日期是哪天？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "345ff57a43144ad89100a8359d1afd4b",
+      "question": "血红蛋白是多少？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "6dfcf85cf071454bb8a2e94c34c696b7",
+      "question": "报告日期是哪天？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "29a6f772bc38478f99aa7c2d1364c890",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "citation_statuses": [
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "c6fe61c0996041f38554479a7a2f7c56",
+      "question": "根据我的检查报告，每日建议摄入多少克核桃？",
+      "citation_ids": [
+        "6e8a499b-f28c-471b-97aa-e80cd4285157",
+        "6e8a499b-f28c-471b-97aa-e80cd4285157",
+        "6e8a499b-f28c-471b-97aa-e80cd4285157"
+      ],
+      "citation_statuses": [
+        {
+          "id": "6e8a499b-f28c-471b-97aa-e80cd4285157",
+          "status": "private_historical_deleted"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "b2bc7cc5f30240a089eb6768a64b296a",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "citation_statuses": [
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "4dbd3071595047fd9ae46258f0c78eb5",
+      "question": "我的检查结论是什么？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "36480fa6be684060baa2f2b66fbe98d4",
+      "question": "血红蛋白是多少？",
+      "citation_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "citation_statuses": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "status": "private_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "a163cd8bff234144890b05ac98e8b8ff",
+      "question": "高血压患者生活方式注意事项有哪些？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "citation_statuses": [
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "status": "public_active"
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "cd364a7d7f8f42be8f810fe12a7d4e3f",
+      "question": "高血压患者在生活方式上有哪些注意事项？",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+      ],
+      "citation_statuses": [
+        {
+          "id": "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+          "status": "public_active"
+        },
+        {
+          "id": "1f18737d-6471-4de4-a790-867fdf9034b8",
+          "status": "public_active"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+          "status": "public_active"
+        },
+        {
+          "id": "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+          "status": "public_active"
+        },
+        {
+          "id": "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    },
+    {
+      "assistant_message_id": "0f14fc456a8e43849658a2e9b7fb3cbb",
+      "question": "高血压患者的生活方式要注意什么",
+      "citation_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "citation_statuses": [
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "status": "public_active"
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "status": "public_active"
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "status": "public_active"
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "status": "public_active"
+        }
+      ],
+      "body_contains_citation": true
+    }
+  ]
+}

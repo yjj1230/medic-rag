@@ -1,0 +1,52 @@
+﻿python.exe : INFO:     Started server process [45344]
+所在位置 行:445 字符: 128
++ ... esktop\RAG; & "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Sc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO:     Started server process [45344]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO:     Waiting for application startup.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py", line 638, in lifes
+pan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_
+lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_
+lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_
+lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_
+lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\Desktop\RAG\src\medical_rag\api\app.py", line 141, in lifespan
+    resolved_settings.validate_runtime()
+  File "C:\Users\lyx\Desktop\RAG\src\medical_rag\core\config.py", line 212, in validate_runtime
+    raise ValueError(
+ValueError: 閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛涜鏀圭敤 HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?MODEL_GATEWAY_URL, OCR_SERVICE_URL锛
+?
+
+ERROR:    Application startup failed. Exiting.

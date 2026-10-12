@@ -1,0 +1,101 @@
+﻿python.exe : INFO:     Started server process [41428]
+所在位置 行:445 字符: 227
++ ... esktop\RAG; & "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Sc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO:     Started server process [41428]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58788 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50109 - "GET /openapi.json HTTP/1.1" 200 OK
+JWT_SECRET 鏈厤缃紝寮€鍙戠幆澧冧娇鐢ㄨ繘绋嬪唴闅忔満瀵嗛挜锛涢噸鍚悗鏃㈡湁浠ょ墝鍏ㄩ儴澶辨晥銆傞潪寮€鍙戠幆澧冨皢鎷掔粷鍚姩銆?
+INFO:     127.0.0.1:61622 - "POST /v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61635 - "POST /v1/documents HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50091 - "GET /v1/documents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60942 - "POST /v1/documents/10311239-e845-4672-8ca2-ce6d1109e465/review HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:60945 - "DELETE /v1/documents/10311239-e845-4672-8ca2-ce6d1109e465 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py"
+, line 421, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", lin
+e 62, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\applications.py", line 1159, in _
+_call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\applications.py", line 90, in _
+_call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\errors.py", line 186
+, in __call__
+    raise exc
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\errors.py", line 164
+, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\lyx\Desktop\RAG\src\medical_rag\api\app.py", line 74, in __call__
+    await self.app(scope, limited_receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\exceptions.py", line
+ 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\_exception_handler.py", line 53
+, in wrapped_app
+    raise exc
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\_exception_handler.py", line 42
+, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", li
+ne 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py", line 660, in __cal
+l__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py", line 276, in handl
+e
+    await self.app(scope, receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\_exception_handler.py", line 53
+, in wrapped_app
+    raise exc
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\_exception_handler.py", line 42
+, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py", line 457, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 680,
+ in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\concurrency.py", line 32, in ru
+n_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, 
+in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, 
+in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\Desktop\RAG\src\medical_rag\api\dependencies.py", line 96, in get_private_index_writer
+    return _configured_index_writer(request, "private_index_writer", "private")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\Desktop\RAG\src\medical_rag\api\dependencies.py", line 71, in _configured_index_writer
+    raise RuntimeError(f"{visibility} index writer is not configured")
+RuntimeError: private index writer is not configured

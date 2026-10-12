@@ -1,0 +1,27 @@
+{
+  "source": "observed_local_db",
+  "opensearch_version": "2.18.0",
+  "aliases_checked": [
+    "medical-rag-public",
+    "medical-rag-private"
+  ],
+  "unique_citation_ids": 14,
+  "present_in_opensearch": 13,
+  "missing_in_opensearch": [
+    "6e8a499b-f28c-471b-97aa-e80cd4285157"
+  ],
+  "missing_case_count": 1,
+  "affected_cases": [
+    {
+      "event_id": "local-db-a9ea441dc0f446118e4affaa20272257",
+      "question": "根据我的检查报告，每日建议摄入多少克核桃？",
+      "missing_index_evidence_ids": [
+        "6e8a499b-f28c-471b-97aa-e80cd4285157"
+      ]
+    }
+  ],
+  "interpretation": "The missing ID resolves to an active retrieval-eligible evidence_unit in SQLite but is absent from both OpenSearch aliases. This is an index drift/reindex candidate, not a fabricated retrieval failure.",
+  "superseded_by": "eval_out/observed_local_db_index_resolution.json",
+  "original_observation_status": "historical_pre_lifecycle_review",
+  "note": "This file preserves the initial read-only mismatch. Lifecycle resolution later confirmed the source was deleted after the historical answer; see the superseding resolution artifact."
+}

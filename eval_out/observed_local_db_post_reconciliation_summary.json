@@ -1,0 +1,54 @@
+{
+  "source": "observed_local_db",
+  "database": "medical_rag.db",
+  "record_count": 27,
+  "unique_questions": 11,
+  "date_counts": {
+    "2026-09-17": 10,
+    "2026-10-06": 5,
+    "2026-10-08": 12
+  },
+  "intent_counts": {
+    "lab_indicator": 6,
+    "report_explanation": 5,
+    "health_education": 16
+  },
+  "citation_presence": 27,
+  "citation_absence": 0,
+  "redaction": {
+    "raw_session_ids_stored": false,
+    "raw_tenant_ids_stored": false,
+    "raw_patient_ids_stored": false,
+    "answer_bodies_stored": false
+  },
+  "labels_pending": true,
+  "production": false,
+  "citation_reference_audit": {
+    "total_references": 103,
+    "unique_references": 14,
+    "resolved_in_local_db": 14,
+    "knowledge_chunk_refs": 11,
+    "evidence_unit_refs": 3,
+    "unresolved_in_local_db": 0,
+    "all_resolved_records_eligible": false,
+    "interpretation": "13 references are currently present in OpenSearch or active local evidence; 1 historical citation resolves in SQLite but its parent document/version was deleted after the answer and is intentionally absent from OpenSearch.",
+    "historical_deleted_evidence_refs": 1
+  },
+  "opensearch_index_audit": {
+    "unique_ids": 14,
+    "present": 13,
+    "missing": [
+      "6e8a499b-f28c-471b-97aa-e80cd4285157"
+    ],
+    "affected_cases": 1
+  },
+  "post_reconciliation": {
+    "opensearch_missing_ids": [
+      "6e8a499b-f28c-471b-97aa-e80cd4285157"
+    ],
+    "active_index_drift_cases": 0,
+    "historical_deleted_citation_cases": 1,
+    "action": "no_reindex_deleted_source",
+    "resolution_file": "eval_out/observed_local_db_index_resolution.json"
+  }
+}

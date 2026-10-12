@@ -1,0 +1,696 @@
+﻿...........F..FFF...F                                                    [100%]
+================================== FAILURES ===================================
+____________ test_development_allows_loopback_plaintext_phi_egress ____________
+
+    def test_development_allows_loopback_plaintext_phi_egress() -> None:
+        settings = Settings(
+            environment="local",
+            database_url="sqlite+pysqlite:///:memory:",
+            model_gateway_url="http://127.0.0.1:18097/v1",
+        )
+>       settings.validate_runtime()
+
+tests\integration\test_startup_validation.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Settings(environment='local', database_url='sqlite+pysqlite:///:memory:', opensearch_url='http://localhost:9200', obje...hi_egress=False, api_host='127.0.0.1', api_port=8000, api_log_level='info', text_analyzer='cjk', search_analyzer='cjk')
+
+    def validate_runtime(self) -> None:
+        """鎷掔粷鍚姩涓嶅畨鍏ㄧ殑闈炲紑鍙戠幆澧冮儴缃层€?
+    
+        鎶涘嚭 ``ValueError`` 骞跺垪鍑哄叏閮ㄩ棶棰橈紝浣胯繍缁翠竴娆″氨鑳戒慨瀹岋紝
+        鑰屼笉蹇呮瘡閲嶅惎涓€娆℃墠鍙戠幇涓€涓€?
+        """
+        # 瓒呮椂棰勭畻涓€鑷存€ф槸**鍔熻兘姝ｇ‘鎬?*绾︽潫锛堜笌瀹夊叏鏃犲叧锛夛紝鍥犳鍦?*鎵€鏈?*鐜鏍￠獙锛?
+        # 涓€鏃?``total <= request``锛岀湡瀹為摼璺繀鐒跺湪妯″瀷杩斿洖鍓嶈鐮嶆柇鈥斺€旇繖姝ｆ槸 P0-5
+        # 绔埌绔檷绾х殑褰㈡€併€傛斁鍦?dev 鏃╅€€涔嬪墠锛岄伩鍏?鏈湴涓嶆姤閿欍€佷笂绾挎墠鐐?銆?
+        if self.model_request_timeout_seconds <= 0:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶅悎娉曪紝鎷掔粷鍚姩锛?
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds}) 蹇呴』涓烘鏁?
+            )
+        if self.model_total_timeout_seconds <= self.model_request_timeout_seconds:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶄竴鑷达紝鎷掔粷鍚姩锛?
+                f"MODEL_TOTAL_TIMEOUT_SECONDS({self.model_total_timeout_seconds}) 蹇呴』澶т簬 "
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds})"
+            )
+        # 鍚敤闈炲尰瀛﹂棽鑱婂垎娴佸嵆鎰忓懗鐫€"瀛樺湪涓€鏉′笉鍩轰簬璇佹嵁鐨勭敓鎴愯矾寰?锛屽畠蹇呴』璧?
+        # ModelGateway锛堝敮涓€鍚堣澶栧彂閫氶亾锛夈€傛病鏈夋ā鍨嬪悕灏辨棤浠庢瀯閫犺姹傘€佷篃鏃犱粠鍋?
+        # 鐧藉悕鍗曟牎楠屸€斺€旀鏃跺畞鍙嫆缁濆惎鍔紝涔熶笉瑕佽闂茶亰璺緞鍦ㄨ繍琛屾湡鍙樻垚"闈欓粯涓嶅彲鐢?
+        # 鎴栵紙鏇寸碂锛夌粫杩囩綉鍏炽€備笌瓒呮椂鏍￠獙鍚岀悊锛屾斁鍦?dev 鏃╅€€**涔嬪墠**銆?
+        if self.casual_chat_enabled and not self.model_name.strip():
+            raise ValueError(
+                "闂茶亰鍒嗘祦宸插惎鐢ㄤ絾 MODEL_NAME 涓虹┖锛屾嫆缁濆惎鍔細"
+                "闈炲尰瀛﹀洖绛斿繀椤荤粡 ModelGateway 澶栧彂锛岄渶瑕佹槑纭殑妯″瀷鍚嶅仛鐧藉悕鍗曟牎楠?
+            )
+    
+        plaintext_model = _is_plaintext_remote(self.model_gateway_url)
+        plaintext_targets = self.phi_egress_targets()
+        if self.is_dev_environment:
+            # 寮€鍙戠幆澧冧篃鍙兘澶勭悊鐪熷疄鎮ｈ€呮姤鍛婏紝涓嶈兘鍥犱负 environment=local 灏?
+            # 鏀捐杩滅▼鏄庢枃 PHI銆傚洖鐜?HTTP 浠嶅厑璁告湰鍦?sidecar 浣跨敤銆?
+            #
+            # 鍞竴鐨勪緥澶栨槸杩愮淮**鏄惧紡**寮€鍚?``ALLOW_PLAINTEXT_PHI_EGRESS``锛?
+            # 鏈湴鑱旇皟缃戝叧鍙彁渚涙槑鏂?HTTP 鏃讹紝娌℃湁瀹冨氨鏃犳硶鐢ㄧ湡瀹炵綉鍏冲惎鍔ㄣ€?
+            # 璇ュ紑鍏抽粯璁ゅ叧闂紝涓斾笅闈㈤潪寮€鍙戠幆澧冨垎鏀細鎶婂紑鍚姸鎬佸綋浣滆嚧鍛介棶棰樸€?
+            if (plaintext_model or plaintext_targets) and not self.allow_plaintext_phi_egress:
+                names = ["MODEL_GATEWAY_URL"] if plaintext_model else []
+                names.extend(name for name, _url in plaintext_targets)
+>               raise ValueError(
+                    "閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛?
+                    f"璇锋敼鐢?HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?{', '.join(names)}锛夈€?
+                    "纭渶鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+                )
+E               ValueError: 閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛涜鏀圭敤 HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?OCR_SERVICE_URL锛夈€傜‘闇€鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+
+src\medical_rag\core\config.py:223: ValueError
+_________ test_readiness_reports_dependencies_missing_before_startup __________
+
+    def test_readiness_reports_dependencies_missing_before_startup() -> None:
+        """``/health`` alone must not be the only signal: it is liveness, not readiness."""
+        app = create_app(Settings(environment="local", database_url="sqlite+pysqlite:///:memory:"))
+>       with TestClient(app) as client:
+             ^^^^^^^^^^^^^^^
+
+tests\integration\test_startup_validation.py:211: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:702: in __enter__
+    portal.call(self.wait_startup)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:737: in wait_startup
+    await receive()
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:728: in receive
+    self.task.result()
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:718: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\applications.py:1159: in __call__
+    await super().__call__(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\applications.py:90: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\errors.py:151: in __call__
+    await self.app(scope, receive, send)
+src\medical_rag\api\app.py:50: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:660: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:669: in app
+    await self.lifespan(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:638: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+src\medical_rag\api\app.py:141: in lifespan
+    resolved_settings.validate_runtime()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Settings(environment='local', database_url='sqlite+pysqlite:///:memory:', opensearch_url='http://localhost:9200', obje...hi_egress=False, api_host='127.0.0.1', api_port=8000, api_log_level='info', text_analyzer='cjk', search_analyzer='cjk')
+
+    def validate_runtime(self) -> None:
+        """鎷掔粷鍚姩涓嶅畨鍏ㄧ殑闈炲紑鍙戠幆澧冮儴缃层€?
+    
+        鎶涘嚭 ``ValueError`` 骞跺垪鍑哄叏閮ㄩ棶棰橈紝浣胯繍缁翠竴娆″氨鑳戒慨瀹岋紝
+        鑰屼笉蹇呮瘡閲嶅惎涓€娆℃墠鍙戠幇涓€涓€?
+        """
+        # 瓒呮椂棰勭畻涓€鑷存€ф槸**鍔熻兘姝ｇ‘鎬?*绾︽潫锛堜笌瀹夊叏鏃犲叧锛夛紝鍥犳鍦?*鎵€鏈?*鐜鏍￠獙锛?
+        # 涓€鏃?``total <= request``锛岀湡瀹為摼璺繀鐒跺湪妯″瀷杩斿洖鍓嶈鐮嶆柇鈥斺€旇繖姝ｆ槸 P0-5
+        # 绔埌绔檷绾х殑褰㈡€併€傛斁鍦?dev 鏃╅€€涔嬪墠锛岄伩鍏?鏈湴涓嶆姤閿欍€佷笂绾挎墠鐐?銆?
+        if self.model_request_timeout_seconds <= 0:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶅悎娉曪紝鎷掔粷鍚姩锛?
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds}) 蹇呴』涓烘鏁?
+            )
+        if self.model_total_timeout_seconds <= self.model_request_timeout_seconds:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶄竴鑷达紝鎷掔粷鍚姩锛?
+                f"MODEL_TOTAL_TIMEOUT_SECONDS({self.model_total_timeout_seconds}) 蹇呴』澶т簬 "
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds})"
+            )
+        # 鍚敤闈炲尰瀛﹂棽鑱婂垎娴佸嵆鎰忓懗鐫€"瀛樺湪涓€鏉′笉鍩轰簬璇佹嵁鐨勭敓鎴愯矾寰?锛屽畠蹇呴』璧?
+        # ModelGateway锛堝敮涓€鍚堣澶栧彂閫氶亾锛夈€傛病鏈夋ā鍨嬪悕灏辨棤浠庢瀯閫犺姹傘€佷篃鏃犱粠鍋?
+        # 鐧藉悕鍗曟牎楠屸€斺€旀鏃跺畞鍙嫆缁濆惎鍔紝涔熶笉瑕佽闂茶亰璺緞鍦ㄨ繍琛屾湡鍙樻垚"闈欓粯涓嶅彲鐢?
+        # 鎴栵紙鏇寸碂锛夌粫杩囩綉鍏炽€備笌瓒呮椂鏍￠獙鍚岀悊锛屾斁鍦?dev 鏃╅€€**涔嬪墠**銆?
+        if self.casual_chat_enabled and not self.model_name.strip():
+            raise ValueError(
+                "闂茶亰鍒嗘祦宸插惎鐢ㄤ絾 MODEL_NAME 涓虹┖锛屾嫆缁濆惎鍔細"
+                "闈炲尰瀛﹀洖绛斿繀椤荤粡 ModelGateway 澶栧彂锛岄渶瑕佹槑纭殑妯″瀷鍚嶅仛鐧藉悕鍗曟牎楠?
+            )
+    
+        plaintext_model = _is_plaintext_remote(self.model_gateway_url)
+        plaintext_targets = self.phi_egress_targets()
+        if self.is_dev_environment:
+            # 寮€鍙戠幆澧冧篃鍙兘澶勭悊鐪熷疄鎮ｈ€呮姤鍛婏紝涓嶈兘鍥犱负 environment=local 灏?
+            # 鏀捐杩滅▼鏄庢枃 PHI銆傚洖鐜?HTTP 浠嶅厑璁告湰鍦?sidecar 浣跨敤銆?
+            #
+            # 鍞竴鐨勪緥澶栨槸杩愮淮**鏄惧紡**寮€鍚?``ALLOW_PLAINTEXT_PHI_EGRESS``锛?
+            # 鏈湴鑱旇皟缃戝叧鍙彁渚涙槑鏂?HTTP 鏃讹紝娌℃湁瀹冨氨鏃犳硶鐢ㄧ湡瀹炵綉鍏冲惎鍔ㄣ€?
+            # 璇ュ紑鍏抽粯璁ゅ叧闂紝涓斾笅闈㈤潪寮€鍙戠幆澧冨垎鏀細鎶婂紑鍚姸鎬佸綋浣滆嚧鍛介棶棰樸€?
+            if (plaintext_model or plaintext_targets) and not self.allow_plaintext_phi_egress:
+                names = ["MODEL_GATEWAY_URL"] if plaintext_model else []
+                names.extend(name for name, _url in plaintext_targets)
+>               raise ValueError(
+                    "閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛?
+                    f"璇锋敼鐢?HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?{', '.join(names)}锛夈€?
+                    "纭渶鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+                )
+E               ValueError: 閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛涜鏀圭敤 HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?MODEL_GATEWAY_URL, OCR_SERVICE_URL锛夈€傜‘闇€鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+
+src\medical_rag\core\config.py:223: ValueError
+____________ test_readiness_fails_when_the_database_is_unreachable ____________
+
+scratch_dir = WindowsPath('C:/Users/lyx/Desktop/RAG/tests/.tmp_test/233f3093483f4dacb813469132c2c938')
+
+    def test_readiness_fails_when_the_database_is_unreachable(scratch_dir) -> None:
+        """Readiness must probe the dependency, not just check that a factory exists.
+    
+        A readiness endpoint that reports "ready" while every query fails sends
+        traffic to an instance that cannot serve it.
+        """
+        missing_directory = scratch_dir / "no-such-directory"
+        settings = Settings(
+            environment="local",
+            database_url=f"sqlite+pysqlite:///{missing_directory / 'unreachable.db'}",
+        )
+>       with TestClient(create_app(settings)) as client:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\integration\test_startup_validation.py:228: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:702: in __enter__
+    portal.call(self.wait_startup)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:737: in wait_startup
+    await receive()
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:728: in receive
+    self.task.result()
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:718: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\applications.py:1159: in __call__
+    await super().__call__(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\applications.py:90: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\errors.py:151: in __call__
+    await self.app(scope, receive, send)
+src\medical_rag\api\app.py:50: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:660: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:669: in app
+    await self.lifespan(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:638: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+src\medical_rag\api\app.py:141: in lifespan
+    resolved_settings.validate_runtime()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Settings(environment='local', database_url='sqlite+pysqlite:///C:\\Users\\lyx\\Desktop\\RAG\\tests\\.tmp_test\\233f309...hi_egress=False, api_host='127.0.0.1', api_port=8000, api_log_level='info', text_analyzer='cjk', search_analyzer='cjk')
+
+    def validate_runtime(self) -> None:
+        """鎷掔粷鍚姩涓嶅畨鍏ㄧ殑闈炲紑鍙戠幆澧冮儴缃层€?
+    
+        鎶涘嚭 ``ValueError`` 骞跺垪鍑哄叏閮ㄩ棶棰橈紝浣胯繍缁翠竴娆″氨鑳戒慨瀹岋紝
+        鑰屼笉蹇呮瘡閲嶅惎涓€娆℃墠鍙戠幇涓€涓€?
+        """
+        # 瓒呮椂棰勭畻涓€鑷存€ф槸**鍔熻兘姝ｇ‘鎬?*绾︽潫锛堜笌瀹夊叏鏃犲叧锛夛紝鍥犳鍦?*鎵€鏈?*鐜鏍￠獙锛?
+        # 涓€鏃?``total <= request``锛岀湡瀹為摼璺繀鐒跺湪妯″瀷杩斿洖鍓嶈鐮嶆柇鈥斺€旇繖姝ｆ槸 P0-5
+        # 绔埌绔檷绾х殑褰㈡€併€傛斁鍦?dev 鏃╅€€涔嬪墠锛岄伩鍏?鏈湴涓嶆姤閿欍€佷笂绾挎墠鐐?銆?
+        if self.model_request_timeout_seconds <= 0:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶅悎娉曪紝鎷掔粷鍚姩锛?
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds}) 蹇呴』涓烘鏁?
+            )
+        if self.model_total_timeout_seconds <= self.model_request_timeout_seconds:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶄竴鑷达紝鎷掔粷鍚姩锛?
+                f"MODEL_TOTAL_TIMEOUT_SECONDS({self.model_total_timeout_seconds}) 蹇呴』澶т簬 "
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds})"
+            )
+        # 鍚敤闈炲尰瀛﹂棽鑱婂垎娴佸嵆鎰忓懗鐫€"瀛樺湪涓€鏉′笉鍩轰簬璇佹嵁鐨勭敓鎴愯矾寰?锛屽畠蹇呴』璧?
+        # ModelGateway锛堝敮涓€鍚堣澶栧彂閫氶亾锛夈€傛病鏈夋ā鍨嬪悕灏辨棤浠庢瀯閫犺姹傘€佷篃鏃犱粠鍋?
+        # 鐧藉悕鍗曟牎楠屸€斺€旀鏃跺畞鍙嫆缁濆惎鍔紝涔熶笉瑕佽闂茶亰璺緞鍦ㄨ繍琛屾湡鍙樻垚"闈欓粯涓嶅彲鐢?
+        # 鎴栵紙鏇寸碂锛夌粫杩囩綉鍏炽€備笌瓒呮椂鏍￠獙鍚岀悊锛屾斁鍦?dev 鏃╅€€**涔嬪墠**銆?
+        if self.casual_chat_enabled and not self.model_name.strip():
+            raise ValueError(
+                "闂茶亰鍒嗘祦宸插惎鐢ㄤ絾 MODEL_NAME 涓虹┖锛屾嫆缁濆惎鍔細"
+                "闈炲尰瀛﹀洖绛斿繀椤荤粡 ModelGateway 澶栧彂锛岄渶瑕佹槑纭殑妯″瀷鍚嶅仛鐧藉悕鍗曟牎楠?
+            )
+    
+        plaintext_model = _is_plaintext_remote(self.model_gateway_url)
+        plaintext_targets = self.phi_egress_targets()
+        if self.is_dev_environment:
+            # 寮€鍙戠幆澧冧篃鍙兘澶勭悊鐪熷疄鎮ｈ€呮姤鍛婏紝涓嶈兘鍥犱负 environment=local 灏?
+            # 鏀捐杩滅▼鏄庢枃 PHI銆傚洖鐜?HTTP 浠嶅厑璁告湰鍦?sidecar 浣跨敤銆?
+            #
+            # 鍞竴鐨勪緥澶栨槸杩愮淮**鏄惧紡**寮€鍚?``ALLOW_PLAINTEXT_PHI_EGRESS``锛?
+            # 鏈湴鑱旇皟缃戝叧鍙彁渚涙槑鏂?HTTP 鏃讹紝娌℃湁瀹冨氨鏃犳硶鐢ㄧ湡瀹炵綉鍏冲惎鍔ㄣ€?
+            # 璇ュ紑鍏抽粯璁ゅ叧闂紝涓斾笅闈㈤潪寮€鍙戠幆澧冨垎鏀細鎶婂紑鍚姸鎬佸綋浣滆嚧鍛介棶棰樸€?
+            if (plaintext_model or plaintext_targets) and not self.allow_plaintext_phi_egress:
+                names = ["MODEL_GATEWAY_URL"] if plaintext_model else []
+                names.extend(name for name, _url in plaintext_targets)
+>               raise ValueError(
+                    "閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛?
+                    f"璇锋敼鐢?HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?{', '.join(names)}锛夈€?
+                    "纭渶鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+                )
+E               ValueError: 閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛涜鏀圭敤 HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?MODEL_GATEWAY_URL, OCR_SERVICE_URL锛夈€傜‘闇€鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+
+src\medical_rag\core\config.py:223: ValueError
+__________ test_liveness_stays_green_even_when_a_dependency_is_down ___________
+
+scratch_dir = WindowsPath('C:/Users/lyx/Desktop/RAG/tests/.tmp_test/2bdbb5cb1b0841628e5040360889e920')
+
+    def test_liveness_stays_green_even_when_a_dependency_is_down(scratch_dir) -> None:
+        """Liveness must not depend on downstream availability, or pods restart-loop."""
+        settings = Settings(
+            environment="local",
+            database_url=f"sqlite+pysqlite:///{scratch_dir / 'nope' / 'db.sqlite'}",
+        )
+>       with TestClient(create_app(settings)) as client:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\integration\test_startup_validation.py:241: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:702: in __enter__
+    portal.call(self.wait_startup)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:737: in wait_startup
+    await receive()
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:728: in receive
+    self.task.result()
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:718: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\applications.py:1159: in __call__
+    await super().__call__(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\applications.py:90: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\errors.py:151: in __call__
+    await self.app(scope, receive, send)
+src\medical_rag\api\app.py:50: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:660: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:669: in app
+    await self.lifespan(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:638: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+src\medical_rag\api\app.py:141: in lifespan
+    resolved_settings.validate_runtime()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Settings(environment='local', database_url='sqlite+pysqlite:///C:\\Users\\lyx\\Desktop\\RAG\\tests\\.tmp_test\\2bdbb5c...hi_egress=False, api_host='127.0.0.1', api_port=8000, api_log_level='info', text_analyzer='cjk', search_analyzer='cjk')
+
+    def validate_runtime(self) -> None:
+        """鎷掔粷鍚姩涓嶅畨鍏ㄧ殑闈炲紑鍙戠幆澧冮儴缃层€?
+    
+        鎶涘嚭 ``ValueError`` 骞跺垪鍑哄叏閮ㄩ棶棰橈紝浣胯繍缁翠竴娆″氨鑳戒慨瀹岋紝
+        鑰屼笉蹇呮瘡閲嶅惎涓€娆℃墠鍙戠幇涓€涓€?
+        """
+        # 瓒呮椂棰勭畻涓€鑷存€ф槸**鍔熻兘姝ｇ‘鎬?*绾︽潫锛堜笌瀹夊叏鏃犲叧锛夛紝鍥犳鍦?*鎵€鏈?*鐜鏍￠獙锛?
+        # 涓€鏃?``total <= request``锛岀湡瀹為摼璺繀鐒跺湪妯″瀷杩斿洖鍓嶈鐮嶆柇鈥斺€旇繖姝ｆ槸 P0-5
+        # 绔埌绔檷绾х殑褰㈡€併€傛斁鍦?dev 鏃╅€€涔嬪墠锛岄伩鍏?鏈湴涓嶆姤閿欍€佷笂绾挎墠鐐?銆?
+        if self.model_request_timeout_seconds <= 0:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶅悎娉曪紝鎷掔粷鍚姩锛?
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds}) 蹇呴』涓烘鏁?
+            )
+        if self.model_total_timeout_seconds <= self.model_request_timeout_seconds:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶄竴鑷达紝鎷掔粷鍚姩锛?
+                f"MODEL_TOTAL_TIMEOUT_SECONDS({self.model_total_timeout_seconds}) 蹇呴』澶т簬 "
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds})"
+            )
+        # 鍚敤闈炲尰瀛﹂棽鑱婂垎娴佸嵆鎰忓懗鐫€"瀛樺湪涓€鏉′笉鍩轰簬璇佹嵁鐨勭敓鎴愯矾寰?锛屽畠蹇呴』璧?
+        # ModelGateway锛堝敮涓€鍚堣澶栧彂閫氶亾锛夈€傛病鏈夋ā鍨嬪悕灏辨棤浠庢瀯閫犺姹傘€佷篃鏃犱粠鍋?
+        # 鐧藉悕鍗曟牎楠屸€斺€旀鏃跺畞鍙嫆缁濆惎鍔紝涔熶笉瑕佽闂茶亰璺緞鍦ㄨ繍琛屾湡鍙樻垚"闈欓粯涓嶅彲鐢?
+        # 鎴栵紙鏇寸碂锛夌粫杩囩綉鍏炽€備笌瓒呮椂鏍￠獙鍚岀悊锛屾斁鍦?dev 鏃╅€€**涔嬪墠**銆?
+        if self.casual_chat_enabled and not self.model_name.strip():
+            raise ValueError(
+                "闂茶亰鍒嗘祦宸插惎鐢ㄤ絾 MODEL_NAME 涓虹┖锛屾嫆缁濆惎鍔細"
+                "闈炲尰瀛﹀洖绛斿繀椤荤粡 ModelGateway 澶栧彂锛岄渶瑕佹槑纭殑妯″瀷鍚嶅仛鐧藉悕鍗曟牎楠?
+            )
+    
+        plaintext_model = _is_plaintext_remote(self.model_gateway_url)
+        plaintext_targets = self.phi_egress_targets()
+        if self.is_dev_environment:
+            # 寮€鍙戠幆澧冧篃鍙兘澶勭悊鐪熷疄鎮ｈ€呮姤鍛婏紝涓嶈兘鍥犱负 environment=local 灏?
+            # 鏀捐杩滅▼鏄庢枃 PHI銆傚洖鐜?HTTP 浠嶅厑璁告湰鍦?sidecar 浣跨敤銆?
+            #
+            # 鍞竴鐨勪緥澶栨槸杩愮淮**鏄惧紡**寮€鍚?``ALLOW_PLAINTEXT_PHI_EGRESS``锛?
+            # 鏈湴鑱旇皟缃戝叧鍙彁渚涙槑鏂?HTTP 鏃讹紝娌℃湁瀹冨氨鏃犳硶鐢ㄧ湡瀹炵綉鍏冲惎鍔ㄣ€?
+            # 璇ュ紑鍏抽粯璁ゅ叧闂紝涓斾笅闈㈤潪寮€鍙戠幆澧冨垎鏀細鎶婂紑鍚姸鎬佸綋浣滆嚧鍛介棶棰樸€?
+            if (plaintext_model or plaintext_targets) and not self.allow_plaintext_phi_egress:
+                names = ["MODEL_GATEWAY_URL"] if plaintext_model else []
+                names.extend(name for name, _url in plaintext_targets)
+>               raise ValueError(
+                    "閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛?
+                    f"璇锋敼鐢?HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?{', '.join(names)}锛夈€?
+                    "纭渶鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+                )
+E               ValueError: 閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛涜鏀圭敤 HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?MODEL_GATEWAY_URL, OCR_SERVICE_URL锛夈€傜‘闇€鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+
+src\medical_rag\core\config.py:223: ValueError
+_ test_an_injected_composition_exposes_its_index_orchestrator_in_development __
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025085C22F30>
+
+    def test_an_injected_composition_exposes_its_index_orchestrator_in_development(
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """A development deployment that injects a graph must actually get it.
+    
+        ``lifespan`` previously consulted ``app.state.production_composition`` only
+        inside its production branch, so an injected graph was ignored in every other
+        environment.
+        """
+    
+        class _Writer:
+            def __init__(self, visibility: str) -> None:
+                self.visibility = visibility
+    
+            def upsert(self, *args: object, **kwargs: object) -> None: ...
+    
+            def delete_document(self, *args: object, **kwargs: object) -> None: ...
+    
+        class _Pipeline:
+            dimensions = 4
+    
+            def embed_records(self, *args: object, **kwargs: object) -> list[object]:
+                return []
+    
+        class _Consent:
+            def require_active_consent(self, *args: object, **kwargs: object) -> None: ...
+    
+        class _Audit:
+            def record_index_job(self, *args: object, **kwargs: object) -> None: ...
+    
+        _fake_opensearch(monkeypatch)
+        orchestrator = IndexOrchestrator(session=None)  # type: ignore[arg-type]
+        composition = ProductionComposition(
+            public_writer=_Writer("public"),
+            private_writer=_Writer("private"),
+            embedding_pipeline=_Pipeline(),
+            consent_service=_Consent(),
+            audit_service=_Audit(),
+            audit_context=object(),
+            index_orchestrator=orchestrator,
+        )
+        composition.validate()  # the fixture must satisfy the real contract
+    
+        app = create_app(Settings(environment="local", database_url="sqlite+pysqlite:///:memory:"))
+        app.state.production_composition = composition
+>       with TestClient(app):
+             ^^^^^^^^^^^^^^^
+
+tests\integration\test_startup_validation.py:347: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:702: in __enter__
+    portal.call(self.wait_startup)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:737: in wait_startup
+    await receive()
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:728: in receive
+    self.task.result()
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\testclient.py:718: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\applications.py:1159: in __call__
+    await super().__call__(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\applications.py:90: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\errors.py:151: in __call__
+    await self.app(scope, receive, send)
+src\medical_rag\api\app.py:50: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\middleware\exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:660: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:669: in app
+    await self.lifespan(scope, receive, send)
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\starlette\routing.py:638: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\routing.py:216: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+src\medical_rag\api\app.py:141: in lifespan
+    resolved_settings.validate_runtime()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Settings(environment='local', database_url='sqlite+pysqlite:///:memory:', opensearch_url='http://localhost:9200', obje...hi_egress=False, api_host='127.0.0.1', api_port=8000, api_log_level='info', text_analyzer='cjk', search_analyzer='cjk')
+
+    def validate_runtime(self) -> None:
+        """鎷掔粷鍚姩涓嶅畨鍏ㄧ殑闈炲紑鍙戠幆澧冮儴缃层€?
+    
+        鎶涘嚭 ``ValueError`` 骞跺垪鍑哄叏閮ㄩ棶棰橈紝浣胯繍缁翠竴娆″氨鑳戒慨瀹岋紝
+        鑰屼笉蹇呮瘡閲嶅惎涓€娆℃墠鍙戠幇涓€涓€?
+        """
+        # 瓒呮椂棰勭畻涓€鑷存€ф槸**鍔熻兘姝ｇ‘鎬?*绾︽潫锛堜笌瀹夊叏鏃犲叧锛夛紝鍥犳鍦?*鎵€鏈?*鐜鏍￠獙锛?
+        # 涓€鏃?``total <= request``锛岀湡瀹為摼璺繀鐒跺湪妯″瀷杩斿洖鍓嶈鐮嶆柇鈥斺€旇繖姝ｆ槸 P0-5
+        # 绔埌绔檷绾х殑褰㈡€併€傛斁鍦?dev 鏃╅€€涔嬪墠锛岄伩鍏?鏈湴涓嶆姤閿欍€佷笂绾挎墠鐐?銆?
+        if self.model_request_timeout_seconds <= 0:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶅悎娉曪紝鎷掔粷鍚姩锛?
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds}) 蹇呴』涓烘鏁?
+            )
+        if self.model_total_timeout_seconds <= self.model_request_timeout_seconds:
+            raise ValueError(
+                "瓒呮椂棰勭畻涓嶄竴鑷达紝鎷掔粷鍚姩锛?
+                f"MODEL_TOTAL_TIMEOUT_SECONDS({self.model_total_timeout_seconds}) 蹇呴』澶т簬 "
+                f"MODEL_REQUEST_TIMEOUT_SECONDS({self.model_request_timeout_seconds})"
+            )
+        # 鍚敤闈炲尰瀛﹂棽鑱婂垎娴佸嵆鎰忓懗鐫€"瀛樺湪涓€鏉′笉鍩轰簬璇佹嵁鐨勭敓鎴愯矾寰?锛屽畠蹇呴』璧?
+        # ModelGateway锛堝敮涓€鍚堣澶栧彂閫氶亾锛夈€傛病鏈夋ā鍨嬪悕灏辨棤浠庢瀯閫犺姹傘€佷篃鏃犱粠鍋?
+        # 鐧藉悕鍗曟牎楠屸€斺€旀鏃跺畞鍙嫆缁濆惎鍔紝涔熶笉瑕佽闂茶亰璺緞鍦ㄨ繍琛屾湡鍙樻垚"闈欓粯涓嶅彲鐢?
+        # 鎴栵紙鏇寸碂锛夌粫杩囩綉鍏炽€備笌瓒呮椂鏍￠獙鍚岀悊锛屾斁鍦?dev 鏃╅€€**涔嬪墠**銆?
+        if self.casual_chat_enabled and not self.model_name.strip():
+            raise ValueError(
+                "闂茶亰鍒嗘祦宸插惎鐢ㄤ絾 MODEL_NAME 涓虹┖锛屾嫆缁濆惎鍔細"
+                "闈炲尰瀛﹀洖绛斿繀椤荤粡 ModelGateway 澶栧彂锛岄渶瑕佹槑纭殑妯″瀷鍚嶅仛鐧藉悕鍗曟牎楠?
+            )
+    
+        plaintext_model = _is_plaintext_remote(self.model_gateway_url)
+        plaintext_targets = self.phi_egress_targets()
+        if self.is_dev_environment:
+            # 寮€鍙戠幆澧冧篃鍙兘澶勭悊鐪熷疄鎮ｈ€呮姤鍛婏紝涓嶈兘鍥犱负 environment=local 灏?
+            # 鏀捐杩滅▼鏄庢枃 PHI銆傚洖鐜?HTTP 浠嶅厑璁告湰鍦?sidecar 浣跨敤銆?
+            #
+            # 鍞竴鐨勪緥澶栨槸杩愮淮**鏄惧紡**寮€鍚?``ALLOW_PLAINTEXT_PHI_EGRESS``锛?
+            # 鏈湴鑱旇皟缃戝叧鍙彁渚涙槑鏂?HTTP 鏃讹紝娌℃湁瀹冨氨鏃犳硶鐢ㄧ湡瀹炵綉鍏冲惎鍔ㄣ€?
+            # 璇ュ紑鍏抽粯璁ゅ叧闂紝涓斾笅闈㈤潪寮€鍙戠幆澧冨垎鏀細鎶婂紑鍚姸鎬佸綋浣滆嚧鍛介棶棰樸€?
+            if (plaintext_model or plaintext_targets) and not self.allow_plaintext_phi_egress:
+                names = ["MODEL_GATEWAY_URL"] if plaintext_model else []
+                names.extend(name for name, _url in plaintext_targets)
+>               raise ValueError(
+                    "閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛?
+                    f"璇锋敼鐢?HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?{', '.join(names)}锛夈€?
+                    "纭渶鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+                )
+E               ValueError: 閰嶇疆涓嶅畨鍏細寮€鍙?娴嬭瘯鐜涔熶笉寰楅€氳繃杩滅▼鏄庢枃 HTTP 鍙戦€?PHI锛涜鏀圭敤 HTTPS 鎴栧洖鐜湴鍧€锛堟秹鍙?MODEL_GATEWAY_URL, OCR_SERVICE_URL锛夈€傜‘闇€鏈湴鑱旇皟鍙樉寮忚缃?ALLOW_PLAINTEXT_PHI_EGRESS=true锛堜粎寮€鍙戠幆澧冿級銆?
+
+src\medical_rag\core\config.py:223: ValueError
+============================== warnings summary ===============================
+..\..\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/integration/test_startup_validation.py::test_development_allows_loopback_plaintext_phi_egress
+FAILED tests/integration/test_startup_validation.py::test_readiness_reports_dependencies_missing_before_startup
+FAILED tests/integration/test_startup_validation.py::test_readiness_fails_when_the_database_is_unreachable
+FAILED tests/integration/test_startup_validation.py::test_liveness_stays_green_even_when_a_dependency_is_down
+FAILED tests/integration/test_startup_validation.py::test_an_injected_composition_exposes_its_index_orchestrator_in_development
+5 failed, 16 passed, 1 warning in 5.60s
+exit=1

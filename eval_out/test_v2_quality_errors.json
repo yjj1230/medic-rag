@@ -1,0 +1,231 @@
+[
+  {
+    "id": "who-silent",
+    "question": "高血压为什么可能没有明显症状？",
+    "gold": [
+      "1f18737d-6471-4de4-a790-867fdf9034b8",
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+    ],
+    "returned": [
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+      "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+      "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+    ],
+    "hit_rate": 1.0,
+    "recall": 0.5,
+    "mrr": 1.0,
+    "note": "无症状风险",
+    "bucket": null
+  },
+  {
+    "id": "who-numbers",
+    "question": "血压读数中的两个数字分别表示什么？",
+    "gold": [
+      "1f18737d-6471-4de4-a790-867fdf9034b8"
+    ],
+    "returned": [
+      "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+      "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+      "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+    ],
+    "hit_rate": 0.0,
+    "recall": 0.0,
+    "mrr": 0.0,
+    "note": "收缩压与舒张压",
+    "bucket": null
+  },
+  {
+    "id": "who-organ-risk",
+    "question": "长期高血压可能损伤哪些重要器官？",
+    "gold": [
+      "1f18737d-6471-4de4-a790-867fdf9034b8",
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+    ],
+    "returned": [
+      "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+      "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+      "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+    ],
+    "hit_rate": 0.0,
+    "recall": 0.0,
+    "mrr": 0.0,
+    "note": "心脏、脑和肾脏风险",
+    "bucket": null
+  },
+  {
+    "id": "lifestyle-exercise",
+    "question": "高血压日常管理为什么强调规律活动？",
+    "gold": [
+      "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+      "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+    ],
+    "returned": [
+      "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+      "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+      "1f18737d-6471-4de4-a790-867fdf9034b8"
+    ],
+    "hit_rate": 1.0,
+    "recall": 0.5,
+    "mrr": 0.5,
+    "note": "生活方式",
+    "bucket": null
+  },
+  {
+    "id": "lifestyle-salt",
+    "question": "高血压患者为什么要控制盐摄入？",
+    "gold": [
+      "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+      "1f18737d-6471-4de4-a790-867fdf9034b8"
+    ],
+    "returned": [
+      "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+      "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+      "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+    ],
+    "hit_rate": 1.0,
+    "recall": 0.5,
+    "mrr": 1.0,
+    "note": "生活方式与来源区分",
+    "bucket": null
+  },
+  {
+    "id": "meds-stop",
+    "question": "血压达到目标后可以自行停药吗？",
+    "gold": [
+      "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+      "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+    ],
+    "returned": [
+      "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+      "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+      "1f18737d-6471-4de4-a790-867fdf9034b8"
+    ],
+    "hit_rate": 1.0,
+    "recall": 0.5,
+    "mrr": 0.5,
+    "note": "不得自行停药",
+    "bucket": null
+  },
+  {
+    "id": "emergency-vision",
+    "question": "高血压伴视力变化为什么需要升级处理？",
+    "gold": [
+      "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+    ],
+    "returned": [
+      "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+      "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+      "1f18737d-6471-4de4-a790-867fdf9034b8"
+    ],
+    "hit_rate": 0.0,
+    "recall": 0.0,
+    "mrr": 0.0,
+    "note": "危险症状",
+    "bucket": null
+  },
+  {
+    "id": "symptom-single",
+    "question": "一次家庭读数可以直接确诊高血压吗？",
+    "gold": [
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+    ],
+    "returned": [
+      "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+      "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+      "1f18737d-6471-4de4-a790-867fdf9034b8"
+    ],
+    "hit_rate": 0.0,
+    "recall": 0.0,
+    "mrr": 0.0,
+    "note": "不能替代诊断",
+    "bucket": null
+  },
+  {
+    "id": "who-sodium",
+    "question": "WHO 对每日盐/钠摄入控制提出了什么一般方向？",
+    "gold": [
+      "1f18737d-6471-4de4-a790-867fdf9034b8"
+    ],
+    "returned": [
+      "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+      "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+      "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+    ],
+    "hit_rate": 0.0,
+    "recall": 0.0,
+    "mrr": 0.0,
+    "note": "保留钠与盐单位区别",
+    "bucket": null
+  },
+  {
+    "id": "risk-check",
+    "question": "高血压风险评估为什么不能只看一个症状？",
+    "gold": [
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+      "1f18737d-6471-4de4-a790-867fdf9034b8"
+    ],
+    "returned": [
+      "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+      "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+    ],
+    "hit_rate": 1.0,
+    "recall": 0.5,
+    "mrr": 0.5,
+    "note": "无症状与规范测量",
+    "bucket": null
+  },
+  {
+    "id": "priv-hgb-low",
+    "question": "血红蛋白结果是否低于报告参考范围？",
+    "gold": [
+      "822690e4-42ad-474d-9851-4f6462c23168"
+    ],
+    "returned": [
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+      "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+      "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+    ],
+    "hit_rate": 0.0,
+    "recall": 0.0,
+    "mrr": 0.0,
+    "note": "私有报告解释",
+    "bucket": null
+  },
+  {
+    "id": "priv-report-followup",
+    "question": "报告建议何时考虑复查或咨询医生？",
+    "gold": [
+      "822690e4-42ad-474d-9851-4f6462c23168",
+      "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+    ],
+    "returned": [
+      "822690e4-42ad-474d-9851-4f6462c23168",
+      "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+      "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+    ],
+    "hit_rate": 1.0,
+    "recall": 0.5,
+    "mrr": 1.0,
+    "note": "私有报告建议",
+    "bucket": null
+  },
+  {
+    "id": "priv-advice-safety",
+    "question": "报告中的后续建议是否等于确诊结论？",
+    "gold": [
+      "822690e4-42ad-474d-9851-4f6462c23168",
+      "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+    ],
+    "returned": [
+      "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+      "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+    ],
+    "hit_rate": 1.0,
+    "recall": 0.5,
+    "mrr": 1.0,
+    "note": "不能替代临床评估",
+    "bucket": null
+  }
+]

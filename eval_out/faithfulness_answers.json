@@ -1,0 +1,492 @@
+{
+  "generated_at": "2026-10-07T14:47:23",
+  "generator": {
+    "model": "glm-5.3-flash",
+    "orchestrator_timeout_s": 300.0,
+    "request_timeout_s": 120.0,
+    "redaction": "sha256+cache"
+  },
+  "index_version": {
+    "public": "public-v1",
+    "private": "private-v1"
+  },
+  "answers": [
+    {
+      "answer_id": "pub-home-bp-method",
+      "question": "家庭自测血压应该怎么测量？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "status": "answered",
+      "cited_evidence": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "diagnostics": {
+        "index_version": "public-v1",
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "answer_path": "rag"
+      },
+      "evidence": [
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "sha256": "9ade2d61ea7b239ae4cfb87ad3e7cf0308ecc8f49617de85245752839f1b27f9"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "sha256": "09a7e446755c923178544c70fc0730bade55606662986c59fc421b5e42d29589"
+        }
+      ],
+      "elapsed_s": 61.5,
+      "text_sha256": "e13546f5e8af8779a4f2e9c078fa6750b98ee185b64e5340cbcb92b1b0cf6c3f"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "question": "家庭血压的目标值是多少？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "status": "answered",
+      "cited_evidence": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "diagnostics": {
+        "index_version": "private-v1",
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "answer_path": "rag"
+      },
+      "evidence": [
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "sha256": "9ade2d61ea7b239ae4cfb87ad3e7cf0308ecc8f49617de85245752839f1b27f9"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "sha256": "09a7e446755c923178544c70fc0730bade55606662986c59fc421b5e42d29589"
+        }
+      ],
+      "elapsed_s": 24.4,
+      "text_sha256": "c6c8a01ddf18a72571d46cd5f2c1060fdf9a13e8b52fb496ac0c56f97031d7d2"
+    },
+    {
+      "answer_id": "pub-salt-limit",
+      "question": "高血压患者每天食盐摄入量应控制在多少克以内？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "status": "answered",
+      "cited_evidence": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "diagnostics": {
+        "index_version": "public-v1",
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "answer_path": "rag"
+      },
+      "evidence": [
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "sha256": "a123e70d95541bb3dbd714382eb454a4b8088c028dcf55bdf181bb108906a387"
+        }
+      ],
+      "elapsed_s": 11.4,
+      "text_sha256": "730e784620bdc14437a287b3c4f08e31fb697f262ff390c1a6076a664d13301d"
+    },
+    {
+      "answer_id": "pub-exercise",
+      "question": "高血压患者建议每周进行多长时间的运动？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "status": "answered",
+      "cited_evidence": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "diagnostics": {
+        "index_version": "public-v1",
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "answer_path": "rag"
+      },
+      "evidence": [
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "sha256": "a123e70d95541bb3dbd714382eb454a4b8088c028dcf55bdf181bb108906a387"
+        }
+      ],
+      "elapsed_s": 51.8,
+      "text_sha256": "2a377834b1141abd695e59f82067c50614d0a4e962cfdde94e33214e9b229890"
+    },
+    {
+      "answer_id": "pub-stop-meds",
+      "question": "血压降到正常了，可以自己停降压药吗？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 71.1,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "pub-missed-dose",
+      "question": "降压药漏服了一次应该怎么处理？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 40.8,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "pub-emergency-signs",
+      "question": "血压很高同时剧烈头痛、视物模糊，需要立即就医吗？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "status": "answered",
+      "cited_evidence": [
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "diagnostics": {
+        "index_version": "private-v1",
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "answer_path": "rag"
+      },
+      "evidence": [
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "sha256": "09a7e446755c923178544c70fc0730bade55606662986c59fc421b5e42d29589"
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "sha256": "9ade2d61ea7b239ae4cfb87ad3e7cf0308ecc8f49617de85245752839f1b27f9"
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "sha256": "4758717d73dd4f59e01d3afa4a2119dd9b993465a5b62afb3fe3804e8b22d143"
+        }
+      ],
+      "elapsed_s": 73.9,
+      "text_sha256": "9d897d31a7da852b70950316e10e621c455944235e702186a267271954d8d5fc"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "question": "高血压的非药物治疗包括哪些措施？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "status": "answered",
+      "cited_evidence": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "diagnostics": {
+        "index_version": "public-v1",
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "answer_path": "rag"
+      },
+      "evidence": [
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "sha256": "a123e70d95541bb3dbd714382eb454a4b8088c028dcf55bdf181bb108906a387"
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "sha256": "9ade2d61ea7b239ae4cfb87ad3e7cf0308ecc8f49617de85245752839f1b27f9"
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "sha256": "4758717d73dd4f59e01d3afa4a2119dd9b993465a5b62afb3fe3804e8b22d143"
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "sha256": "09a7e446755c923178544c70fc0730bade55606662986c59fc421b5e42d29589"
+        }
+      ],
+      "elapsed_s": 64.0,
+      "text_sha256": "34b7b74427ab4c0199b39bf616abec9a1dae8936b7e29edd16a57f1222aa9d3c"
+    },
+    {
+      "answer_id": "pub-weight-loss",
+      "question": "超重的人减重对血压有帮助吗？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 39.1,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "priv-hemoglobin",
+      "question": "我的血红蛋白是多少？",
+      "scope": "private",
+      "gold_evidence_ids": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 3.9,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "priv-anemia",
+      "question": "我的血常规报告提示贫血吗？",
+      "scope": "private",
+      "gold_evidence_ids": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 52.6,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "priv-platelet",
+      "question": "我的血小板计数是多少？",
+      "scope": "private",
+      "gold_evidence_ids": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "status": "answered",
+      "cited_evidence": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+      ],
+      "diagnostics": {
+        "index_version": "private-v1",
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "answer_path": "rag"
+      },
+      "evidence": [
+        {
+          "id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+          "sha256": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa"
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "sha256": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa"
+        },
+        {
+          "id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+          "sha256": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa"
+        }
+      ],
+      "elapsed_s": 16.1,
+      "text_sha256": "cc46d84334bceb0d125dc268b8bb968ea4977be24080d687a61ce6dbd65d6916"
+    },
+    {
+      "answer_id": "priv-wbc-normal",
+      "question": "我的白细胞计数正常吗？",
+      "scope": "private",
+      "gold_evidence_ids": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 22.1,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "priv-red-cell",
+      "question": "我的红细胞计数偏低吗？",
+      "scope": "private",
+      "gold_evidence_ids": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 55.8,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "pub-home-bp-value",
+      "question": "家庭血压多少算正常？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 15.3,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "pub-salt-why",
+      "question": "高血压患者为什么要少吃盐？限盐建议是多少？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 29.5,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "pub-meds-regular",
+      "question": "降压药需要长期服用吗？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 42.7,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "question": "出现高血压急症症状时应该怎么做？",
+      "scope": "public",
+      "gold_evidence_ids": [
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "status": "answered",
+      "cited_evidence": [
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "diagnostics": {
+        "index_version": "public-v1",
+        "gate_policy": "cosine_absolute",
+        "gate_score_space": "l2_inv",
+        "answer_path": "rag"
+      },
+      "evidence": [
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "sha256": "09a7e446755c923178544c70fc0730bade55606662986c59fc421b5e42d29589"
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "sha256": "4758717d73dd4f59e01d3afa4a2119dd9b993465a5b62afb3fe3804e8b22d143"
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "sha256": "9ade2d61ea7b239ae4cfb87ad3e7cf0308ecc8f49617de85245752839f1b27f9"
+        }
+      ],
+      "elapsed_s": 67.2,
+      "text_sha256": "b3ca253a1b2968b5bb49507689e05e8490f0be7b6e97de48b8bf44abfb8dbefd"
+    },
+    {
+      "answer_id": "priv-hemoglobin-range",
+      "question": "我的血红蛋白值在参考范围内吗？",
+      "scope": "private",
+      "gold_evidence_ids": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 21.5,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    },
+    {
+      "answer_id": "priv-anemia-report",
+      "question": "我的报告为什么提示贫血？",
+      "scope": "private",
+      "gold_evidence_ids": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "status": "degraded",
+      "cited_evidence": [],
+      "diagnostics": {
+        "answer_path": "rag"
+      },
+      "evidence": [],
+      "elapsed_s": 71.2,
+      "text_sha256": "531639b5d463255a4ef31dd754eca2200975f20b839b4777b76f2517b62a7821"
+    }
+  ]
+}

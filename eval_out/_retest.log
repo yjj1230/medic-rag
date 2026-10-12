@@ -1,0 +1,9 @@
+﻿鐧诲綍 OK
+涓婁紶娴嬭瘯 PDF...
+  -> http=201 doc=10311239-e845-4672-8ca2-ce6d1109e465
+瑙ｆ瀽鍚? ready 绱㈠紩鍧?1
+[A-02] review http=403 body={"detail":"褰撳墠韬唤娌℃湁鍖诲澶嶆牳鏉冮檺"} passed=True
+[A-03] delete http=500 娈嬬暀=1 db=('READY', None) -> P0-6 澶嶇幇
+[cleanup] {'index_deleted': 1, 'db_documents_tombstoned': 1, 'db_versions_tombstoned': 1, 'post_residual': 0}
+鎶ュ憡锛欳:\Users\lyx\Desktop\RAG\eval_out\e2e_retest_a02a03.json
+exit=1

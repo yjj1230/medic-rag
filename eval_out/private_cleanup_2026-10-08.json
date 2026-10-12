@@ -1,0 +1,117 @@
+{
+  "created_at": "2026-10-08T05:55:01.002829+00:00",
+  "index": "medical-rag-private-local",
+  "before_count": 7,
+  "content_groups": {
+    "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa": 4,
+    "634e0259222880064591b351d3969d459ba25272fab5de23388f307569179032": 2,
+    "6912681b285978d203cb52a312888274fbec14f26e9ba0528f176a192c369d18": 1
+  },
+  "canonical_by_hash": {
+    "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa": "822690e4-42ad-474d-9851-4f6462c23168"
+  },
+  "records": [
+    {
+      "record_id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+      "evidence_unit_id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+      "content_hash": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa",
+      "text_length": 307,
+      "garbled": false
+    },
+    {
+      "record_id": "822690e4-42ad-474d-9851-4f6462c23168",
+      "evidence_unit_id": "822690e4-42ad-474d-9851-4f6462c23168",
+      "content_hash": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa",
+      "text_length": 307,
+      "garbled": false
+    },
+    {
+      "record_id": "7092ee1e-9302-49ea-8262-270de97fd144",
+      "evidence_unit_id": "7092ee1e-9302-49ea-8262-270de97fd144",
+      "content_hash": "634e0259222880064591b351d3969d459ba25272fab5de23388f307569179032",
+      "text_length": 346,
+      "garbled": true
+    },
+    {
+      "record_id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+      "evidence_unit_id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+      "content_hash": "6912681b285978d203cb52a312888274fbec14f26e9ba0528f176a192c369d18",
+      "text_length": 242,
+      "garbled": false
+    },
+    {
+      "record_id": "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+      "evidence_unit_id": "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+      "content_hash": "634e0259222880064591b351d3969d459ba25272fab5de23388f307569179032",
+      "text_length": 346,
+      "garbled": true
+    },
+    {
+      "record_id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+      "evidence_unit_id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+      "content_hash": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa",
+      "text_length": 307,
+      "garbled": false
+    },
+    {
+      "record_id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+      "evidence_unit_id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+      "content_hash": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa",
+      "text_length": 307,
+      "garbled": false
+    }
+  ],
+  "targets": [
+    {
+      "record_id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+      "evidence_unit_id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+      "content_hash": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa",
+      "text_length": 307,
+      "garbled": false,
+      "reason": "duplicate_content"
+    },
+    {
+      "record_id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+      "evidence_unit_id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+      "content_hash": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa",
+      "text_length": 307,
+      "garbled": false,
+      "reason": "duplicate_content"
+    },
+    {
+      "record_id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+      "evidence_unit_id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+      "content_hash": "40b1527213490bd27e615709abf5b9d7bf4f38eb1ccde7770baafc51af9b79fa",
+      "text_length": 307,
+      "garbled": false,
+      "reason": "duplicate_content"
+    },
+    {
+      "record_id": "7092ee1e-9302-49ea-8262-270de97fd144",
+      "evidence_unit_id": "7092ee1e-9302-49ea-8262-270de97fd144",
+      "content_hash": "634e0259222880064591b351d3969d459ba25272fab5de23388f307569179032",
+      "text_length": 346,
+      "garbled": true,
+      "reason": "garbled_placeholder"
+    },
+    {
+      "record_id": "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+      "evidence_unit_id": "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+      "content_hash": "634e0259222880064591b351d3969d459ba25272fab5de23388f307569179032",
+      "text_length": 346,
+      "garbled": true,
+      "reason": "garbled_placeholder"
+    }
+  ],
+  "after_count": 2,
+  "apply_result": {
+    "deleted": [
+      "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+      "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+      "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+      "7092ee1e-9302-49ea-8262-270de97fd144",
+      "9c907073-ae8d-4f9e-950f-0e217e2b47a5"
+    ],
+    "failed": []
+  }
+}

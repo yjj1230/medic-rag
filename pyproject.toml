@@ -1,0 +1,101 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medical-rag"
+version = "0.1.0"
+description = "Patient-facing medical RAG pilot"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115,<1.0",
+    "uvicorn[standard]>=0.30,<1.0",
+    # Required by FastAPI to resolve the document-upload route's UploadFile.
+    # FastAPI checks this at route-registration time, so its absence does not
+    # disable one endpoint: create_app() raises and the service cannot start.
+    # Development environments happened to have it installed, so this went
+    # unnoticed until the API was actually started in the built image.
+    "python-multipart>=0.0.9,<1.0",
+    "pydantic>=2.10,<3.0",
+    "pydantic-settings>=2.6,<3.0",
+    "sqlalchemy>=2.0,<3.0",
+    "alembic>=1.14,<2.0",
+    "psycopg[binary]>=3.2,<4.0",
+    "celery>=5.4,<6.0",
+    "redis>=5.2,<6.0",
+    "boto3>=1.35,<2.0",
+    "httpx>=0.28,<1.0",
+    # The retrieval backend is not optional for a RAG service: without it the
+    # search index used to degrade to an empty in-memory index at runtime.
+    "opensearch-py>=2.4,<3.0",
+    "pypdf>=5.0,<6.0",
+    "pypdfium2>=4.0,<6.0",
+    "python-docx>=1.1,<2.0",
+    "openpyxl>=3.1,<4.0",
+    "Pillow>=10.0,<12.0",
+    "xlrd>=2.0,<3.0",
+    "pyjwt>=2.9,<3.0",
+    "bcrypt>=4.2,<5.0",
+    # 本地向量化后端（EMBEDDING_BACKEND=local）依赖。放在主依赖而不是可选 extra：
+    # 镜像由 [project].dependencies 构建，任何 src/ 会 import 的模块都必须声明在
+    # 这里，否则镜像里缺少该包时整个向量化路径会在运行时才失败（与
+    # python-multipart、opensearch-py 两次事故同一类问题，见
+    # tests/contract/test_declared_dependencies.py）。代价是约百 MB 的
+    # onnxruntime，换取「容器一定能起来」。
+    "fastembed>=0.4,<1.0",
+    "onnxruntime>=1.20,<2.0",
+]
+
+[project.scripts]
+medical-rag-api = "medical_rag.api.serve:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3,<10.0",
+    "pytest-asyncio>=0.24,<1.0",
+    "pytest-cov>=6.0,<8.0",
+    "ruff>=0.9,<1.0",
+]
+# Kept for backwards compatibility; opensearch-py is a main dependency now.
+live = [
+    "opensearch-py>=2.4,<3.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+# Rule families are selected explicitly: leaving `select` unset made `ruff check`
+# fall back to ruff's defaults, which omit bugbear and bandit entirely.
+select = ["E", "F", "W", "B", "S"]
+# E501 only: line-length is already capped by the formatter, and wrapping every
+# long CJK string literal in this codebase adds no readability.
+ignore = ["E501"]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's Depends()/File() in argument defaults is the documented idiom, so
+# exempt those callables by name instead of ignoring B008 everywhere.
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.File",
+    "fastapi.Form",
+    "fastapi.Header",
+    "fastapi.Query",
+    "fastapi.Body",
+    "fastapi.Path",
+    "fastapi.Cookie",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests assert by design, and use fixed fake credentials and deterministic
+# randomness on purpose: none of that is a production weakness.
+"tests/**" = ["S101", "S105", "S106", "S107", "S108", "S311"]

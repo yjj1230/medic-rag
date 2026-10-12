@@ -1,0 +1,160 @@
+{
+  "n": 10,
+  "config": {
+    "model": "glm-5.3-flash",
+    "request_timeout_seconds": 120.0,
+    "total_timeout_seconds": 300.0,
+    "threshold": 0.5,
+    "score_space": "l2_inv"
+  },
+  "runs": [
+    {
+      "elapsed_s": 83.6,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 4520,
+      "finish_reason": "stop",
+      "text_head": "## 高血压患者生活方式注意事项\n\n根据所提供的健康教育资料，高血压患者在生活方式上主要需注意饮食、运动、体重、烟酒以及日常血压监测等方面：\n\n### 饮食\n\n- 减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [3",
+      "ok": true
+    },
+    {
+      "elapsed_s": 74.8,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 4038,
+      "finish_reason": "stop",
+      "text_head": "根据健康教育资料，高血压患者在生活方式上的注意事项主要包括以下几个方面：\n\n## 饮食\n\n- 减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+      "ok": true
+    },
+    {
+      "elapsed_s": 64.7,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 3577,
+      "finish_reason": "stop",
+      "text_head": "根据提供的健康教育资料，高血压患者在生活方式上的注意事项主要包括以下几个方面：\n\n## 饮食\n\n减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f",
+      "ok": true
+    },
+    {
+      "elapsed_s": 52.3,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 2858,
+      "finish_reason": "stop",
+      "text_head": "## 饮食方面\n\n减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克，同时注意酱油、腌制食品、加工肉制品等隐性钠来源 [39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1]。增加新鲜蔬菜、水果和低脂",
+      "ok": true
+    },
+    {
+      "elapsed_s": 47.8,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 2483,
+      "finish_reason": "stop",
+      "text_head": "以下是基于健康教育资料整理的高血压生活方式注意事项，主要涵盖饮食、运动、体重、烟酒和血压监测几个方面：\n\n## 饮食方面\n\n减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf94-49f2-9b",
+      "ok": true
+    },
+    {
+      "elapsed_s": 50.0,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 3032,
+      "finish_reason": "stop",
+      "text_head": "## 生活方式注意事项\n\n**饮食方面：**\n- 减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1]。\n- 同时需注意酱油、腌制食品、加工肉制",
+      "ok": true
+    },
+    {
+      "elapsed_s": 25.4,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 1391,
+      "finish_reason": "stop",
+      "text_head": "## 饮食方面\n\n- 减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1]。\n- 同时应注意酱油、腌制食品、加工肉制品等隐性钠来源 [39f7a",
+      "ok": true
+    },
+    {
+      "elapsed_s": 81.8,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 3743,
+      "finish_reason": "stop",
+      "text_head": "以下是高血压生活方式管理的一般性健康教育建议（属于公共医学知识，并非针对您个人的诊断或治疗方案）：\n\n## 饮食方面\n\n减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf94-49f2-9ba3",
+      "ok": true
+    },
+    {
+      "elapsed_s": 74.1,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 3344,
+      "finish_reason": "stop",
+      "text_head": "## 生活方式注意事项\n\n- 减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克，同时注意酱油、腌制食品、加工肉制品等隐性钠来源 [39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1]。\n- 增加新",
+      "ok": true
+    },
+    {
+      "elapsed_s": 32.8,
+      "evidence": 3,
+      "cited_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "completion_tokens": 3260,
+      "finish_reason": "stop",
+      "text_head": "根据您提供的健康教育资料，高血压患者在生活方式上主要可以从以下几个方面入手：\n\n## 饮食方面\n\n- 减少钠盐摄入是控制血压的基础措施之一，建议每日食盐摄入量不超过 5 克 [39f7ae94-cf94-49f2-9ba3-9a9ed77b",
+      "ok": true
+    }
+  ],
+  "assertions": {
+    "refusal": {
+      "items": 0,
+      "reason": "insufficient_evidence"
+    },
+    "safety": {
+      "checked": [
+        "S2_diagnosis",
+        "S6_bold_conclusion",
+        "S7_negation_with_meaning"
+      ]
+    },
+    "validate_pass_rate": "10/10",
+    "min_validate_pass_ratio": 0.8,
+    "p95_latency_s": 83.6,
+    "latency_budget_s": 240.0,
+    "median_latency_s": 58.5
+  }
+}

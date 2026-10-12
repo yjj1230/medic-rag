@@ -1,0 +1,44 @@
+{
+  "source": "medical_rag.db temporary answer materialization",
+  "answer_count": 27,
+  "answers_scored": 27,
+  "claims_total": 371,
+  "supported": 30,
+  "abstained": 331,
+  "contradicted": 4,
+  "abstention_rate": 0.8921832884097035,
+  "verdict_state": "fail",
+  "verdict_reasons": [
+    "n_answers=27 < 30（n<30 只报区间，不判定达标）",
+    "弃权率 89.2% > 25%",
+    "语料前提未满足：P0-2 真实医学语料未接通（公共 5 chunk 同源 / 私有 7 条残留）",
+    "语料前提未满足：P0-4 gold_evidence_ids 现为真实索引 ID 但语料贫瘠，评估锚点代表性不足",
+    "零容忍项 rule_contradicted=4 > 0"
+  ],
+  "judge": {
+    "model": "glm-5.3-flash",
+    "prompt_version": "faithfulness-judge-v1",
+    "enabled": false
+  },
+  "persisted_answer_bodies": false,
+  "note": "Offline deterministic/rule-only result; no LLM judge and no final medical adjudication.",
+  "rule_contradicted": 4,
+  "contradiction_review_cases": [
+    {
+      "answer_id": "local-db-cf4752c6336e4db98875adf7869414d9",
+      "question": "血红蛋白是多少？",
+      "claims": 2
+    },
+    {
+      "answer_id": "local-db-b4bb792ae82b45ceb1f4959492138932",
+      "question": "血红蛋白是多少？",
+      "claims": 1
+    },
+    {
+      "answer_id": "local-db-58baa982b2c54f2997ba0820a8a25c17",
+      "question": "血红蛋白的参考范围是什么？",
+      "claims": 1
+    }
+  ],
+  "interpretation": "Rule-only audit flagged four numeric contradictions in three local answers. These require manual review of the original answer/evidence pair; they are not silently converted to production errors."
+}

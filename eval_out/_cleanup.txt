@@ -1,0 +1,4 @@
+﻿index deleted: 1
+db documents rows updated: 1
+db document_versions rows updated: 1
+post-check: index residual = 0 | db = ('deleted', '2026-10-08 05:53:11')

@@ -1,0 +1,5 @@
+INFO:     Started server process [35932]
+INFO:     Waiting for application startup.
+OCR_SERVICE_URL 使用明文 HTTP 且指向非本机地址（http://192.168.254.35:18080）
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)

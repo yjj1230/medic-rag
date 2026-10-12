@@ -1,0 +1,64 @@
+﻿python.exe : INFO:medical_rag.worker_entrypoint:broker=redis://localhost:6380/0 opensearch=http://localhost:9200 pool=s
+olo
+所在位置 行:445 字符: 128
++ ... esktop\RAG; & "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Sc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO:medical_ra...:9200 pool=solo:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO:opensearch:GET http://localhost:9200/ [status:200 request:0.031s]
+INFO:opensearch:HEAD http://localhost:9200/medical-rag-public-local [status:200 request:0.056s]
+INFO:opensearch:HEAD http://localhost:9200/medical-rag-public-local [status:200 request:0.002s]
+INFO:opensearch:GET http://localhost:9200/medical-rag-public-local/_mapping [status:200 request:0.006s]
+INFO:opensearch:PUT http://localhost:9200/medical-rag-public-local/_mapping [status:200 request:0.287s]
+INFO:medical_rag.worker_entrypoint:mapping ensured for medical-rag-public-local
+INFO:opensearch:HEAD http://localhost:9200/_alias/medical-rag-public [status:200 request:0.147s]
+INFO:opensearch:GET http://localhost:9200/_alias/medical-rag-public [status:200 request:0.002s]
+INFO:medical_rag.worker_entrypoint:alias medical-rag-public already points at medical-rag-public-local
+INFO:opensearch:HEAD http://localhost:9200/medical-rag-private-local [status:200 request:0.002s]
+INFO:opensearch:HEAD http://localhost:9200/medical-rag-private-local [status:200 request:0.003s]
+INFO:opensearch:GET http://localhost:9200/medical-rag-private-local/_mapping [status:200 request:0.003s]
+INFO:opensearch:PUT http://localhost:9200/medical-rag-private-local/_mapping [status:200 request:0.064s]
+INFO:medical_rag.worker_entrypoint:mapping ensured for medical-rag-private-local
+INFO:opensearch:HEAD http://localhost:9200/_alias/medical-rag-private [status:200 request:0.002s]
+INFO:opensearch:GET http://localhost:9200/_alias/medical-rag-private [status:200 request:0.003s]
+INFO:medical_rag.worker_entrypoint:alias medical-rag-private already points at medical-rag-private-local
+ 
+ -------------- celery@DESKTOP-KN5IOBH v5.6.3 (recovery)
+--- ***** ----- 
+-- ******* ---- Windows-11-10.0.26200-SP0 2026-10-08 13:45:00
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         medical_rag:0x206c5154ad0
+- ** ---------- .> transport:   redis://localhost:6380/0
+- ** ---------- .> results:     disabled://
+- *** --- * --- .> concurrency: 1 (solo)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . medical_rag.parse_document
+
+[2026-10-08 13:45:00,400: INFO/MainProcess] Connected to redis://localhost:6380/0
+[2026-10-08 13:45:00,406: INFO/MainProcess] mingle: searching for neighbors
+[2026-10-08 13:45:01,482: INFO/MainProcess] mingle: all alone
+[2026-10-08 13:45:01,544: INFO/MainProcess] celery@DESKTOP-KN5IOBH ready.
+[2026-10-08 13:47:20,807: INFO/MainProcess] Task medical_rag.parse_document[73153238-e357-4345-88fe-268389a2b047] recei
+ved
+[2026-10-08 13:47:24,181: INFO/MainProcess] 鏈湴鍚戦噺妯″瀷宸插姞杞? BAAI/bge-small-zh-v1.5 dims=512 path=models\bge-small-zh-v1.
+5
+[2026-10-08 13:47:25,154: INFO/MainProcess] POST http://localhost:9200/medical-rag-private-local/_bulk [status:200 requ
+est:0.761s]
+[2026-10-08 13:47:25,584: INFO/MainProcess] Task medical_rag.parse_document[73153238-e357-4345-88fe-268389a2b047] succe
+eded in 4.780999999959022s: {'raw_text_length': 130, 'evidence_count': 1, 'fact_count': 0, 'language': 'mixed', 'parser
+_version': 'pdf-parser-v2', 'needs_review': False, 'review_reasons': []}
+[2026-10-08 14:11:37,257: INFO/MainProcess] Task medical_rag.parse_document[030fed72-5299-4368-9c41-0ca5767fabf4] recei
+ved
+[2026-10-08 14:11:37,873: INFO/MainProcess] POST http://localhost:9200/medical-rag-private-local/_bulk [status:200 requ
+est:0.020s]
+[2026-10-08 14:11:37,942: INFO/MainProcess] Task medical_rag.parse_document[030fed72-5299-4368-9c41-0ca5767fabf4] succe
+eded in 0.6879999999655411s: {'raw_text_length': 130, 'evidence_count': 1, 'fact_count': 0, 'language': 'mixed', 'parse
+r_version': 'pdf-parser-v2', 'needs_review': False, 'review_reasons': []}

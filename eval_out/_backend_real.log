@@ -1,0 +1,56 @@
+﻿python.exe : INFO:     Started server process [41144]
+所在位置 行:445 字符: 128
++ ... esktop\RAG; & "C:\Users\lyx\AppData\Local\hermes\hermes-agent\venv\Sc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO:     Started server process [41144]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO:     Waiting for application startup.
+OCR_SERVICE_URL 浣跨敤鏄庢枃 HTTP 涓旀寚鍚戦潪鏈満鍦板潃锛坔ttp://192.168.254.35:18080锛?
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:56865 - "GET /health HTTP/1.1" 200 OK
+JWT_SECRET 鏈厤缃紝寮€鍙戠幆澧冧娇鐢ㄨ繘绋嬪唴闅忔満瀵嗛挜锛涢噸鍚悗鏃㈡湁浠ょ墝鍏ㄩ儴澶辨晥銆傞潪寮€鍙戠幆澧冨皢鎷掔粷鍚姩銆?
+INFO:     127.0.0.1:60300 - "POST /v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60324 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55595 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56081 - "GET /v1/chat/sessions/3da8252f-767d-49ef-bb6b-413b7a1b5c55/messages HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61350 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54848 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58145 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56735 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53315 - "POST /v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56977 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65159 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50751 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53723 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63478 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64752 - "POST /v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49996 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63905 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63418 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54800 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49207 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56961 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61113 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57817 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50469 - "POST /v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59942 - "POST /v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59948 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55544 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62942 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62075 - "GET /v1/chat/sessions/337b7779-416a-4d47-821b-bd088f157f91/messages HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:61380 - "GET /v1/chat/sessions/e7b48972-16fc-422b-a8e3-7fb2d0d5d061/messages HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61387 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58338 - "POST /v1/chat/answers HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:53751 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62394 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56237 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59725 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56259 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63011 - "POST /v1/chat/answers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49992 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49994 - "GET /health/ready HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59424 - "GET /health/ready HTTP/1.1" 200 OK

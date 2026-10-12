@@ -1,0 +1,143 @@
+x-rag-environment: &rag-environment
+  ENVIRONMENT: ${ENVIRONMENT:-local}
+  DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-medical_rag}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-medical_rag}
+  OPENSEARCH_URL: http://opensearch:9200
+  REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+  OBJECT_STORE_ENDPOINT: http://minio:9000
+  OBJECT_STORE_BUCKET: ${OBJECT_STORE_BUCKET:-medical-rag}
+  OBJECT_STORE_ACCESS_KEY: ${MINIO_ROOT_USER}
+  OBJECT_STORE_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+  MODEL_GATEWAY_URL: ${MODEL_GATEWAY_URL:?MODEL_GATEWAY_URL must be set}
+  MODEL_GATEWAY_API_KEY: ${MODEL_GATEWAY_API_KEY:?MODEL_GATEWAY_API_KEY must be set}
+  MODEL_PROVIDER_ID: ${MODEL_PROVIDER_ID:-lan-chat}
+  MODEL_NAME: ${MODEL_NAME:-gpt-5.5}
+  EMBEDDING_BACKEND: ${EMBEDDING_BACKEND:-gateway}
+  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-text-embedding-3-small}
+  EMBEDDING_DIMENSIONS: ${EMBEDDING_DIMENSIONS:-1536}
+  EMBEDDING_INDEX_VERSION: ${EMBEDDING_INDEX_VERSION:-private-v1}
+  LOCAL_EMBEDDING_MODEL_PATH: ${LOCAL_EMBEDDING_MODEL_PATH:-}
+  RAG_TEXT_ANALYZER: ${RAG_TEXT_ANALYZER:-cjk}
+  RAG_SEARCH_ANALYZER: ${RAG_SEARCH_ANALYZER:-cjk}
+  RAG_PUBLIC_INDEX_NAME: ${RAG_PUBLIC_INDEX_NAME:-medical-rag-public-local}
+  RAG_PRIVATE_INDEX_NAME: ${RAG_PRIVATE_INDEX_NAME:-medical-rag-private-local}
+  RAG_ALLOW_UNEMBEDDED: ${RAG_ALLOW_UNEMBEDDED:-0}
+  VIRUS_SCANNER_BACKEND: ${VIRUS_SCANNER_BACKEND:-none}
+  JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set (>=32 bytes)}
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-medical_rag}
+      POSTGRES_USER: ${POSTGRES_USER:-medical_rag}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    ports:
+      # Bound to loopback: these services carry patient data and must not be
+      # reachable from the surrounding network.
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-medical_rag} -d ${POSTGRES_DB:-medical_rag}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  opensearch:
+    image: opensearchproject/opensearch:2.18.0
+    environment:
+      discovery.type: single-node
+      # Local development only.  For any shared environment, enable the security
+      # plugin and configure TLS + authentication instead.
+      DISABLE_SECURITY_PLUGIN: ${OPENSEARCH_DISABLE_SECURITY_PLUGIN:-true}
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD:-}
+    ports:
+      - "127.0.0.1:9200:9200"
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9200/_cluster/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7.4
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:?REDIS_PASSWORD must be set}"]
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis-data:/data
+
+  minio:
+    image: minio/minio:RELEASE.2025-02-18T16-25-55Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?MINIO_ROOT_USER must be set}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?MINIO_ROOT_PASSWORD must be set}
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    volumes:
+      - minio-data:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment: *rag-environment
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "scripts/run_worker.py", "worker", "--loglevel", "INFO"]
+    environment: *rag-environment
+    depends_on:
+      postgres:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import celery, redis, opensearchpy"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  index-init:
+    profiles: ["ops"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "scripts/run_worker.py", "init-indexes"]
+    environment: *rag-environment
+    depends_on:
+      opensearch:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres-data:
+  opensearch-data:
+  redis-data:
+  minio-data:

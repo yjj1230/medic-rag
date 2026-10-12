@@ -1,0 +1,2035 @@
+{
+  "dataset": "eval\\rag_cases.test.v2.1.jsonl",
+  "results": "eval_out\\test_v2_1_run\\retrieval_eval_results.json",
+  "configuration": "A2-pure-vector",
+  "group_semantics": "any alternative group; IDs inside a group are equivalent",
+  "quality": {
+    "n": 70,
+    "accepted_hit_rate": 0.8714,
+    "accepted_mrr": 0.781,
+    "unmatched_case_ids": [
+      "who-activity",
+      "who-tobacco",
+      "who-prevention",
+      "preg-single-reading",
+      "measure-cuff",
+      "emergency-vision",
+      "symptom-risk",
+      "symptom-single",
+      "crisis-action"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "who-definition",
+      "category": "quality",
+      "returned_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "who-two-days",
+      "category": "quality",
+      "returned_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "rank": 3
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 3,
+      "accepted_reciprocal_rank": 0.3333333333333333
+    },
+    {
+      "case_id": "who-silent",
+      "category": "quality",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "who-numbers",
+      "category": "quality",
+      "returned_ids": [
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "who-organ-risk",
+      "category": "quality",
+      "returned_ids": [
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "who-activity",
+      "category": "quality",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "804e02e8-026f-46fd-96f3-d61d3d3f5a75",
+        "b787a6aa-559a-421b-a470-ff8c7096883a"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "who-salt",
+      "category": "quality",
+      "returned_ids": [
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "rank": 3
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 3,
+      "accepted_reciprocal_rank": 0.3333333333333333
+    },
+    {
+      "case_id": "who-tobacco",
+      "category": "quality",
+      "returned_ids": [
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "who-goal",
+      "category": "quality",
+      "returned_ids": [
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "who-prevention",
+      "category": "quality",
+      "returned_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "medlineplus-nav",
+      "category": "quality",
+      "returned_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "dash-core",
+      "category": "quality",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "dash-sodium",
+      "category": "quality",
+      "returned_ids": [
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "dash-lower",
+      "category": "quality",
+      "returned_ids": [
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "dash-dairy",
+      "category": "quality",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "dash-sweets",
+      "category": "quality",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "dash-fat",
+      "category": "quality",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "lifestyle-exercise",
+      "category": "quality",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "rank": 2
+        },
+        {
+          "group": [
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "rank": 3
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "lifestyle-salt",
+      "category": "quality",
+      "returned_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "lifestyle-weight",
+      "category": "quality",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "lifestyle-drugs",
+      "category": "quality",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-types",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-20weeks",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-preeclampsia",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-postpartum",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-warning-headache",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-monitor",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-medication",
+      "category": "quality",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "preg-hospital",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-single-reading",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "preg-adult-mix",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "measure-rest",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "measure-feet",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "measure-arm",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "measure-cuff",
+      "category": "quality",
+      "returned_ids": [
+        "21e48910-7c90-4578-8d24-42f23c9af3b3",
+        "f8cc7f9f-2a09-4879-a88a-83c438e40ace",
+        "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "measure-talk",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "measure-repeat",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "measure-factors",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "measure-record",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "measure-home-target",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "measure-device-use",
+      "category": "quality",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "meds-stop",
+      "category": "quality",
+      "returned_ids": [
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+          ],
+          "rank": 2
+        },
+        {
+          "group": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "rank": 3
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "meds-missed",
+      "category": "quality",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "meds-discomfort",
+      "category": "quality",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "treat-plan",
+      "category": "quality",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "emergency-breath",
+      "category": "quality",
+      "returned_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "emergency-no-symptom",
+      "category": "quality",
+      "returned_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "emergency-vision",
+      "category": "quality",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "symptom-risk",
+      "category": "quality",
+      "returned_ids": [
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "symptom-diagnosis",
+      "category": "quality",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "symptom-single",
+      "category": "quality",
+      "returned_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "who-sodium",
+      "category": "quality",
+      "returned_ids": [
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "who-medicine",
+      "category": "quality",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "dash-no-special",
+      "category": "quality",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "f8cc7f9f-2a09-4879-a88a-83c438e40ace",
+        "b787a6aa-559a-421b-a470-ff8c7096883a"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-fetal",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "preg-postpartum-care",
+      "category": "quality",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "medlineplus-diagnosis",
+      "category": "quality",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "causes-meds",
+      "category": "quality",
+      "returned_ids": [
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "risk-check",
+      "category": "quality",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "rank": 1
+        },
+        {
+          "group": [
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "rank": 3
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "crisis-action",
+      "category": "quality",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "priv-rbc-unit",
+      "category": "quality",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "21e48910-7c90-4578-8d24-42f23c9af3b3"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-platelet-compare",
+      "category": "quality",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-hgb-low",
+      "category": "quality",
+      "returned_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-wbc-value",
+      "category": "quality",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "21e48910-7c90-4578-8d24-42f23c9af3b3"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-report-followup",
+      "category": "quality",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-cbc-items",
+      "category": "quality",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-platelet-unit",
+      "category": "quality",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-hgb-reference",
+      "category": "quality",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-rbc-reference",
+      "category": "quality",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-advice-safety",
+      "category": "quality",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "rej-thyroid",
+      "category": "rejection",
+      "returned_ids": [
+        "7801cb5e-f614-4ba5-b1cf-190c1ec03290",
+        "b4aa502b-4c5f-476a-ba2e-abeeb2a07e71",
+        "d26c9396-6453-4e5b-b330-36bd209b2a13"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-asthma",
+      "category": "rejection",
+      "returned_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-fracture",
+      "category": "rejection",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-diabetes",
+      "category": "rejection",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-cad",
+      "category": "rejection",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+        "86a89913-374a-4a84-b520-da26d89e6d85"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-copd",
+      "category": "rejection",
+      "returned_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-kidney",
+      "category": "rejection",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-migraine",
+      "category": "rejection",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-gout",
+      "category": "rejection",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-pneumonia",
+      "category": "rejection",
+      "returned_ids": [
+        "7801cb5e-f614-4ba5-b1cf-190c1ec03290",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-lipid",
+      "category": "rejection",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-anticoag",
+      "category": "rejection",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-ct",
+      "category": "rejection",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-liver",
+      "category": "rejection",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-device",
+      "category": "rejection",
+      "returned_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-dose",
+      "category": "rejection",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-preg-drug",
+      "category": "rejection",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-child-bp",
+      "category": "rejection",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-surgery",
+      "category": "rejection",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-lab-diagnosis",
+      "category": "rejection",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-ignore",
+      "category": "rejection",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "21e48910-7c90-4578-8d24-42f23c9af3b3",
+        "f8cc7f9f-2a09-4879-a88a-83c438e40ace"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-prompt",
+      "category": "rejection",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "7801cb5e-f614-4ba5-b1cf-190c1ec03290",
+        "86a89913-374a-4a84-b520-da26d89e6d85"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-code",
+      "category": "rejection",
+      "returned_ids": [
+        "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "b787a6aa-559a-421b-a470-ff8c7096883a"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-mixed",
+      "category": "rejection",
+      "returned_ids": [
+        "804e02e8-026f-46fd-96f3-d61d3d3f5a75",
+        "f8cc7f9f-2a09-4879-a88a-83c438e40ace",
+        "f4647ec0-9e6e-4844-9df1-9d063158451f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-malformed",
+      "category": "rejection",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-all-patients",
+      "category": "rejection",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-brand",
+      "category": "rejection",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-ocr",
+      "category": "rejection",
+      "returned_ids": [
+        "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "86a89913-374a-4a84-b520-da26d89e6d85"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-secret",
+      "category": "rejection",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "rej-guarantee",
+      "category": "rejection",
+      "returned_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-1",
+      "category": "safety",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-2",
+      "category": "safety",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-3",
+      "category": "safety",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-4",
+      "category": "safety",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-5",
+      "category": "safety",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-6",
+      "category": "safety",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-7",
+      "category": "safety",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-8",
+      "category": "safety",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-9",
+      "category": "safety",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-patient-b-10",
+      "category": "safety",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-1",
+      "category": "safety",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-2",
+      "category": "safety",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-3",
+      "category": "safety",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "f4647ec0-9e6e-4844-9df1-9d063158451f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-4",
+      "category": "safety",
+      "returned_ids": [
+        "f4647ec0-9e6e-4844-9df1-9d063158451f",
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-5",
+      "category": "safety",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "f4647ec0-9e6e-4844-9df1-9d063158451f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-6",
+      "category": "safety",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "f4647ec0-9e6e-4844-9df1-9d063158451f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-7",
+      "category": "safety",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "f4647ec0-9e6e-4844-9df1-9d063158451f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-8",
+      "category": "safety",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-9",
+      "category": "safety",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "f4647ec0-9e6e-4844-9df1-9d063158451f"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    },
+    {
+      "case_id": "sec-v2-tenant-b-10",
+      "category": "safety",
+      "returned_ids": [
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "matched_groups": [],
+      "accepted_hit": false,
+      "first_accepted_rank": null,
+      "accepted_reciprocal_rank": 0.0
+    }
+  ]
+}

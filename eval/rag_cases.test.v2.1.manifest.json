@@ -1,0 +1,25 @@
+{
+  "dataset": "eval/rag_cases.test.v2.1.jsonl",
+  "revision_of": "eval/rag_cases.test.v2.jsonl",
+  "created_at": "2026-10-08",
+  "status": "frozen",
+  "case_count": 120,
+  "category_counts": {
+    "quality": 70,
+    "rejection": 30,
+    "safety": 20
+  },
+  "revised_case_count": 15,
+  "gold_evidence_groups": true,
+  "knowledge_snapshot": {
+    "public_index_docs": 30,
+    "private_index_docs": 2,
+    "public_source_count": 10,
+    "who_explicit_source_id": "be9ec2fe-797c-411b-a4cc-acead437bdc6",
+    "reviewer": "俞家俊"
+  },
+  "sha256": "ed33014ce05d20b8cf98eb915833183a8e9284691eb996d71be89b9a90c20e5b",
+  "notes": "Formal frozen v2.1 revision set based on frozen Test v2; original Test v2 is preserved. Equivalent evidence is represented by gold_evidence_groups; canonical gold_evidence_ids is retained only for legacy evaluators. A3-hybrid-rrf60 grouped quality: accepted Hit Rate=1.0000, MRR=0.8190, unmatched=0.",
+  "frozen_at": "2026-10-08",
+  "evaluation_artifact": "eval_out/test_v2_1_grouped_A3-hybrid-rrf60.json"
+}

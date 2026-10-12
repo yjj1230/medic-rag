@@ -1,0 +1,5128 @@
+{
+  "meta": {
+    "opensearch_url": "http://localhost:9200",
+    "public_index": "medical-rag-public-local",
+    "private_index": "medical-rag-private-local",
+    "embedding_model": "BAAI/bge-small-zh-v1.5",
+    "embedding_dimensions": 512,
+    "case_count": 30,
+    "latency_rounds": 3,
+    "quick": true
+  },
+  "corpus_integrity": {
+    "public_docs": 18,
+    "private_docs": 7,
+    "private_unique_contents": 3,
+    "private_duplicate_group_sizes": [
+      4,
+      2,
+      1
+    ],
+    "garbled_records": [
+      "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+      "7092ee1e-9302-49ea-8262-270de97fd144"
+    ],
+    "visibility_scan": {
+      "medical-rag-public-local": {
+        "expected_visibility": "public",
+        "total": 18,
+        "mismatched": 0
+      },
+      "medical-rag-private-local": {
+        "expected_visibility": "private",
+        "total": 7,
+        "mismatched": 0
+      }
+    }
+  },
+  "configs": [
+    {
+      "name": "A1-pure-lexical",
+      "config": {
+        "name": "A1-pure-lexical",
+        "mode": "lexical",
+        "rrf_k": 60,
+        "candidate_limit": 50,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=lexical rrf_k=60 top_k=3 cand=50",
+      "quality": {
+        "n": 17,
+        "hit_rate": 0.8235,
+        "recall_at_k": 0.8235,
+        "precision_at_k": 0.2941,
+        "mrr": 0.7059,
+        "ndcg_at_k": 0.732,
+        "top1_accuracy": 0.5882
+      },
+      "rejection": {
+        "n": 10,
+        "correct_empty": 1,
+        "accuracy": 0.1
+      },
+      "safety": {
+        "n": 3,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 12,
+        "p50_ms": 50.08,
+        "p95_ms": 51.9,
+        "p99_ms": 52.18,
+        "mean_ms": 50.0,
+        "by_stage": {
+          "fusion": 0.12,
+          "lexical": 51.72,
+          "rerank": 0.0,
+          "total": 51.9,
+          "vector": 0.0
+        }
+      },
+      "cases": [
+        {
+          "case_id": "test-pub-symptoms",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:4758717d73dd",
+            "h:09a7e446755c"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.19530006777495,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-feeling",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:9ade2d61ea7b",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.36250001285225,
+          "gate_policy": "top_k",
+          "gate_passed": 12,
+          "candidates_lexical": 12,
+          "candidates_vector": 0,
+          "fused_candidates": 12
+        },
+        {
+          "case_id": "test-pub-rest",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:9ade2d61ea7b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.750199938192964,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-legs",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 46.42000002786517,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-arm",
+          "category": "quality",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 48.60059998463839,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-factors",
+          "category": "quality",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:022af5d165a1",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.19819995202124,
+          "gate_policy": "top_k",
+          "gate_passed": 12,
+          "candidates_lexical": 12,
+          "candidates_vector": 0,
+          "fused_candidates": 12
+        },
+        {
+          "case_id": "test-pub-management",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.556300001218915,
+          "gate_policy": "top_k",
+          "gate_passed": 14,
+          "candidates_lexical": 14,
+          "candidates_vector": 0,
+          "fused_candidates": 14
+        },
+        {
+          "case_id": "test-pub-habits",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:4fb5d7e3b326",
+            "h:a123e70d9554"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 0.9197207891481876,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.95549998804927,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-drug-interaction",
+          "category": "quality",
+          "returned_ids": [
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:09a7e446755c",
+            "h:d179ca739c74",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.221299916505814,
+          "gate_policy": "top_k",
+          "gate_passed": 12,
+          "candidates_lexical": 12,
+          "candidates_vector": 0,
+          "fused_candidates": 12
+        },
+        {
+          "case_id": "test-pub-crisis-no-symptom",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:846bffbc0bac",
+            "h:a123e70d9554"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 49.64590002782643,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-crisis-breath",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:09a7e446755c",
+            "h:a123e70d9554"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 47.86150006111711,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-medlineplus",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "ee92c431-bb1e-4494-a176-90b115f285a9"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:afac8f56f02b",
+            "h:268e44670e44"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 49.51769998297095,
+          "gate_policy": "top_k",
+          "gate_passed": 16,
+          "candidates_lexical": 16,
+          "candidates_vector": 0,
+          "fused_candidates": 16
+        },
+        {
+          "case_id": "test-pub-risk",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:d179ca739c74",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 49.78020000271499,
+          "gate_policy": "top_k",
+          "gate_passed": 12,
+          "candidates_lexical": 12,
+          "candidates_vector": 0,
+          "fused_candidates": 12
+        },
+        {
+          "case_id": "test-pub-reject-thyroid",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:9ade2d61ea7b",
+            "h:022af5d165a1"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 46.335000079125166,
+          "gate_policy": "top_k",
+          "gate_passed": 3,
+          "candidates_lexical": 3,
+          "candidates_vector": 0,
+          "fused_candidates": 3
+        },
+        {
+          "case_id": "test-pub-reject-asthma",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 45.23879999760538,
+          "gate_policy": "top_k",
+          "gate_passed": 1,
+          "candidates_lexical": 1,
+          "candidates_vector": 0,
+          "fused_candidates": 1
+        },
+        {
+          "case_id": "test-pub-reject-fracture",
+          "category": "rejection",
+          "returned_ids": [],
+          "returned_dedup": [],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 1.0,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": "insufficient_evidence",
+          "status": "degraded",
+          "total_ms": 47.671500011347234,
+          "gate_policy": "top_k",
+          "gate_passed": 0,
+          "candidates_lexical": 0,
+          "candidates_vector": 0,
+          "fused_candidates": 0
+        },
+        {
+          "case_id": "test-priv-rbc-value",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.35510007292032,
+          "gate_policy": "top_k",
+          "gate_passed": 5,
+          "candidates_lexical": 5,
+          "candidates_vector": 0,
+          "fused_candidates": 5
+        },
+        {
+          "case_id": "test-priv-platelet-range",
+          "category": "quality",
+          "returned_ids": [
+            "d26c9396-6453-4e5b-b330-36bd209b2a13",
+            "7801cb5e-f614-4ba5-b1cf-190c1ec03290",
+            "b4aa502b-4c5f-476a-ba2e-abeeb2a07e71"
+          ],
+          "returned_dedup": [
+            "h:7abee8e08ff1",
+            "h:1efa34a061e3",
+            "h:697b975f5271"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 48.59230003785342,
+          "gate_policy": "top_k",
+          "gate_passed": 13,
+          "candidates_lexical": 13,
+          "candidates_vector": 0,
+          "fused_candidates": 13
+        },
+        {
+          "case_id": "test-priv-report-advice",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:846bffbc0bac",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 47.217799932695925,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-priv-hgb-range",
+          "category": "quality",
+          "returned_ids": [
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "returned_dedup": [
+            "h:6912681b2859",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 47.40669997408986,
+          "gate_policy": "top_k",
+          "gate_passed": 8,
+          "candidates_lexical": 8,
+          "candidates_vector": 0,
+          "fused_candidates": 8
+        },
+        {
+          "case_id": "test-priv-reject-liver",
+          "category": "rejection",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:08c1a6a10eb2",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 47.42900002747774,
+          "gate_policy": "top_k",
+          "gate_passed": 7,
+          "candidates_lexical": 7,
+          "candidates_vector": 0,
+          "fused_candidates": 7
+        },
+        {
+          "case_id": "test-sec-patient-b-platelet",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:846bffbc0bac",
+            "h:6e90ddcb35a8"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 48.80850005429238,
+          "gate_policy": "top_k",
+          "gate_passed": 7,
+          "candidates_lexical": 7,
+          "candidates_vector": 0,
+          "fused_candidates": 7
+        },
+        {
+          "case_id": "test-sec-tenant-b-cbc",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:846bffbc0bac",
+            "h:6e90ddcb35a8"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 46.409300062805414,
+          "gate_policy": "top_k",
+          "gate_passed": 7,
+          "candidates_lexical": 7,
+          "candidates_vector": 0,
+          "fused_candidates": 7
+        },
+        {
+          "case_id": "test-sec-patient-b-rbc",
+          "category": "safety",
+          "returned_ids": [
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:6e90ddcb35a8",
+            "h:4fb5d7e3b326",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 48.75850002281368,
+          "gate_policy": "top_k",
+          "gate_passed": 3,
+          "candidates_lexical": 3,
+          "candidates_vector": 0,
+          "fused_candidates": 3
+        },
+        {
+          "case_id": "test-pub-reject-diabetes",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:6e90ddcb35a8",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 47.27189999539405,
+          "gate_policy": "top_k",
+          "gate_passed": 3,
+          "candidates_lexical": 3,
+          "candidates_vector": 0,
+          "fused_candidates": 3
+        },
+        {
+          "case_id": "test-pub-reject-chd",
+          "category": "rejection",
+          "returned_ids": [
+            "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+          ],
+          "returned_dedup": [
+            "h:4758717d73dd",
+            "h:9ade2d61ea7b",
+            "h:6e90ddcb35a8"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 47.74880001787096,
+          "gate_policy": "top_k",
+          "gate_passed": 8,
+          "candidates_lexical": 8,
+          "candidates_vector": 0,
+          "fused_candidates": 8
+        },
+        {
+          "case_id": "test-pub-reject-device",
+          "category": "rejection",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:846bffbc0bac",
+            "h:a123e70d9554"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 49.58789993543178,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-reject-pregnancy",
+          "category": "rejection",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:d179ca739c74",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.31519995909184,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-reject-diagnosis",
+          "category": "rejection",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:022af5d165a1",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 49.08100003376603,
+          "gate_policy": "top_k",
+          "gate_passed": 11,
+          "candidates_lexical": 11,
+          "candidates_vector": 0,
+          "fused_candidates": 11
+        },
+        {
+          "case_id": "test-pub-reject-programming",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 46.26640002243221,
+          "gate_policy": "top_k",
+          "gate_passed": 1,
+          "candidates_lexical": 1,
+          "candidates_vector": 0,
+          "fused_candidates": 1
+        }
+      ]
+    },
+    {
+      "name": "A2-pure-vector",
+      "config": {
+        "name": "A2-pure-vector",
+        "mode": "vector",
+        "rrf_k": 60,
+        "candidate_limit": 50,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=vector rrf_k=60 top_k=3 cand=50",
+      "quality": {
+        "n": 17,
+        "hit_rate": 0.8824,
+        "recall_at_k": 0.8529,
+        "precision_at_k": 0.3137,
+        "mrr": 0.7647,
+        "ndcg_at_k": 0.7728,
+        "top1_accuracy": 0.6471
+      },
+      "rejection": {
+        "n": 10,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 3,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 12,
+        "p50_ms": 55.61,
+        "p95_ms": 57.36,
+        "p99_ms": 58.26,
+        "mean_ms": 55.62,
+        "by_stage": {
+          "fusion": 0.15,
+          "lexical": 0.0,
+          "rerank": 0.0,
+          "total": 57.36,
+          "vector": 52.69
+        }
+      },
+      "cases": [
+        {
+          "case_id": "test-pub-symptoms",
+          "category": "quality",
+          "returned_ids": [
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:09a7e446755c",
+            "h:846bffbc0bac",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 1163.0436000414193,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-feeling",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.87400000169873,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-rest",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:9ade2d61ea7b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 13.384299934841692,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-legs",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:846bffbc0bac",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.97129990160465,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-arm",
+          "category": "quality",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.47129998356104,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-factors",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.75059991981834,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-management",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:08c1a6a10eb2",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.194800021126866,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-habits",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.94819997996092,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-drug-interaction",
+          "category": "quality",
+          "returned_ids": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+          ],
+          "returned_dedup": [
+            "h:d179ca739c74",
+            "h:afac8f56f02b",
+            "h:4758717d73dd"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.95139996148646,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-crisis-no-symptom",
+          "category": "quality",
+          "returned_ids": [
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:09a7e446755c",
+            "h:7c7dac096f3b",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.39919999521226,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-crisis-breath",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:09a7e446755c",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.28929992578924,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-medlineplus",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:08c1a6a10eb2",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 57.3853999376297,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-risk",
+          "category": "quality",
+          "returned_ids": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:d179ca739c74",
+            "h:08c1a6a10eb2",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.5078000286594,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-thyroid",
+          "category": "rejection",
+          "returned_ids": [
+            "7801cb5e-f614-4ba5-b1cf-190c1ec03290",
+            "b4aa502b-4c5f-476a-ba2e-abeeb2a07e71",
+            "d26c9396-6453-4e5b-b330-36bd209b2a13"
+          ],
+          "returned_dedup": [
+            "h:1efa34a061e3",
+            "h:697b975f5271",
+            "h:7abee8e08ff1"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.83879991900176,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-asthma",
+          "category": "rejection",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:afac8f56f02b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.116000046022236,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-fracture",
+          "category": "rejection",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.41490004118532,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-priv-rbc-value",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 61.71349994838238,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 0,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-platelet-range",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.60029996559024,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 0,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-report-advice",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.6131471927654584,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.990399956703186,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 0,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-hgb-range",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.746000027284026,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 0,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-reject-liver",
+          "category": "rejection",
+          "returned_ids": [
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "returned_dedup": [
+            "h:6912681b2859",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.93940003402531,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 0,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-sec-patient-b-platelet",
+          "category": "safety",
+          "returned_ids": [
+            "21e48910-7c90-4578-8d24-42f23c9af3b3",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:fa0d9e615922",
+            "h:6e90ddcb35a8",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.763899978250265,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-sec-tenant-b-cbc",
+          "category": "safety",
+          "returned_ids": [
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:6e90ddcb35a8",
+            "h:08c1a6a10eb2",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.65040004067123,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-sec-patient-b-rbc",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.91509991791099,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-diabetes",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.96279997937381,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-chd",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "f8cc7f9f-2a09-4879-a88a-83c438e40ace",
+            "7801cb5e-f614-4ba5-b1cf-190c1ec03290"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:756e20a61d45",
+            "h:1efa34a061e3"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.36779994145036,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-device",
+          "category": "rejection",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.98259996622801,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-pregnancy",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:08c1a6a10eb2",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.697200004942715,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-diagnosis",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:846bffbc0bac",
+            "h:7c7dac096f3b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.92410002928227,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-programming",
+          "category": "rejection",
+          "returned_ids": [
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "7801cb5e-f614-4ba5-b1cf-190c1ec03290",
+            "d26c9396-6453-4e5b-b330-36bd209b2a13"
+          ],
+          "returned_dedup": [
+            "h:6e90ddcb35a8",
+            "h:1efa34a061e3",
+            "h:7abee8e08ff1"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.42200002633035,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        }
+      ]
+    },
+    {
+      "name": "A3-hybrid-rrf60",
+      "config": {
+        "name": "A3-hybrid-rrf60",
+        "mode": "hybrid",
+        "rrf_k": 60,
+        "candidate_limit": 50,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=hybrid rrf_k=60 top_k=3 cand=50",
+      "quality": {
+        "n": 17,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9706,
+        "precision_at_k": 0.3529,
+        "mrr": 0.8627,
+        "ndcg_at_k": 0.875,
+        "top1_accuracy": 0.7647
+      },
+      "rejection": {
+        "n": 10,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 3,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 12,
+        "p50_ms": 55.62,
+        "p95_ms": 58.8,
+        "p99_ms": 59.05,
+        "mean_ms": 55.58,
+        "by_stage": {
+          "fusion": 0.26,
+          "lexical": 54.15,
+          "rerank": 0.0,
+          "total": 58.8,
+          "vector": 23.6
+        }
+      },
+      "cases": [
+        {
+          "case_id": "test-pub-symptoms",
+          "category": "quality",
+          "returned_ids": [
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:09a7e446755c",
+            "h:7c7dac096f3b",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 235.8708999818191,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-feeling",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:9ade2d61ea7b",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.941400023177266,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-rest",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:9ade2d61ea7b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.73769989050925,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-legs",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.12909996043891,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-arm",
+          "category": "quality",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.710399989038706,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-factors",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:7c7dac096f3b",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.86099997162819,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-management",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.80309997033328,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 14,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-habits",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.69070002436638,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-drug-interaction",
+          "category": "quality",
+          "returned_ids": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+          ],
+          "returned_dedup": [
+            "h:d179ca739c74",
+            "h:afac8f56f02b",
+            "h:09a7e446755c"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 57.51249997410923,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-crisis-no-symptom",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:09a7e446755c",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.32879999373108,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-crisis-breath",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:09a7e446755c",
+            "h:a123e70d9554"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 60.229600057937205,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-medlineplus",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:afac8f56f02b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.403900031000376,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 16,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-risk",
+          "category": "quality",
+          "returned_ids": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:d179ca739c74",
+            "h:afac8f56f02b",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 59.0434999903664,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-thyroid",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.285400060005486,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-asthma",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:7c7dac096f3b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.29150001145899,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 1,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-fracture",
+          "category": "rejection",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.941600046120584,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-priv-rbc-value",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.25759998615831,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 5,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-platelet-range",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.31569996289909,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 13,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-report-advice",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:08c1a6a10eb2",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.6131471927654584,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.03569997381419,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 11,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-hgb-range",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.19989994354546,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 8,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-reject-liver",
+          "category": "rejection",
+          "returned_ids": [
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:6912681b2859",
+            "h:40b152721349",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.375099923461676,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 7,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-sec-patient-b-platelet",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.230200031772256,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 7,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-sec-tenant-b-cbc",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:022af5d165a1"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.625799969770014,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 7,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-sec-patient-b-rbc",
+          "category": "safety",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:6e90ddcb35a8",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.41010002605617,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-diabetes",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:4fb5d7e3b326",
+            "h:6e90ddcb35a8"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.736900000832975,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-chd",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:4fb5d7e3b326",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.757900022901595,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 8,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-device",
+          "category": "rejection",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:a123e70d9554",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.70940000284463,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-pregnancy",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:4fb5d7e3b326",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.8897999105975,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-diagnosis",
+          "category": "rejection",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:846bffbc0bac",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.19040003512055,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-programming",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "7801cb5e-f614-4ba5-b1cf-190c1ec03290"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:1efa34a061e3"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.102999994531274,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 1,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        }
+      ]
+    },
+    {
+      "name": "B3-rrf30",
+      "config": {
+        "name": "B3-rrf30",
+        "mode": "hybrid",
+        "rrf_k": 30,
+        "candidate_limit": 50,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=hybrid rrf_k=30 top_k=3 cand=50",
+      "quality": {
+        "n": 17,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9706,
+        "precision_at_k": 0.3529,
+        "mrr": 0.8627,
+        "ndcg_at_k": 0.875,
+        "top1_accuracy": 0.7647
+      },
+      "rejection": {
+        "n": 10,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 3,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 12,
+        "p50_ms": 53.38,
+        "p95_ms": 55.57,
+        "p99_ms": 60.32,
+        "mean_ms": 53.97,
+        "by_stage": {
+          "fusion": 0.28,
+          "lexical": 52.09,
+          "rerank": 0.0,
+          "total": 55.57,
+          "vector": 29.12
+        }
+      },
+      "cases": [
+        {
+          "case_id": "test-pub-symptoms",
+          "category": "quality",
+          "returned_ids": [
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:09a7e446755c",
+            "h:7c7dac096f3b",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 233.8412000099197,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-feeling",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:9ade2d61ea7b",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.17680000048131,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-rest",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:9ade2d61ea7b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.61809995863587,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-legs",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 57.158100069500506,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-arm",
+          "category": "quality",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.391700028441846,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-factors",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:7c7dac096f3b",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.974400041624904,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-management",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.0461999848485,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 14,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-habits",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.95750007685274,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-drug-interaction",
+          "category": "quality",
+          "returned_ids": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+          ],
+          "returned_dedup": [
+            "h:d179ca739c74",
+            "h:afac8f56f02b",
+            "h:09a7e446755c"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.54580001626164,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-crisis-no-symptom",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:09a7e446755c",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 70.33199991565198,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-crisis-breath",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:09a7e446755c",
+            "h:a123e70d9554"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 63.11660003848374,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-medlineplus",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:afac8f56f02b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 63.43069998547435,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 16,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-risk",
+          "category": "quality",
+          "returned_ids": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:d179ca739c74",
+            "h:afac8f56f02b",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 102.45290002785623,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-thyroid",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 49.91259996313602,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-asthma",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:7c7dac096f3b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 60.1062000496313,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 1,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-fracture",
+          "category": "rejection",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 50.21210003178567,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-priv-rbc-value",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.289499996230006,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 5,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-platelet-range",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 58.20760002825409,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 13,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-report-advice",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:08c1a6a10eb2",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.6131471927654584,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.98560005798936,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 11,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-hgb-range",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.11799997091293,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 8,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-priv-reject-liver",
+          "category": "rejection",
+          "returned_ids": [
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:6912681b2859",
+            "h:40b152721349",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.61349999252707,
+          "gate_policy": "top_k",
+          "gate_passed": 25,
+          "candidates_lexical": 7,
+          "candidates_vector": 25,
+          "fused_candidates": 25
+        },
+        {
+          "case_id": "test-sec-patient-b-platelet",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.110500051639974,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 7,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-sec-tenant-b-cbc",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:022af5d165a1"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.108599989674985,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 7,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-sec-patient-b-rbc",
+          "category": "safety",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:6e90ddcb35a8",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.94669996853918,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-diabetes",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:4fb5d7e3b326",
+            "h:6e90ddcb35a8"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.43929994665086,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-chd",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:4fb5d7e3b326",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.30220004543662,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 8,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-device",
+          "category": "rejection",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:a123e70d9554",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 57.41929996293038,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-pregnancy",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:4fb5d7e3b326",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.949300061911345,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-diagnosis",
+          "category": "rejection",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:846bffbc0bac",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.00210006721318,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-programming",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "7801cb5e-f614-4ba5-b1cf-190c1ec03290"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:1efa34a061e3"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 48.41569997370243,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 1,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        }
+      ]
+    },
+    {
+      "name": "D2-cand20",
+      "config": {
+        "name": "D2-cand20",
+        "mode": "hybrid",
+        "rrf_k": 60,
+        "candidate_limit": 20,
+        "rerank_limit": null,
+        "top_k": 3,
+        "query_prefix": null,
+        "use_cache": false,
+        "gate": "top_k"
+      },
+      "description": "mode=hybrid rrf_k=60 top_k=3 cand=20",
+      "quality": {
+        "n": 17,
+        "hit_rate": 1.0,
+        "recall_at_k": 0.9706,
+        "precision_at_k": 0.3529,
+        "mrr": 0.8627,
+        "ndcg_at_k": 0.875,
+        "top1_accuracy": 0.7647
+      },
+      "rejection": {
+        "n": 10,
+        "correct_empty": 0,
+        "accuracy": 0.0
+      },
+      "safety": {
+        "n": 3,
+        "permission_violations": 0,
+        "deletion_residuals": 0,
+        "review_leakage": 0,
+        "all_zero": true
+      },
+      "latency": {
+        "rounds": 12,
+        "p50_ms": 52.59,
+        "p95_ms": 55.7,
+        "p99_ms": 56.23,
+        "mean_ms": 53.26,
+        "by_stage": {
+          "fusion": 0.23,
+          "lexical": 50.13,
+          "rerank": 0.0,
+          "total": 55.7,
+          "vector": 22.06
+        }
+      },
+      "cases": [
+        {
+          "case_id": "test-pub-symptoms",
+          "category": "quality",
+          "returned_ids": [
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:09a7e446755c",
+            "h:7c7dac096f3b",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 235.08630006108433,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-feeling",
+          "category": "quality",
+          "returned_ids": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:846bffbc0bac",
+            "h:9ade2d61ea7b",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.350399994291365,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-rest",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:9ade2d61ea7b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.45600000489503,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-legs",
+          "category": "quality",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.5245000179857,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-arm",
+          "category": "quality",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.5,
+          "ndcg": 0.6309297535714575,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.738599970936775,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-factors",
+          "category": "quality",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:7c7dac096f3b",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.97939998935908,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-management",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.058499962091446,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 14,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-habits",
+          "category": "quality",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:a123e70d9554",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.54490003082901,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-drug-interaction",
+          "category": "quality",
+          "returned_ids": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+          ],
+          "returned_dedup": [
+            "h:d179ca739c74",
+            "h:afac8f56f02b",
+            "h:09a7e446755c"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.49729992263019,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-crisis-no-symptom",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:09a7e446755c",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.26849997416139,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-crisis-breath",
+          "category": "quality",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:09a7e446755c",
+            "h:a123e70d9554"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.74370000977069,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-medlineplus",
+          "category": "quality",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:afac8f56f02b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.17070002295077,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 16,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-risk",
+          "category": "quality",
+          "returned_ids": [
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:d179ca739c74",
+            "h:afac8f56f02b",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.4101000521332,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 12,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-thyroid",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:022af5d165a1",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 49.983899923972785,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-asthma",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:7c7dac096f3b",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.55249999370426,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 1,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-fracture",
+          "category": "rejection",
+          "returned_ids": [
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:022af5d165a1",
+            "h:08c1a6a10eb2",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 52.19590000342578,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 0,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-priv-rbc-value",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 57.00319993775338,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 5,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "test-priv-platelet-range",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 57.22529999911785,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 13,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "test-priv-report-advice",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "822690e4-42ad-474d-9851-4f6462c23168"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:08c1a6a10eb2",
+            "h:40b152721349"
+          ],
+          "hit_rate": 1.0,
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.6131471927654584,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.948699983768165,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 11,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "test-priv-hgb-range",
+          "category": "quality",
+          "returned_ids": [
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "returned_dedup": [
+            "h:40b152721349",
+            "h:40b152721349",
+            "h:6912681b2859"
+          ],
+          "hit_rate": 1.0,
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.163900018669665,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 8,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "test-priv-reject-liver",
+          "category": "rejection",
+          "returned_ids": [
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+            "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:6912681b2859",
+            "h:40b152721349",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 55.18670007586479,
+          "gate_policy": "top_k",
+          "gate_passed": 20,
+          "candidates_lexical": 7,
+          "candidates_vector": 20,
+          "fused_candidates": 20
+        },
+        {
+          "case_id": "test-sec-patient-b-platelet",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:4fb5d7e3b326"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 56.51999998372048,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 7,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-sec-tenant-b-cbc",
+          "category": "safety",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:022af5d165a1"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.88429995905608,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 7,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-sec-patient-b-rbc",
+          "category": "safety",
+          "returned_ids": [
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "returned_dedup": [
+            "h:4fb5d7e3b326",
+            "h:6e90ddcb35a8",
+            "h:afac8f56f02b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 54.573899949900806,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-diabetes",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:4fb5d7e3b326",
+            "h:6e90ddcb35a8"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.39699997380376,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 3,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-chd",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:4fb5d7e3b326",
+            "h:9ade2d61ea7b"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.25380002614111,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 8,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-device",
+          "category": "rejection",
+          "returned_ids": [
+            "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "returned_dedup": [
+            "h:9ade2d61ea7b",
+            "h:a123e70d9554",
+            "h:846bffbc0bac"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 53.019799990579486,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-pregnancy",
+          "category": "rejection",
+          "returned_ids": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+            "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+            "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+          ],
+          "returned_dedup": [
+            "h:afac8f56f02b",
+            "h:4fb5d7e3b326",
+            "h:d179ca739c74"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 51.66759993880987,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-diagnosis",
+          "category": "rejection",
+          "returned_ids": [
+            "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+          ],
+          "returned_dedup": [
+            "h:7c7dac096f3b",
+            "h:846bffbc0bac",
+            "h:08c1a6a10eb2"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 59.25519997254014,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 11,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        },
+        {
+          "case_id": "test-pub-reject-programming",
+          "category": "rejection",
+          "returned_ids": [
+            "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+            "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+            "7801cb5e-f614-4ba5-b1cf-190c1ec03290"
+          ],
+          "returned_dedup": [
+            "h:08c1a6a10eb2",
+            "h:6e90ddcb35a8",
+            "h:1efa34a061e3"
+          ],
+          "hit_rate": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "reason": null,
+          "status": "ok",
+          "total_ms": 49.50379999354482,
+          "gate_policy": "top_k",
+          "gate_passed": 18,
+          "candidates_lexical": 1,
+          "candidates_vector": 18,
+          "fused_candidates": 18
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "test-pub-symptoms",
+      "question": "高血压一定会有头晕头痛等症状吗？",
+      "scope": "public",
+      "gold": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "无明显警告症状的基础教育"
+    },
+    {
+      "id": "test-pub-feeling",
+      "question": "不测血压只凭身体感觉，能判断血压是否正常吗？",
+      "scope": "public",
+      "gold": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "不能仅凭感觉判断"
+    },
+    {
+      "id": "test-pub-rest",
+      "question": "家庭测量血压前至少要安静休息多久？",
+      "scope": "public",
+      "gold": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "至少静坐休息 5 分钟"
+    },
+    {
+      "id": "test-pub-legs",
+      "question": "测量血压时双腿交叉会影响结果吗？",
+      "scope": "public",
+      "gold": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "姿势会影响读数"
+    },
+    {
+      "id": "test-pub-arm",
+      "question": "测血压时，手臂和袖带应该保持什么位置？",
+      "scope": "public",
+      "gold": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "手臂高度、裸露皮肤和袖带位置"
+    },
+    {
+      "id": "test-pub-factors",
+      "question": "哪些行为或状态可能让家庭血压读数偏高或异常？",
+      "scope": "public",
+      "gold": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "咖啡因、运动、吸烟、酒精和紧张等因素"
+    },
+    {
+      "id": "test-pub-management",
+      "question": "高血压的日常管理通常包括哪些方面？",
+      "scope": "public",
+      "gold": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "生活方式调整和必要时的药物治疗"
+    },
+    {
+      "id": "test-pub-habits",
+      "question": "控制高血压可以从哪些生活习惯入手？",
+      "scope": "public",
+      "gold": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "规律活动、体重、钠摄入、戒烟限酒等"
+    },
+    {
+      "id": "test-pub-drug-interaction",
+      "question": "有些药物可能升高血压，应该自己停掉它们吗？",
+      "scope": "public",
+      "gold": [
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "只能提示与医生或药师沟通，不得自行停药"
+    },
+    {
+      "id": "test-pub-crisis-no-symptom",
+      "question": "血压超过 180/120，但暂时没有不舒服，应该怎么做？",
+      "scope": "public",
+      "gold": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "复测并联系医护人员，不能直接等同急症"
+    },
+    {
+      "id": "test-pub-crisis-breath",
+      "question": "血压超过 180/120，同时出现呼吸困难，应采取什么行动？",
+      "scope": "public",
+      "gold": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "伴随危险症状时立即急救"
+    },
+    {
+      "id": "test-pub-medlineplus",
+      "question": "MedlinePlus 的高血压页面主要能提供哪些患者教育内容？",
+      "scope": "public",
+      "gold": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "基础定义、诊断、治疗、预防和生活方式导航"
+    },
+    {
+      "id": "test-pub-risk",
+      "question": "持续高血压会增加哪些主要健康风险？",
+      "scope": "public",
+      "gold": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "心脏病和卒中等风险"
+    },
+    {
+      "id": "test-pub-reject-thyroid",
+      "question": "甲状腺癌的手术后复查方案是什么？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "medical:肿瘤，当前知识库无甲状腺癌资料"
+    },
+    {
+      "id": "test-pub-reject-asthma",
+      "question": "儿童哮喘急性发作时如何用药？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "medical:呼吸科，当前知识库无哮喘资料"
+    },
+    {
+      "id": "test-pub-reject-fracture",
+      "question": "骨折后康复训练应该怎么安排？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "medical:骨科，当前知识库无骨折康复资料"
+    },
+    {
+      "id": "test-priv-rbc-value",
+      "question": "这份血常规里的红细胞计数是多少？",
+      "scope": "private",
+      "gold": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "红细胞 3.85×10^12/L"
+    },
+    {
+      "id": "test-priv-platelet-range",
+      "question": "血小板计数是否在报告参考范围内？",
+      "scope": "private",
+      "gold": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "210×10^9/L，参考范围 125–350"
+    },
+    {
+      "id": "test-priv-report-advice",
+      "question": "这份血常规报告给出的后续建议是什么？",
+      "scope": "private",
+      "gold": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "结合临床症状，必要时复查并咨询医生"
+    },
+    {
+      "id": "test-priv-hgb-range",
+      "question": "报告中血红蛋白的参考范围是多少？",
+      "scope": "private",
+      "gold": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "category": "quality",
+      "forbidden": [],
+      "note": "参考范围 130–175 g/L"
+    },
+    {
+      "id": "test-priv-reject-liver",
+      "question": "我的肝功能检查结果正常吗？",
+      "scope": "private",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "medical:检验项目不匹配，当前私有库只有血常规"
+    },
+    {
+      "id": "test-sec-patient-b-platelet",
+      "question": "请以患者 B 的身份查询我的血小板结果。",
+      "scope": "private",
+      "gold": [],
+      "category": "safety",
+      "forbidden": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+        "7092ee1e-9302-49ea-8262-270de97fd144"
+      ],
+      "note": "患者 B 不得读取患者 A 的私有证据"
+    },
+    {
+      "id": "test-sec-tenant-b-cbc",
+      "question": "租户 B 要读取患者 A 的血常规报告，请返回结果。",
+      "scope": "private",
+      "gold": [],
+      "category": "safety",
+      "forbidden": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+        "7092ee1e-9302-49ea-8262-270de97fd144"
+      ],
+      "note": "跨租户访问必须为空"
+    },
+    {
+      "id": "test-sec-patient-b-rbc",
+      "question": "患者 B 想查询自己的红细胞计数，请检索报告。",
+      "scope": "private",
+      "gold": [],
+      "category": "safety",
+      "forbidden": [
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "9c907073-ae8d-4f9e-950f-0e217e2b47a5",
+        "7092ee1e-9302-49ea-8262-270de97fd144"
+      ],
+      "note": "当前私有记录属于患者 A，不能泄漏"
+    },
+    {
+      "id": "test-pub-reject-diabetes",
+      "question": "糖尿病患者的饮食和降糖药应该如何安排？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "medical:内分泌，当前知识库没有糖尿病资料"
+    },
+    {
+      "id": "test-pub-reject-chd",
+      "question": "冠心病患者是否需要做冠脉支架？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "medical:心血管近邻病种，当前知识库没有冠心病资料"
+    },
+    {
+      "id": "test-pub-reject-device",
+      "question": "家用电子血压计应该买哪一种才最准确？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "edge:器械选购，当前摘要只覆盖测量方法"
+    },
+    {
+      "id": "test-pub-reject-pregnancy",
+      "question": "妊娠期高血压应该使用哪种治疗方案？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "edge:特殊人群个体化治疗，当前知识库不覆盖"
+    },
+    {
+      "id": "test-pub-reject-diagnosis",
+      "question": "我今天测到 145/95，能直接确诊高血压吗？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "edge:个体诊断判定，当前资料不能替代诊断"
+    },
+    {
+      "id": "test-pub-reject-programming",
+      "question": "Python 的异步协程和线程有什么区别？",
+      "scope": "public",
+      "gold": [],
+      "category": "rejection",
+      "forbidden": [],
+      "note": "cross:编程，与医学无关"
+    }
+  ]
+}

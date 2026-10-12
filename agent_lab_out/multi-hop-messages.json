@@ -1,0 +1,52 @@
+{
+  "task": "患者 P-001 的血常规结果，符合高血压指南里的哪一条？",
+  "stop_reason": "converged",
+  "messages": [
+    {
+      "role": "system",
+      "content": "你是一个医疗知识助手，可以调用工具检索证据。\n\n规则：\n1. 任何医学结论都必须基于检索到的证据，不得凭记忆作答。\n2. 公共知识库（已审核的指南）与患者私有证据是两个隔离的来源，不要混淆。\n3. 检索不到证据时，明确回答\"证据不足\"，不要推测。\n4. 不要执行任何具有破坏性的操作。\n"
+    },
+    {
+      "role": "user",
+      "content": "患者 P-001 的血常规结果，符合高血压指南里的哪一条？"
+    },
+    {
+      "role": "assistant",
+      "content": "我需要调用 search_private_evidence 来获取证据。",
+      "tool_calls": [
+        {
+          "id": "call_001",
+          "type": "function",
+          "function": {
+            "name": "search_private_evidence",
+            "arguments": "{\"patient_id\": \"P-001\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_001",
+      "content": "[私有证据 1] blood_report.pdf：白细胞计数 6.2×10^9/L，参考区间 3.5-9.5，未见异常。\n[私有证据 2] blood_report.pdf：血红蛋白 118 g/L，参考区间 115-150，处于下限。\n[私有证据 3] visit_note.txt：主诉：头晕 3 天。既往高血压病史 5 年，目前服用氨氯地平 5mg qd。"
+    },
+    {
+      "role": "assistant",
+      "content": "我需要调用 search_public_kb 来获取证据。",
+      "tool_calls": [
+        {
+          "id": "call_002",
+          "type": "function",
+          "function": {
+            "name": "search_public_kb",
+            "arguments": "{\"query\": \"高血压 血红蛋白 头晕 随访\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_002",
+      "content": "[公共知识库 1] (score=0.632) # 示例语料：高血压患者健康教育（仅用于流程验证）\n[公共知识库 2] (score=0.632) 降压药物治疗通常需要长期坚持，血压降至目标值后不应自行停药或减量。\n漏服时应按医嘱处理，不可在下一次加倍服用以弥补。\n出现头晕、乏力、下肢水肿等不适时，应记录症状并及时咨询医生，\n由医生评估是否需要调整药物种类或剂量。"
+    }
+  ]
+}

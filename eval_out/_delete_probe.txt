@@ -1,0 +1,4 @@
+﻿DELETE #1: 500 Internal Server Error
+DELETE #2: 500 Internal Server Error
+DB documents: [('b1e377910d2145b89b17aa4662b3bde9', 'READY', None)]
+index residual: 1

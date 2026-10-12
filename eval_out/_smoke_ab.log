@@ -1,0 +1,30 @@
+﻿OpenSearch: 2.18.0
+鐧诲綍 OK锛堟偅鑰?13800138000锛?
+
+[B-01] 搴撳唴闂闂瓟锛堢湡瀹炴ā鍨嬶紝绾?100s锛?..
+  -> http=200 status=answered citations=7 52.5s passed=True
+[B-04] diagnostics 缂哄け瀛楁=['embedding_degraded'] gate=cosine_absolute/l2_inv passed=False
+
+[A-01] 鐢熸垚骞朵笂浼犱腑鏂?PDF...
+  -> http=201 document_id=b1e37791-0d21-45b8-9b17-aa4662b3bde9 passed=True
+[A-02] 绛夊緟瑙ｆ瀽瀹屾垚锛堣疆璇㈡枃妗ｇ姸鎬侊紝鏈€闀?240s锛?..
+  瑙ｆ瀽鍚庣姸鎬? {'id': 'b1e37791-0d21-45b8-9b17-aa4662b3bde9', 'filename': 'e2e_smoke_doc.pdf', 'content_type': 'application/pdf', 'status': 'ready', 'quality_status': 'READY', 'failure_reason_code': None, 'failure_reason_label': None}
+  -> review http=404 绱㈠紩鍧楁暟=1 passed=False
+
+[B-02] 瀹氬悜妫€绱㈤棶绛旓紙鐪熷疄妯″瀷锛岀害 100s锛?..
+  -> http=200 status=answered citations=1 17.9s
+
+[A-03] 鍒犻櫎鏂囨。骞舵鏌ユ畫鐣?..
+  -> http=500 绱㈠紩娈嬬暀=1 passed=False
+
+================================================================================
+鎵ц 6 渚嬶細PASS 3 / FAIL 3锛沚locked 1 渚?['B-03']
+  [PASS] B-01
+  [FAIL] B-04
+  [BLOCKED] B-03
+  [PASS] A-01
+  [FAIL] A-02
+  [PASS] B-02
+  [FAIL] A-03
+鎶ュ憡锛欳:\Users\lyx\Desktop\RAG\eval_out\e2e_smoke_ab.json
+exit=2

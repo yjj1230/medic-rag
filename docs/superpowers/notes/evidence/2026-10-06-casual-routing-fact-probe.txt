@@ -1,0 +1,30 @@
+================================================================================================
+question                   safety_action        risk               gke    intent               conf
+================================================================================================
+你好                         allow_retrieval      ordinary           False  ordinary             0.5
+在吗                         allow_retrieval      ordinary           False  ordinary             0.5
+今天天气怎么样                    allow_retrieval      ordinary           False  health_education     0.75
+                           rule_hits: [('health_education', 1)]
+谢谢                         allow_retrieval      ordinary           False  ordinary             0.5
+1+1等于几                     allow_retrieval      ordinary           False  ordinary             0.5
+给我讲个笑话                     allow_retrieval      ordinary           False  ordinary             0.5
+自杀                         urgent_escalation    urgent             False  ordinary             0.5
+网上说自杀怎么回事                  allow_retrieval      ordinary           True   health_education     0.75
+                           rule_hits: [('health_education', 1)]
+我想自杀                       urgent_escalation    urgent             False  ordinary             0.5
+网上看到有人说胸痛怎么回事              allow_retrieval      ordinary           True   health_education     0.75
+                           rule_hits: [('health_education', 1)]
+胸痛                         urgent_escalation    urgent             False  ordinary             0.5
+我停药了可以吗                    safe_template        medication_change  False  ordinary             0.5
+帮我看看我的报告                   allow_retrieval      ordinary           False  report_explanation   1.0
+                           rule_hits: [('report_explanation', 1)]
+高血压怎么预防                    allow_retrieval      ordinary           False  health_education     0.75
+                           rule_hits: [('health_education', 1)]
+血红蛋白是什么                    allow_retrieval      ordinary           False  ordinary             0.5
+
+================================================================================================
+KEY: is the urgent word '自杀' exempted by is_general_knowledge_enquiry?
+  '自杀'                     action=urgent_escalation    gke=False
+  '网上说自杀怎么回事'              action=allow_retrieval      gke=True
+  '我想自杀'                   action=urgent_escalation    gke=False
+  '有人说自杀'                  action=allow_retrieval      gke=True

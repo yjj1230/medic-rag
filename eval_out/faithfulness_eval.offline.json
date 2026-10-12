@@ -1,0 +1,753 @@
+{
+  "generated_at": "2026-10-07T15:15:53",
+  "source": "C:\\Users\\lyx\\Desktop\\RAG\\eval_out\\faithfulness_answers.json",
+  "judge": {
+    "model": "glm-5.3-flash",
+    "prompt_version": "faithfulness-judge-v1",
+    "enabled": false
+  },
+  "calibration": {
+    "path": "C:\\Users\\lyx\\Desktop\\RAG\\config\\eval\\faithfulness_calibration-latest.json",
+    "loaded": false,
+    "detail": null
+  },
+  "counts": {
+    "answers": 20,
+    "refused": 12,
+    "answers_scored": 8,
+    "claims_total": 66,
+    "claims_effective": 66,
+    "supported": 4,
+    "abstained": 62,
+    "errored": 0,
+    "unbound": 0,
+    "contradicted": 0,
+    "rule_contradicted": 0,
+    "llm_contradicted": 0,
+    "rule_judgable": 4
+  },
+  "intervals": {
+    "answer_faithfulness_t": {
+      "low": 0.0,
+      "high": 0.08480863872031986,
+      "n": 8,
+      "method": "t",
+      "half_width": 0.04581407350292856
+    },
+    "claim_faithfulness_wilson": {
+      "low": 0.02381861466682568,
+      "high": 0.14572908767172355,
+      "n": 66,
+      "method": "wilson"
+    },
+    "contradiction_wilson": {
+      "low": 0.0,
+      "high": 0.05500255783352154,
+      "n": 66
+    },
+    "abstention_wilson": {
+      "low": 0.8542709123282765,
+      "high": 0.9761813853331743,
+      "n": 66
+    }
+  },
+  "by_kind": {
+    "applicability": {
+      "n": 9,
+      "supported": 0,
+      "faithfulness": 0.0
+    },
+    "causal": {
+      "n": 4,
+      "supported": 0,
+      "faithfulness": 0.0
+    },
+    "numeric": {
+      "n": 4,
+      "supported": 4,
+      "faithfulness": 1.0
+    },
+    "other": {
+      "n": 46,
+      "supported": 0,
+      "faithfulness": 0.0
+    },
+    "trend": {
+      "n": 3,
+      "supported": 0,
+      "faithfulness": 0.0
+    }
+  },
+  "zero_tolerance": {
+    "rule_contradicted": 0,
+    "llm_contradicted": 0,
+    "state": "样本不足",
+    "note": "D-4：零容忍仅取 judge==rule 的 contradicted；llm 判定的只进 Wilson 区间"
+  },
+  "verdict_state": "undecidable",
+  "verdict_reasons": [
+    "n_answers=8 < 30（n<30 只报区间，不判定达标）",
+    "弃权率 93.9% > 25%",
+    "语料前提未满足：P0-2 真实医学语料未接通（公共 5 chunk 同源 / 私有 7 条残留）",
+    "语料前提未满足：P0-4 gold_evidence_ids 现为真实索引 ID 但语料贫瘠，评估锚点代表性不足",
+    "零容忍空转防护：规则可判 numeric 样本 4 < 10 → 记「样本不足」，不记 pass"
+  ],
+  "per_answer": [
+    {
+      "answer_id": "priv-anemia",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "priv-anemia-report",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "priv-hemoglobin",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "priv-hemoglobin-range",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "priv-platelet",
+      "status": "answered",
+      "faithfulness": 0.0,
+      "total": 4,
+      "supported": 0,
+      "abstained": 4,
+      "errored": 0,
+      "unbound": 0,
+      "contradicted": 0,
+      "abstention_rate": 1.0
+    },
+    {
+      "answer_id": "priv-red-cell",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "priv-wbc-normal",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "status": "answered",
+      "faithfulness": 0.0,
+      "total": 7,
+      "supported": 0,
+      "abstained": 7,
+      "errored": 0,
+      "unbound": 0,
+      "contradicted": 0,
+      "abstention_rate": 1.0
+    },
+    {
+      "answer_id": "pub-emergency-signs",
+      "status": "answered",
+      "faithfulness": 0.0,
+      "total": 4,
+      "supported": 0,
+      "abstained": 4,
+      "errored": 0,
+      "unbound": 0,
+      "contradicted": 0,
+      "abstention_rate": 1.0
+    },
+    {
+      "answer_id": "pub-exercise",
+      "status": "answered",
+      "faithfulness": 0.0,
+      "total": 5,
+      "supported": 0,
+      "abstained": 5,
+      "errored": 0,
+      "unbound": 0,
+      "contradicted": 0,
+      "abstention_rate": 1.0
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "status": "answered",
+      "faithfulness": 0.1,
+      "total": 10,
+      "supported": 1,
+      "abstained": 9,
+      "errored": 0,
+      "unbound": 0,
+      "contradicted": 0,
+      "abstention_rate": 0.9
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "status": "answered",
+      "faithfulness": 0.125,
+      "total": 8,
+      "supported": 1,
+      "abstained": 7,
+      "errored": 0,
+      "unbound": 0,
+      "contradicted": 0,
+      "abstention_rate": 0.875
+    },
+    {
+      "answer_id": "pub-home-bp-value",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "status": "answered",
+      "faithfulness": 0.08695652173913043,
+      "total": 23,
+      "supported": 2,
+      "abstained": 21,
+      "errored": 0,
+      "unbound": 0,
+      "contradicted": 0,
+      "abstention_rate": 0.9130434782608695
+    },
+    {
+      "answer_id": "pub-meds-regular",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "pub-missed-dose",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "pub-salt-limit",
+      "status": "answered",
+      "faithfulness": 0.0,
+      "total": 5,
+      "supported": 0,
+      "abstained": 5,
+      "errored": 0,
+      "unbound": 0,
+      "contradicted": 0,
+      "abstention_rate": 1.0
+    },
+    {
+      "answer_id": "pub-salt-why",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "pub-stop-meds",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    },
+    {
+      "answer_id": "pub-weight-loss",
+      "status": "degraded",
+      "faithfulness": null,
+      "total": 0,
+      "supported": 0,
+      "note": "非 answered → 计入拒答统计，不进忠实度聚合"
+    }
+  ],
+  "claims": [
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s2c0",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s3c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s4c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s6c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s7c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s7c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s9c0",
+      "kind": "trend",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s9c1",
+      "kind": "numeric",
+      "code": "entailed",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s13c0",
+      "kind": "causal",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-method",
+      "claim_id": "s13c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "claim_id": "s1c0",
+      "kind": "numeric",
+      "code": "entailed",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "claim_id": "s1c1",
+      "kind": "trend",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "claim_id": "s3c0",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "claim_id": "s3c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "claim_id": "s4c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "claim_id": "s4c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "claim_id": "s5c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-home-bp-target",
+      "claim_id": "s5c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-salt-limit",
+      "claim_id": "s0c0",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-salt-limit",
+      "claim_id": "s1c0",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-salt-limit",
+      "claim_id": "s2c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-salt-limit",
+      "claim_id": "s2c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-salt-limit",
+      "claim_id": "s2c2",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-exercise",
+      "claim_id": "s0c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-exercise",
+      "claim_id": "s0c1",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-exercise",
+      "claim_id": "s1c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-exercise",
+      "claim_id": "s1c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-exercise",
+      "claim_id": "s1c2",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-signs",
+      "claim_id": "s2c0",
+      "kind": "causal",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-signs",
+      "claim_id": "s2c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-signs",
+      "claim_id": "s9c0",
+      "kind": "trend",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-signs",
+      "claim_id": "s9c1",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s3c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s4c0",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s4c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s5c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s5c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s7c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s8c0",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s8c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s9c0",
+      "kind": "numeric",
+      "code": "entailed",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s9c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s11c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s13c0",
+      "kind": "applicability",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s14c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s14c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s15c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s15c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s16c0",
+      "kind": "numeric",
+      "code": "entailed",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s18c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s18c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s18c2",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s18c3",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s22c0",
+      "kind": "causal",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-lifestyle-all",
+      "claim_id": "s22c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "priv-platelet",
+      "claim_id": "s0c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "priv-platelet",
+      "claim_id": "s0c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "priv-platelet",
+      "claim_id": "s1c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "priv-platelet",
+      "claim_id": "s1c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "claim_id": "s2c0",
+      "kind": "causal",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "claim_id": "s2c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "claim_id": "s4c0",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "claim_id": "s4c1",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "claim_id": "s4c2",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "claim_id": "s4c3",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    },
+    {
+      "answer_id": "pub-emergency-act",
+      "claim_id": "s4c4",
+      "kind": "other",
+      "code": "insufficient",
+      "judge": "rule"
+    }
+  ]
+}

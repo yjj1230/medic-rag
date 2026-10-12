@@ -1,0 +1,1 @@
+﻿redis6380=open minio9000=open

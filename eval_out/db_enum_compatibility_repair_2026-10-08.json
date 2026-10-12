@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-10-08T09:09:24.187943+00:00",
+  "database": "medical_rag.db",
+  "backup": "backups\\medical_rag.db.pre_enum_normalization-2026-10-08",
+  "reason": "Normalize local e2e cleanup tombstones to SQLAlchemy Enum member-name storage so ORM reconciliation can read them.",
+  "before": {
+    "documents": [
+      {
+        "id": "b1e377910d2145b89b17aa4662b3bde9",
+        "status": "deleted",
+        "deleted_at": "2026-10-08 05:53:11"
+      },
+      {
+        "id": "10311239e84546728ca2ce6d1109e465",
+        "status": "deleted",
+        "deleted_at": "2026-10-08 06:11:45"
+      }
+    ],
+    "document_versions": [
+      {
+        "id": "d088293274df459baa53aee9fcc74425",
+        "status": "deleted",
+        "deleted_at": "2026-10-08 05:53:11"
+      },
+      {
+        "id": "d8c474e310cc4c5daff91593e6d6bb6b",
+        "status": "deleted",
+        "deleted_at": "2026-10-08 06:11:45"
+      }
+    ]
+  },
+  "after": {
+    "documents": [
+      {
+        "id": "b1e377910d2145b89b17aa4662b3bde9",
+        "status": "DELETED",
+        "deleted_at": "2026-10-08 05:53:11"
+      },
+      {
+        "id": "10311239e84546728ca2ce6d1109e465",
+        "status": "DELETED",
+        "deleted_at": "2026-10-08 06:11:45"
+      }
+    ],
+    "document_versions": [
+      {
+        "id": "d088293274df459baa53aee9fcc74425",
+        "status": "DELETED",
+        "deleted_at": "2026-10-08 05:53:11"
+      },
+      {
+        "id": "d8c474e310cc4c5daff91593e6d6bb6b",
+        "status": "DELETED",
+        "deleted_at": "2026-10-08 06:11:45"
+      }
+    ]
+  },
+  "rows_changed": 4,
+  "data_resurrection": false,
+  "note": "Only status string casing changed; deleted_at timestamps and document contents were not changed."
+}

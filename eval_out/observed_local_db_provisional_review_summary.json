@@ -1,0 +1,15 @@
+{
+  "records": 27,
+  "provisional_route_counts": {
+    "rag": 24,
+    "clarify": 2,
+    "rag_with_caveat": 1
+  },
+  "provisional_answerability_counts": {
+    "answerable": 24,
+    "partially_answerable": 3
+  },
+  "medical_review_required": 8,
+  "final_labels": false,
+  "note": "These are evidence-based provisional labels generated from observed intent and question wording; they are not medical approval or production ground truth."
+}

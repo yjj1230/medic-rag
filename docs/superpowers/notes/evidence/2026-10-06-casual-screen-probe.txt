@@ -1,0 +1,52 @@
+﻿case                                         lex   highrisk  safety             cite 
+------------------------------------------------------------------------------------------
+你的血压偏高，建议停药。                                 True  False     safe_template      False
+我建议您放心，指标完全正常。                               True  False     allow_retrieval    False
+这个问题涉及医疗健康，请重新描述为医学相关问题，我会依据医学资料回答。          True  False     allow_retrieval    False
+这个问题涉及医疗健康。你的血压偏高。                           True  False     allow_retrieval    False
+参见 [e1c1] 的说明                                False False     allow_retrieval    True 
+今天天气不错，多云转晴。                                 False False     allow_retrieval    False
+你好，很高兴为你服务。                                  False False     allow_retrieval    False
+
+SafetyAction.ALLOW_RETRIEVAL = allow_retrieval
+
+拆解: 我建议您放心，指标完全正常。
+python.exe : Traceback (most recent call last):
+所在位置 行:445 字符: 88
++ ... ing]::UTF8; & "C:/Users/lyx/AppData/Local/hermes/hermes-agent/venv/Sc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last) 
+   ::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\lyx\Desktop\RAG\docs\superpowers\notes\evidence\2026-10-06-cas
+ual-screen-probe.py", line 69, in <module>
+    main()
+  File "C:\Users\lyx\Desktop\RAG\docs\superpowers\notes\evidence\2026-10-06-cas
+ual-screen-probe.py", line 63, in main
+    if _re.search(alt, probe, _re.IGNORECASE):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\re\__init__.py
+", line 177, in search
+    return _compile(pattern, flags).search(string)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\re\__init__.py
+", line 307, in _compile
+    p = _compiler.compile(pattern, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\re\_compiler.p
+y", line 750, in compile
+    p = _parser.parse(p, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\re\_parser.py"
+, line 979, in parse
+    p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\re\_parser.py"
+, line 460, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lyx\AppData\Local\Programs\Python\Python312\Lib\re\_parser.py"
+, line 864, in _parse
+    raise source.error("missing ), unterminated subpattern",
+re.error: missing ), unterminated subpattern at position 0

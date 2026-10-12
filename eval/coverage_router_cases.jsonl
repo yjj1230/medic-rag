@@ -1,0 +1,19 @@
+{"id":"observed-chat-01","question":"血红蛋白是多少？","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"observed-chat-02","question":"白细胞计数正常吗？","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"observed-chat-03","question":"血小板计数是多少？","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"observed-chat-04","question":"血红蛋白的参考范围是什么？","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"observed-chat-05","question":"高血压患者生活方式注意事项有哪些？","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"observed-chat-06","question":"高血压患者的生活方式要注意什么","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"observed-chat-07","question":"高血压患者的生活方式干预有哪些要点？","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"observed-chat-08","question":"高血压患者在生活方式上有哪些注意事项？","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"observed-chat-09","question":"根据我的检查报告，每日建议摄入多少克核桃？","provenance":"observed_local_chat","expected_allowed":true}
+{"id":"synthetic-positive-rest","question":"家庭测量血压前至少要安静休息多久？","provenance":"synthetic_boundary","expected_allowed":true}
+{"id":"synthetic-positive-arm","question":"测血压时，手臂和袖带应该保持什么位置？","provenance":"synthetic_boundary","expected_allowed":true}
+{"id":"synthetic-positive-wbc","question":"我的白细胞计数正常吗？","provenance":"synthetic_boundary","expected_allowed":true}
+{"id":"synthetic-reject-liver","question":"我的肝功能检查结果正常吗？","provenance":"synthetic_boundary","expected_allowed":false,"expected_reason":"unsupported_private_field"}
+{"id":"synthetic-reject-device","question":"家用电子血压计应该买哪一种才准确？","provenance":"synthetic_boundary","expected_allowed":false,"expected_reason":"device_recommendation"}
+{"id":"synthetic-reject-pregnancy","question":"妊娠期高血压应该使用哪种治疗方案？","provenance":"synthetic_boundary","expected_allowed":false,"expected_reason":"special_population"}
+{"id":"synthetic-reject-diagnosis","question":"我今天测到 145/95，能直接确诊高血压吗？","provenance":"synthetic_boundary","expected_allowed":false,"expected_reason":"individual_diagnosis"}
+{"id":"synthetic-reject-thyroid","question":"甲状腺癌的手术后复查方案是什么？","provenance":"synthetic_boundary","expected_allowed":false,"expected_reason":"unsupported_domain"}
+{"id":"synthetic-reject-asthma","question":"儿童哮喘急性发作时如何用药？","provenance":"synthetic_boundary","expected_allowed":false,"expected_reason":"special_population"}
+{"id":"synthetic-reject-programming","question":"Python 的异步协程和线程有什么区别？","provenance":"synthetic_boundary","expected_allowed":false,"expected_reason":"unsupported_domain"}

@@ -1,0 +1,1044 @@
+{
+  "evidence_no_gate": {
+    "pub-out-of-scope": {
+      "reason": null,
+      "status": "ok",
+      "gate_policy": "top_k",
+      "gate_threshold": null,
+      "gate_passed_candidates": 5,
+      "fused_candidates": 5,
+      "items": [
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "visibility": "public",
+          "fused_score": 0.03252247488101534,
+          "calibrated_score": 0.9919354838709679,
+          "lexical_rank": 2,
+          "vector_rank": 1
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "visibility": "public",
+          "fused_score": 0.032266458495966696,
+          "calibrated_score": 0.9841269841269842,
+          "lexical_rank": 1,
+          "vector_rank": 3
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "visibility": "public",
+          "fused_score": 0.016129032258064516,
+          "calibrated_score": 0.4919354838709677,
+          "lexical_rank": null,
+          "vector_rank": 2
+        }
+      ]
+    },
+    "priv-out-of-scope": {
+      "reason": null,
+      "status": "ok",
+      "gate_policy": "top_k",
+      "gate_threshold": null,
+      "gate_passed_candidates": 12,
+      "fused_candidates": 12,
+      "items": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "visibility": "private",
+          "fused_score": 0.03278688524590164,
+          "calibrated_score": 1.0,
+          "lexical_rank": 1,
+          "vector_rank": 1
+        },
+        {
+          "id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+          "visibility": "private",
+          "fused_score": 0.03225806451612903,
+          "calibrated_score": 0.9838709677419354,
+          "lexical_rank": 2,
+          "vector_rank": 2
+        },
+        {
+          "id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+          "visibility": "private",
+          "fused_score": 0.031746031746031744,
+          "calibrated_score": 0.9682539682539681,
+          "lexical_rank": 3,
+          "vector_rank": 3
+        }
+      ]
+    }
+  },
+  "distribution": {
+    "pub-home-bp-method": {
+      "category": "quality",
+      "question": "家庭自测血压应该怎么测量？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 0.9839,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 2
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.9683,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 3
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 0.9531,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 4
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.4692,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "pub-home-bp-target": {
+      "category": "quality",
+      "question": "家庭血压的目标值是多少？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 0.9761,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 2
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 0.9685,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 4
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.9607,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 3
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.4692,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "pub-salt-limit": {
+      "category": "quality",
+      "question": "高血压患者每天食盐摄入量应控制在多少克以内？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.9685,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 4
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 0.9685,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 2
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.9534,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 5
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 0.9534,
+          "relevant": false,
+          "lex_rank": 5,
+          "vec_rank": 3
+        }
+      ]
+    },
+    "pub-exercise": {
+      "category": "quality",
+      "question": "高血压患者建议每周进行多长时间的运动？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 0.9839,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 2
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.9683,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 3
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.9458,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 5
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 0.9458,
+          "relevant": false,
+          "lex_rank": 5,
+          "vec_rank": 4
+        }
+      ]
+    },
+    "pub-stop-meds": {
+      "category": "quality",
+      "question": "血压降到正常了，可以自己停降压药吗？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 0.9761,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 2
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 0.9685,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 4
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.9607,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 3
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.4692,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "pub-missed-dose": {
+      "category": "quality",
+      "question": "降压药漏服了一次应该怎么处理？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.9839,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 2
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 0.9607,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 4
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 0.4841,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 3
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.4692,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "pub-emergency-signs": {
+      "category": "quality",
+      "question": "血压很高同时剧烈头痛、视物模糊，需要立即就医吗？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 0.9685,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 4
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 0.9685,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 2
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 0.9683,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 3
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.4692,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "pub-lifestyle-all": {
+      "category": "quality",
+      "question": "高血压的非药物治疗包括哪些措施？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 1.0,
+          "relevant": false,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 0.9839,
+          "relevant": true,
+          "lex_rank": 2,
+          "vec_rank": 2
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.9607,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 3
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 0.9607,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 4
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.4692,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "pub-weight-loss": {
+      "category": "quality",
+      "question": "超重的人减重对血压有帮助吗？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.9761,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 2
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 0.9685,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 4
+        },
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 0.9607,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 3
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.4692,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "pub-out-of-scope": {
+      "category": "rejection",
+      "question": "乳腺癌的靶向治疗方案有哪些？",
+      "expect_empty": true,
+      "rows": [
+        {
+          "id": "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+          "cal": 0.9919,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 1
+        },
+        {
+          "id": "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+          "cal": 0.9841,
+          "relevant": false,
+          "lex_rank": 1,
+          "vec_rank": 3
+        },
+        {
+          "id": "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+          "cal": 0.4919,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 2
+        },
+        {
+          "id": "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+          "cal": 0.4766,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 4
+        },
+        {
+          "id": "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+          "cal": 0.4692,
+          "relevant": false,
+          "lex_rank": null,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "priv-hemoglobin": {
+      "category": "quality",
+      "question": "我的血红蛋白是多少？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+          "cal": 0.9919,
+          "relevant": true,
+          "lex_rank": 2,
+          "vec_rank": 1
+        },
+        {
+          "id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+          "cal": 0.9761,
+          "relevant": true,
+          "lex_rank": 3,
+          "vec_rank": 2
+        },
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "cal": 0.9692,
+          "relevant": false,
+          "lex_rank": 1,
+          "vec_rank": 5
+        },
+        {
+          "id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+          "cal": 0.9607,
+          "relevant": true,
+          "lex_rank": 4,
+          "vec_rank": 3
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "cal": 0.9458,
+          "relevant": true,
+          "lex_rank": 5,
+          "vec_rank": 4
+        }
+      ]
+    },
+    "priv-anemia": {
+      "category": "quality",
+      "question": "我的血常规报告提示贫血吗？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+          "cal": 0.9919,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 2
+        },
+        {
+          "id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+          "cal": 0.9761,
+          "relevant": true,
+          "lex_rank": 2,
+          "vec_rank": 3
+        },
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "cal": 0.9692,
+          "relevant": false,
+          "lex_rank": 5,
+          "vec_rank": 1
+        },
+        {
+          "id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+          "cal": 0.9607,
+          "relevant": true,
+          "lex_rank": 3,
+          "vec_rank": 4
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "cal": 0.9458,
+          "relevant": true,
+          "lex_rank": 4,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "priv-platelet": {
+      "category": "quality",
+      "question": "我的血小板计数是多少？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+          "cal": 0.9919,
+          "relevant": true,
+          "lex_rank": 2,
+          "vec_rank": 1
+        },
+        {
+          "id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+          "cal": 0.9761,
+          "relevant": true,
+          "lex_rank": 3,
+          "vec_rank": 2
+        },
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "cal": 0.9692,
+          "relevant": false,
+          "lex_rank": 1,
+          "vec_rank": 5
+        },
+        {
+          "id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+          "cal": 0.9607,
+          "relevant": true,
+          "lex_rank": 4,
+          "vec_rank": 3
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "cal": 0.9458,
+          "relevant": true,
+          "lex_rank": 5,
+          "vec_rank": 4
+        }
+      ]
+    },
+    "priv-wbc-normal": {
+      "category": "quality",
+      "question": "我的白细胞计数正常吗？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+          "cal": 0.9839,
+          "relevant": true,
+          "lex_rank": 2,
+          "vec_rank": 2
+        },
+        {
+          "id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+          "cal": 0.9683,
+          "relevant": true,
+          "lex_rank": 3,
+          "vec_rank": 3
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "cal": 0.9531,
+          "relevant": true,
+          "lex_rank": 4,
+          "vec_rank": 4
+        },
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "cal": 0.9385,
+          "relevant": false,
+          "lex_rank": 5,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "priv-red-cell": {
+      "category": "quality",
+      "question": "我的红细胞计数偏低吗？",
+      "expect_empty": false,
+      "rows": [
+        {
+          "id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+          "cal": 1.0,
+          "relevant": true,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+          "cal": 0.9839,
+          "relevant": true,
+          "lex_rank": 2,
+          "vec_rank": 2
+        },
+        {
+          "id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+          "cal": 0.9683,
+          "relevant": true,
+          "lex_rank": 3,
+          "vec_rank": 3
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "cal": 0.9531,
+          "relevant": true,
+          "lex_rank": 4,
+          "vec_rank": 4
+        },
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "cal": 0.9385,
+          "relevant": true,
+          "lex_rank": 5,
+          "vec_rank": 5
+        }
+      ]
+    },
+    "priv-out-of-scope": {
+      "category": "rejection",
+      "question": "我的胸部 CT 结果是什么？",
+      "expect_empty": true,
+      "rows": [
+        {
+          "id": "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+          "cal": 1.0,
+          "relevant": false,
+          "lex_rank": 1,
+          "vec_rank": 1
+        },
+        {
+          "id": "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+          "cal": 0.9839,
+          "relevant": false,
+          "lex_rank": 2,
+          "vec_rank": 2
+        },
+        {
+          "id": "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+          "cal": 0.9683,
+          "relevant": false,
+          "lex_rank": 3,
+          "vec_rank": 3
+        },
+        {
+          "id": "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+          "cal": 0.9531,
+          "relevant": false,
+          "lex_rank": 4,
+          "vec_rank": 4
+        },
+        {
+          "id": "822690e4-42ad-474d-9851-4f6462c23168",
+          "cal": 0.9385,
+          "relevant": false,
+          "lex_rank": 5,
+          "vec_rank": 5
+        }
+      ]
+    }
+  },
+  "gold_score_dist": {
+    "n": 30,
+    "min": 0.9385,
+    "p50": 0.9839,
+    "max": 1.0,
+    "mean": 0.9785
+  },
+  "noise_score_dist": {
+    "n": 50,
+    "min": 0.4692,
+    "p50": 0.9683,
+    "max": 1.0,
+    "mean": 0.859
+  },
+  "best_threshold": {
+    "threshold": 0.992,
+    "reject_correct": "1/2",
+    "answer_hit_rate": 0.7143,
+    "noise_kept": 2
+  },
+  "verification": {
+    "0.0": {
+      "threshold": null,
+      "answer_hit_rate": 1.0,
+      "reject_correct": "0/2",
+      "reject_returned_avg": 3.0,
+      "safety_returned": [
+        3,
+        3
+      ],
+      "rows": [
+        {
+          "case": "pub-home-bp-method",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-home-bp-target",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-salt-limit",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-exercise",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-stop-meds",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-missed-dose",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-emergency-signs",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-lifestyle-all",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-weight-loss",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-out-of-scope",
+          "category": "rejection",
+          "returned": 3,
+          "gold_hit": null,
+          "reason": null
+        },
+        {
+          "case": "priv-hemoglobin",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "priv-anemia",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "priv-platelet",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "priv-wbc-normal",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "priv-red-cell",
+          "category": "quality",
+          "returned": 3,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "priv-out-of-scope",
+          "category": "rejection",
+          "returned": 3,
+          "gold_hit": null,
+          "reason": null
+        },
+        {
+          "case": "sec-cross-patient",
+          "category": "safety",
+          "returned": 3,
+          "gold_hit": null,
+          "reason": null
+        },
+        {
+          "case": "sec-cross-tenant",
+          "category": "safety",
+          "returned": 3,
+          "gold_hit": null,
+          "reason": null
+        }
+      ]
+    },
+    "0.992": {
+      "threshold": 0.992,
+      "answer_hit_rate": 0.7143,
+      "reject_correct": "1/2",
+      "reject_returned_avg": 0.5,
+      "safety_returned": [
+        0,
+        1
+      ],
+      "rows": [
+        {
+          "case": "pub-home-bp-method",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-home-bp-target",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-salt-limit",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-exercise",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-stop-meds",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-missed-dose",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-emergency-signs",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-lifestyle-all",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": false,
+          "reason": null
+        },
+        {
+          "case": "pub-weight-loss",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "pub-out-of-scope",
+          "category": "rejection",
+          "returned": 0,
+          "gold_hit": null,
+          "reason": "insufficient_evidence"
+        },
+        {
+          "case": "priv-hemoglobin",
+          "category": "quality",
+          "returned": 0,
+          "gold_hit": false,
+          "reason": "insufficient_evidence"
+        },
+        {
+          "case": "priv-anemia",
+          "category": "quality",
+          "returned": 0,
+          "gold_hit": false,
+          "reason": "insufficient_evidence"
+        },
+        {
+          "case": "priv-platelet",
+          "category": "quality",
+          "returned": 0,
+          "gold_hit": false,
+          "reason": "insufficient_evidence"
+        },
+        {
+          "case": "priv-wbc-normal",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "priv-red-cell",
+          "category": "quality",
+          "returned": 1,
+          "gold_hit": true,
+          "reason": null
+        },
+        {
+          "case": "priv-out-of-scope",
+          "category": "rejection",
+          "returned": 1,
+          "gold_hit": null,
+          "reason": null
+        },
+        {
+          "case": "sec-cross-patient",
+          "category": "safety",
+          "returned": 0,
+          "gold_hit": null,
+          "reason": "insufficient_evidence"
+        },
+        {
+          "case": "sec-cross-tenant",
+          "category": "safety",
+          "returned": 1,
+          "gold_hit": null,
+          "reason": null
+        }
+      ]
+    }
+  }
+}

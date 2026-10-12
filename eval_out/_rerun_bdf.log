@@ -1,0 +1,19 @@
+﻿鐧诲綍 OK
+[B-01] http=200 status=answered citations=6 40.5s
+[D-01] 杩介棶 http=200 status=degraded 缁敤浼氳瘽=False
+[D-02] 鍘嗗彶 http=200 鏉℃暟=2 roles=['user', 'assistant']
+[D-04] 浼氳瘽闅旂 distinct=False B缁勭姸鎬?insufficient_evidence
+[F-01] http=200 status=insufficient_evidence citations=0 passed=True
+[F-02] http=200 status=insufficient_evidence notice=褰撳墠鐭ヨ瘑搴撴病鏈夎鐩栬鐤剧梾鎴栦富棰橈紝鏆傛椂鏃犳硶鍙潬鍥炵瓟銆?
+
+======================================================================
+  [PASS] B-01
+  [FAIL] D-01
+  [FAIL] D-02
+  [FAIL] D-04
+  [PASS] F-01
+  [PASS] F-02
+  [FAIL] F-03
+鎵ц 7锛歅ASS 3 / FAIL 4
+鎶ュ憡锛欳:\Users\lyx\Desktop\RAG\eval_out\e2e_rerun_bdf.json
+exit=1

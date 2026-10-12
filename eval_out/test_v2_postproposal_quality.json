@@ -1,0 +1,356 @@
+{
+  "dataset": "eval/rag_cases.test.v2.jsonl",
+  "configuration": "A3-hybrid-rrf60",
+  "frozen_dataset_unchanged": true,
+  "note": "仅按人工 revision proposal 和新来源的直接支持证据重放，不修改冻结 gold，也不作为正式 Test v2 指标。",
+  "case_count": 13,
+  "accepted_hit_rate": 1.0,
+  "accepted_mrr": 0.7435897435897435,
+  "cases": [
+    {
+      "case_id": "who-silent",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "accepted_groups": [
+        [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        [
+          "1f18737d-6471-4de4-a790-867fdf9034b8"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "who-numbers",
+      "returned_ids": [
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "accepted_groups": [
+        [
+          "26af9567-28d0-4e0c-a48e-2bdb3065dc06"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "26af9567-28d0-4e0c-a48e-2bdb3065dc06"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "who-organ-risk",
+      "returned_ids": [
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+      ],
+      "accepted_groups": [
+        [
+          "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "lifestyle-exercise",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "accepted_groups": [
+        [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "lifestyle-salt",
+      "returned_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "accepted_groups": [
+        [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        [
+          "1f18737d-6471-4de4-a790-867fdf9034b8"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "meds-stop",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "accepted_groups": [
+        [
+          "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+        ],
+        [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "emergency-vision",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "accepted_groups": [
+        [
+          "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+        ],
+        [
+          "1f18737d-6471-4de4-a790-867fdf9034b8"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "rank": 3
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 3,
+      "accepted_reciprocal_rank": 0.3333333333333333
+    },
+    {
+      "case_id": "symptom-single",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "accepted_groups": [
+        [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        [
+          "1f18737d-6471-4de4-a790-867fdf9034b8"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "who-sodium",
+      "returned_ids": [
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+      ],
+      "accepted_groups": [
+        [
+          "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "risk-check",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "accepted_groups": [
+        [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        [
+          "1f18737d-6471-4de4-a790-867fdf9034b8"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+          ],
+          "rank": 2
+        },
+        {
+          "group": [
+            "1f18737d-6471-4de4-a790-867fdf9034b8"
+          ],
+          "rank": 3
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    },
+    {
+      "case_id": "priv-hgb-low",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "accepted_groups": [
+        [
+          "822690e4-42ad-474d-9851-4f6462c23168",
+          "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "rank": 3
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 3,
+      "accepted_reciprocal_rank": 0.3333333333333333
+    },
+    {
+      "case_id": "priv-report-followup",
+      "returned_ids": [
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "accepted_groups": [
+        [
+          "822690e4-42ad-474d-9851-4f6462c23168",
+          "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "rank": 1
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 1,
+      "accepted_reciprocal_rank": 1.0
+    },
+    {
+      "case_id": "priv-advice-safety",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "accepted_groups": [
+        [
+          "822690e4-42ad-474d-9851-4f6462c23168",
+          "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+        ]
+      ],
+      "matched_groups": [
+        {
+          "group": [
+            "822690e4-42ad-474d-9851-4f6462c23168",
+            "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+          ],
+          "rank": 2
+        }
+      ],
+      "accepted_hit": true,
+      "first_accepted_rank": 2,
+      "accepted_reciprocal_rank": 0.5
+    }
+  ]
+}
