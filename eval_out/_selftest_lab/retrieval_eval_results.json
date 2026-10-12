@@ -1,0 +1,870 @@
+{
+ "meta": {
+  "run_at": "2026-10-12T11:36:22.581148+00:00",
+  "runner": "scripts/retrieval_tuning_lab.py (rebuilt 2026-10-12)",
+  "mode": "selftest",
+  "case_count": 4,
+  "latency_rounds": 5,
+  "quick": false,
+  "category_counts": {
+   "quality": 2,
+   "rejection": 1,
+   "safety": 1
+  },
+  "note": "离线自检：夹具索引 + 夹具用例，不接触 OpenSearch"
+ },
+ "corpus_integrity": {
+  "note": "selftest fixture",
+  "records": 3
+ },
+ "configs": [
+  {
+   "name": "A1-pure-lexical",
+   "config": {
+    "name": "A1-pure-lexical",
+    "mode": "lexical",
+    "rrf_k": 60,
+    "candidate_limit": 50,
+    "top_k": 3
+   },
+   "description": "离线自检配置",
+   "quality": {
+    "n": 2,
+    "hit_rate": 0.0,
+    "recall_at_k": 0.0,
+    "precision_at_k": 0.0,
+    "mrr": 0.0,
+    "ndcg_at_k": 0.0,
+    "top1_accuracy": 0.0
+   },
+   "rejection": {
+    "n": 1,
+    "correct_empty": 1,
+    "accuracy": 1.0
+   },
+   "safety": {
+    "n": 1,
+    "permission_violations": 0,
+    "deletion_residuals": 0,
+    "review_leakage": 0,
+    "all_zero": true
+   },
+   "latency": {
+    "rounds": 5,
+    "samples": 4,
+    "p50_ms": 0.26950007304549217,
+    "p95_ms": 0.4732999950647354,
+    "p99_ms": 0.4732999950647354,
+    "mean_ms": 0.2483749995008111
+   },
+   "cases": [
+    {
+     "case_id": "fx-q-hypertension",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 0.0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "mrr": 0.0,
+     "ndcg": 0.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.4732999950647354
+    },
+    {
+     "case_id": "fx-rej-thyroid",
+     "category": "rejection",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.26950007304549217
+    },
+    {
+     "case_id": "fx-q-private",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 0.0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "mrr": 0.0,
+     "ndcg": 0.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.1439000479876995
+    },
+    {
+     "case_id": "fx-sec-cross-patient",
+     "category": "safety",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.1067998819053173
+    }
+   ]
+  },
+  {
+   "name": "A2-pure-vector",
+   "config": {
+    "name": "A2-pure-vector",
+    "mode": "vector",
+    "rrf_k": 60,
+    "candidate_limit": 50,
+    "top_k": 3
+   },
+   "description": "离线自检配置",
+   "quality": {
+    "n": 2,
+    "hit_rate": 1.0,
+    "recall_at_k": 1.0,
+    "precision_at_k": 1.0,
+    "mrr": 1.0,
+    "ndcg_at_k": 1.0,
+    "top1_accuracy": 1.0
+   },
+   "rejection": {
+    "n": 1,
+    "correct_empty": 0,
+    "accuracy": 0.0
+   },
+   "safety": {
+    "n": 1,
+    "permission_violations": 0,
+    "deletion_residuals": 0,
+    "review_leakage": 0,
+    "all_zero": true
+   },
+   "latency": {
+    "rounds": 5,
+    "samples": 4,
+    "p50_ms": 0.3643999807536602,
+    "p95_ms": 0.45980000868439674,
+    "p99_ms": 0.45980000868439674,
+    "mean_ms": 0.2668999368324876
+   },
+   "cases": [
+    {
+     "case_id": "fx-q-hypertension",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.45980000868439674
+    },
+    {
+     "case_id": "fx-rej-thyroid",
+     "category": "rejection",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-b"
+     ],
+     "hit_rate": 0.0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "mrr": 0.0,
+     "ndcg": 0.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.3643999807536602
+    },
+    {
+     "case_id": "fx-q-private",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-priv-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.14859996736049652
+    },
+    {
+     "case_id": "fx-sec-cross-patient",
+     "category": "safety",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.09479979053139687
+    }
+   ]
+  },
+  {
+   "name": "A3-hybrid-rrf60",
+   "config": {
+    "name": "A3-hybrid-rrf60",
+    "mode": "hybrid",
+    "rrf_k": 60,
+    "candidate_limit": 50,
+    "top_k": 3
+   },
+   "description": "离线自检配置",
+   "quality": {
+    "n": 2,
+    "hit_rate": 1.0,
+    "recall_at_k": 1.0,
+    "precision_at_k": 1.0,
+    "mrr": 1.0,
+    "ndcg_at_k": 1.0,
+    "top1_accuracy": 1.0
+   },
+   "rejection": {
+    "n": 1,
+    "correct_empty": 0,
+    "accuracy": 0.0
+   },
+   "safety": {
+    "n": 1,
+    "permission_violations": 0,
+    "deletion_residuals": 0,
+    "review_leakage": 0,
+    "all_zero": true
+   },
+   "latency": {
+    "rounds": 5,
+    "samples": 4,
+    "p50_ms": 0.27270009741187096,
+    "p95_ms": 0.4262998700141907,
+    "p99_ms": 0.4262998700141907,
+    "mean_ms": 0.2615000121295452
+   },
+   "cases": [
+    {
+     "case_id": "fx-q-hypertension",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.4262998700141907
+    },
+    {
+     "case_id": "fx-rej-thyroid",
+     "category": "rejection",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-b"
+     ],
+     "hit_rate": 0.0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "mrr": 0.0,
+     "ndcg": 0.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.23669982329010963
+    },
+    {
+     "case_id": "fx-q-private",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-priv-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.11030025780200958
+    },
+    {
+     "case_id": "fx-sec-cross-patient",
+     "category": "safety",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.27270009741187096
+    }
+   ]
+  },
+  {
+   "name": "G1-hybrid-rrf60-gate",
+   "config": {
+    "name": "G1-hybrid-rrf60-gate",
+    "mode": "hybrid",
+    "rrf_k": 60,
+    "candidate_limit": 50,
+    "gate": true,
+    "top_k": 3
+   },
+   "description": "离线自检配置",
+   "quality": {
+    "n": 2,
+    "hit_rate": 1.0,
+    "recall_at_k": 1.0,
+    "precision_at_k": 1.0,
+    "mrr": 1.0,
+    "ndcg_at_k": 1.0,
+    "top1_accuracy": 1.0
+   },
+   "rejection": {
+    "n": 1,
+    "correct_empty": 1,
+    "accuracy": 1.0
+   },
+   "safety": {
+    "n": 1,
+    "permission_violations": 0,
+    "deletion_residuals": 0,
+    "review_leakage": 0,
+    "all_zero": true
+   },
+   "latency": {
+    "rounds": 5,
+    "samples": 4,
+    "p50_ms": 0.42479997500777245,
+    "p95_ms": 0.45160017907619476,
+    "p99_ms": 0.45160017907619476,
+    "mean_ms": 0.3171251155436039
+   },
+   "cases": [
+    {
+     "case_id": "fx-q-hypertension",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.45160017907619476
+    },
+    {
+     "case_id": "fx-rej-thyroid",
+     "category": "rejection",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.42479997500777245
+    },
+    {
+     "case_id": "fx-q-private",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-priv-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.2452000044286251
+    },
+    {
+     "case_id": "fx-sec-cross-patient",
+     "category": "safety",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.14690030366182327
+    }
+   ]
+  },
+  {
+   "name": "B3-rrf30",
+   "config": {
+    "name": "B3-rrf30",
+    "mode": "hybrid",
+    "rrf_k": 30,
+    "candidate_limit": 50,
+    "top_k": 3
+   },
+   "description": "离线自检配置",
+   "quality": {
+    "n": 2,
+    "hit_rate": 1.0,
+    "recall_at_k": 1.0,
+    "precision_at_k": 1.0,
+    "mrr": 1.0,
+    "ndcg_at_k": 1.0,
+    "top1_accuracy": 1.0
+   },
+   "rejection": {
+    "n": 1,
+    "correct_empty": 0,
+    "accuracy": 0.0
+   },
+   "safety": {
+    "n": 1,
+    "permission_violations": 0,
+    "deletion_residuals": 0,
+    "review_leakage": 0,
+    "all_zero": true
+   },
+   "latency": {
+    "rounds": 5,
+    "samples": 4,
+    "p50_ms": 0.31400006264448166,
+    "p95_ms": 0.3690999001264572,
+    "p99_ms": 0.3690999001264572,
+    "mean_ms": 0.22947497200220823
+   },
+   "cases": [
+    {
+     "case_id": "fx-q-hypertension",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.3690999001264572
+    },
+    {
+     "case_id": "fx-rej-thyroid",
+     "category": "rejection",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-b"
+     ],
+     "hit_rate": 0.0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "mrr": 0.0,
+     "ndcg": 0.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.31400006264448166
+    },
+    {
+     "case_id": "fx-q-private",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-priv-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.13779988512396812
+    },
+    {
+     "case_id": "fx-sec-cross-patient",
+     "category": "safety",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.09700004011392593
+    }
+   ]
+  },
+  {
+   "name": "D2-cand20",
+   "config": {
+    "name": "D2-cand20",
+    "mode": "hybrid",
+    "rrf_k": 60,
+    "candidate_limit": 20,
+    "top_k": 3
+   },
+   "description": "离线自检配置",
+   "quality": {
+    "n": 2,
+    "hit_rate": 1.0,
+    "recall_at_k": 1.0,
+    "precision_at_k": 1.0,
+    "mrr": 1.0,
+    "ndcg_at_k": 1.0,
+    "top1_accuracy": 1.0
+   },
+   "rejection": {
+    "n": 1,
+    "correct_empty": 0,
+    "accuracy": 0.0
+   },
+   "safety": {
+    "n": 1,
+    "permission_violations": 0,
+    "deletion_residuals": 0,
+    "review_leakage": 0,
+    "all_zero": true
+   },
+   "latency": {
+    "rounds": 5,
+    "samples": 4,
+    "p50_ms": 0.25959964841604233,
+    "p95_ms": 0.7086996920406818,
+    "p99_ms": 0.7086996920406818,
+    "mean_ms": 0.3111498663201928
+   },
+   "cases": [
+    {
+     "case_id": "fx-q-hypertension",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.7086996920406818
+    },
+    {
+     "case_id": "fx-rej-thyroid",
+     "category": "rejection",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-b"
+     ],
+     "hit_rate": 0.0,
+     "recall": 0.0,
+     "precision": 0.0,
+     "mrr": 0.0,
+     "ndcg": 0.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.25959964841604233
+    },
+    {
+     "case_id": "fx-q-private",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-priv-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.15870016068220139
+    },
+    {
+     "case_id": "fx-sec-cross-patient",
+     "category": "safety",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.1175999641418457
+    }
+   ]
+  },
+  {
+   "name": "G2-cand20-gate",
+   "config": {
+    "name": "G2-cand20-gate",
+    "mode": "hybrid",
+    "rrf_k": 60,
+    "candidate_limit": 20,
+    "gate": true,
+    "top_k": 3
+   },
+   "description": "离线自检配置",
+   "quality": {
+    "n": 2,
+    "hit_rate": 1.0,
+    "recall_at_k": 1.0,
+    "precision_at_k": 1.0,
+    "mrr": 1.0,
+    "ndcg_at_k": 1.0,
+    "top1_accuracy": 1.0
+   },
+   "rejection": {
+    "n": 1,
+    "correct_empty": 1,
+    "accuracy": 1.0
+   },
+   "safety": {
+    "n": 1,
+    "permission_violations": 0,
+    "deletion_residuals": 0,
+    "review_leakage": 0,
+    "all_zero": true
+   },
+   "latency": {
+    "rounds": 5,
+    "samples": 4,
+    "p50_ms": 0.18149986863136292,
+    "p95_ms": 0.3383997827768326,
+    "p99_ms": 0.3383997827768326,
+    "mean_ms": 0.2014999045059085
+   },
+   "cases": [
+    {
+     "case_id": "fx-q-hypertension",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-pub-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.3383997827768326
+    },
+    {
+     "case_id": "fx-rej-thyroid",
+     "category": "rejection",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.18149986863136292
+    },
+    {
+     "case_id": "fx-q-private",
+     "category": "quality",
+     "bucket": "standard",
+     "returned_ids": [
+      "fx-priv-a"
+     ],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": null,
+     "status": "ok",
+     "total_ms": 0.18010009080171585
+    },
+    {
+     "case_id": "fx-sec-cross-patient",
+     "category": "safety",
+     "bucket": "standard",
+     "returned_ids": [],
+     "hit_rate": 1.0,
+     "recall": 1.0,
+     "precision": 0.0,
+     "mrr": 1.0,
+     "ndcg": 1.0,
+     "permission_violations": 0,
+     "deletion_residuals": 0,
+     "review_leakage": 0,
+     "reason": "insufficient_evidence",
+     "status": "insufficient_evidence",
+     "total_ms": 0.10599987581372261
+    }
+   ]
+  }
+ ],
+ "cases": [
+  {
+   "id": "fx-q-hypertension",
+   "question": "成人高血压如何定义",
+   "scope": "public",
+   "gold": [
+    "fx-pub-a"
+   ],
+   "category": "quality",
+   "forbidden": [],
+   "note": "可答：词法+向量双命中"
+  },
+  {
+   "id": "fx-rej-thyroid",
+   "question": "甲状腺癌术后复查应该如何安排",
+   "scope": "public",
+   "gold": [],
+   "category": "rejection",
+   "forbidden": [],
+   "note": "无关查询：基线被词法命中误导，门禁应拒答"
+  },
+  {
+   "id": "fx-q-private",
+   "question": "报告中的红细胞计数和单位是什么",
+   "scope": "private",
+   "gold": [
+    "fx-priv-a"
+   ],
+   "category": "quality",
+   "forbidden": [],
+   "note": "私有用例：患者 A 身份"
+  },
+  {
+   "id": "fx-sec-cross-patient",
+   "question": "患者 B 查询自己的血常规记录",
+   "scope": "private",
+   "gold": [],
+   "category": "safety",
+   "forbidden": [
+    "fx-priv-a"
+   ],
+   "note": "跨患者：患者 B 身份不得读到 A 的记录"
+  }
+ ]
+}
