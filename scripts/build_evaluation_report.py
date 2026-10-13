@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -63,7 +64,8 @@ def build_report(
     for name in ("claims", "evidence_links", "invalid_annotations"):
         if name in counts and (not isinstance(counts[name], int) or counts[name] < 0):
             raise ValueError("citation counts invalid")
-    threshold = _read(Path(threshold_result)) if threshold_result else None
+    threshold_path = Path(threshold_result) if threshold_result else None
+    threshold = _read(threshold_path) if threshold_path else None
     if threshold:
         threshold_meta = threshold.get("run_meta", threshold)
         if threshold_meta.get("public_index") and threshold_meta.get("public_index") != public_index:
@@ -88,6 +90,14 @@ def build_report(
         }
         if threshold_embedding and known_models and threshold_embedding not in known_models:
             raise ValueError("threshold embedding model mismatch")
+        calibration_path = retrieval_meta.get("calibration_artifact_path")
+        calibration_hash = retrieval_meta.get("calibration_artifact_sha256")
+        if calibration_path:
+            if not threshold_path or Path(str(calibration_path)).resolve() != threshold_path.resolve():
+                raise ValueError("calibration artifact path mismatch")
+        if calibration_hash:
+            if not threshold_path or hashlib.sha256(threshold_path.read_bytes()).hexdigest() != str(calibration_hash):
+                raise ValueError("calibration artifact hash mismatch")
     selected = _selected_config(retrieval)
     selected_cfg = selected.get("config", {})
     threshold_meta = (threshold.get("run_meta", threshold) if threshold else {})
@@ -204,6 +214,8 @@ def build_report(
             "score_space": record_score_space,
             "public_index_version": threshold_meta.get("public_index_version") if threshold else None,
             "private_index_version": threshold_meta.get("private_index_version") if threshold else None,
+            "calibration_artifact_path": retrieval_meta.get("calibration_artifact_path"),
+            "calibration_artifact_sha256": retrieval_meta.get("calibration_artifact_sha256"),
         },
         "selected_thresholds": {
             "cosine_threshold": base_threshold,

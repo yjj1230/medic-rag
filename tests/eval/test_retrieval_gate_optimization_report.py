@@ -139,6 +139,20 @@ def test_selected_threshold_identity_mismatch_fails(tmp_path: Path) -> None:
         )
 
 
+def test_calibration_provenance_mismatch_fails(tmp_path: Path) -> None:
+    retrieval = json.loads(_retrieval(tmp_path).read_text(encoding="utf-8"))
+    retrieval["meta"]["calibration_artifact_sha256"] = "mutated"
+    retrieval_path = _write(tmp_path / "retrieval-mutated.json", retrieval)
+    with pytest.raises(ValueError, match="calibration artifact hash"):
+        build_report(
+            retrieval_path,
+            _citation(tmp_path),
+            _assets(tmp_path),
+            _threshold(tmp_path),
+            failure_attribution=_attribution(tmp_path),
+        )
+
+
 def test_valid_combined_artifacts_preserve_labels_and_denominators(tmp_path: Path) -> None:
     report = build_report(
         _retrieval(tmp_path),

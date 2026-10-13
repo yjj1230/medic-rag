@@ -1,6 +1,6 @@
 {
   "run_meta": {
-    "run_at": "2026-10-13T12:41:34.430131+00:00",
+    "run_at": "2026-10-13T12:56:03.349518+00:00",
     "dataset_sha256": "ed33014ce05d20b8cf98eb915833183a8e9284691eb996d71be89b9a90c20e5b",
     "case_count": 120,
     "frozen_test": true
@@ -14,7 +14,9 @@
     "record_score_space": "cosinesimil",
     "score_space": "cosinesimil",
     "public_index_version": "public-v1",
-    "private_index_version": "private-v1"
+    "private_index_version": "private-v1",
+    "calibration_artifact_path": "config/calibration/cosine-gate-2026-10-14.json",
+    "calibration_artifact_sha256": "afc489348872efe50b2e9a12dae4610cbe5fe8d2ab3d6f6f996e79e599673902"
   },
   "selected_thresholds": {
     "cosine_threshold": 0.76,
