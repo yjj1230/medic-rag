@@ -39,3 +39,13 @@ Review-fix verification:
 
 - `.venv/Scripts/python.exe -m pytest tests/eval/test_retrieval_failure_attribution.py -q` — **5 passed**
 - `.venv/Scripts/ruff.exe check scripts/retrieval_failure_attribution.py tests/eval/test_retrieval_failure_attribution.py` — **All checks passed**
+
+## Scoped re-review fix (2026-10-13)
+
+- Added `calibration_mismatch` to the infrastructure-first reason matcher so the allowlisted reason cannot be misclassified as an answerable gate false reject.
+- Added a regression test covering the precedence rule.
+
+Verification:
+
+- `.venv/Scripts/python.exe -m pytest tests/eval/test_retrieval_failure_attribution.py -q` — **6 passed**
+- `.venv/Scripts/ruff.exe check scripts/retrieval_failure_attribution.py tests/eval/test_retrieval_failure_attribution.py` — **All checks passed**

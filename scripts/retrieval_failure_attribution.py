@@ -272,6 +272,7 @@ def _classify(case: Mapping[str, Any], result: Mapping[str, Any], reason: str, d
             "error",
             "missing_retrieval_result",
             "calibration_artifact_mismatch",
+            "calibration_mismatch",
             "mapping_unavailable",
             "score_space_mismatch",
             "embedding_unavailable",

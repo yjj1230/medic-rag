@@ -188,3 +188,18 @@ def test_validates_selected_config_hash_and_extra_rows_and_redacts_paths(tmp_pat
     result = attribute_failures(cases, retrieval)
     assert result["run_meta"]["cases_file"] == cases.name
     assert result["run_meta"]["retrieval_result"] == retrieval.name
+
+
+def test_calibration_mismatch_reason_has_infrastructure_precedence(tmp_path: Path) -> None:
+    cases = _write_jsonl(
+        tmp_path / "cases.jsonl",
+        [{"id": "a", "category": "quality", "gold_evidence_ids": ["gold"]}],
+    )
+    dataset_sha256 = hashlib.sha256(cases.read_bytes()).hexdigest()
+    retrieval = _retrieval(
+        tmp_path / "retrieval.json",
+        [{"case_id": "a", "returned_ids": [], "reason": "calibration_mismatch"}],
+        dataset_sha256,
+    )
+    result = attribute_failures(cases, retrieval)
+    assert result["per_case"][0]["labels"] == ["infrastructure_failure"]
