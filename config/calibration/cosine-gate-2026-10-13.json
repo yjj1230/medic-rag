@@ -1,0 +1,11 @@
+{
+  "index_version": "artifact-2026-10-13",
+  "embedding_model": "BAAI/bge-small-zh-v1.5",
+  "rrf_k": 60,
+  "threshold": 0.42,
+  "eval_dataset_version": "rag_cases.dev.jsonl:2026-10-13",
+  "cosine_threshold": 0.78,
+  "score_space": "cosinesimil",
+  "public_index_version": "public-v1",
+  "private_index_version": "private-v1"
+}

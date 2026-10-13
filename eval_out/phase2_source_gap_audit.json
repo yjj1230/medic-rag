@@ -1,0 +1,8 @@
+{
+  "run_at": "2026-10-13T07:17:44.182031+00:00",
+  "cases_file": "eval\\rag_cases.test.v2.1.jsonl",
+  "retrieval_results": "eval_out\\phase1_probe\\retrieval_eval_results.json",
+  "confirmed_source_gaps": [],
+  "retrieval_misses": [],
+  "gap_count": 0
+}

@@ -1,0 +1,97 @@
+{
+  "run_at": "2026-10-13T06:49:27.811410+00:00",
+  "cases_file": "eval\\rag_cases.test.v2.1.jsonl",
+  "dataset_sha256": "ed33014ce05d20b8cf98eb915833183a8e9284691eb996d71be89b9a90c20e5b",
+  "case_count": 120,
+  "category_counts": {
+    "quality": 70,
+    "rejection": 30,
+    "safety": 20
+  },
+  "duplicate_case_ids": [],
+  "dev_test_question_overlap": [],
+  "missing_gold_evidence_ids": [],
+  "missing_forbidden_evidence_ids": [],
+  "index_metadata": {
+    "public": {
+      "index": "medical-rag-public-local",
+      "count": 30,
+      "evidence_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "118134a3-48f5-4aef-9a86-b4a585af3514",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "21e48910-7c90-4578-8d24-42f23c9af3b3",
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "4b7574b9-eeb3-44f3-963c-2e765a59c3b4",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7801cb5e-f614-4ba5-b1cf-190c1ec03290",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "804e02e8-026f-46fd-96f3-d61d3d3f5a75",
+        "86a89913-374a-4a84-b520-da26d89e6d85",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "b4aa502b-4c5f-476a-ba2e-abeeb2a07e71",
+        "b787a6aa-559a-421b-a470-ff8c7096883a",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "d26c9396-6453-4e5b-b330-36bd209b2a13",
+        "ee92c431-bb1e-4494-a176-90b115f285a9",
+        "f4647ec0-9e6e-4844-9df1-9d063158451f",
+        "f8cc7f9f-2a09-4879-a88a-83c438e40ace"
+      ],
+      "embedding_models": [
+        "BAAI/bge-small-zh-v1.5"
+      ],
+      "embedding_dimensions": [
+        512
+      ],
+      "index_versions": [
+        "public-v1"
+      ],
+      "embedding_mapping": {
+        "dimension": 512,
+        "space_type": "cosinesimil",
+        "engine": "lucene"
+      }
+    },
+    "private": {
+      "index": "medical-rag-private-local",
+      "count": 8,
+      "evidence_ids": [
+        "0685db7f-4e6e-40ca-a946-07ac785b7a0b",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "6e8a499b-f28c-471b-97aa-e80cd4285157",
+        "7092ee1e-9302-49ea-8262-270de97fd144",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "9c907073-ae8d-4f9e-950f-0e217e2b47a5"
+      ],
+      "embedding_models": [
+        "BAAI/bge-small-zh-v1.5"
+      ],
+      "embedding_dimensions": [
+        512
+      ],
+      "index_versions": [
+        "private-v1"
+      ],
+      "embedding_mapping": {
+        "dimension": 512,
+        "space_type": "cosinesimil",
+        "engine": "lucene"
+      }
+    }
+  },
+  "public_index": "medical-rag-public-local",
+  "private_index": "medical-rag-private-local"
+}

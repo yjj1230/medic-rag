@@ -1,0 +1,1908 @@
+{
+  "run_meta": {
+    "run_at": "2026-10-13T07:43:57.252712+00:00",
+    "dataset_sha256": "ed33014ce05d20b8cf98eb915833183a8e9284691eb996d71be89b9a90c20e5b",
+    "case_count": 120,
+    "frozen_test": true
+  },
+  "identities": {
+    "public_index": "medical-rag-public-local",
+    "private_index": "medical-rag-private-local",
+    "embedding_model": "BAAI/bge-small-zh-v1.5",
+    "embedding_dimensions": 512,
+    "score_space": "cosinesimil"
+  },
+  "retrieval": {
+    "config": "G1-hybrid-rrf60-gate",
+    "dataset_sha256": "ed33014ce05d20b8cf98eb915833183a8e9284691eb996d71be89b9a90c20e5b",
+    "quality": {
+      "n": 70,
+      "hit_rate": 0.7571428571428571,
+      "recall_at_k": 0.7571428571428571,
+      "precision_at_k": 0.30476190476190473,
+      "mrr": 0.6642857142857143,
+      "ndcg_at_k": 0.6894940492353537,
+      "top1_accuracy": 0.5714285714285714
+    },
+    "rejection": {
+      "n": 30,
+      "correct_empty": 24,
+      "accuracy": 0.8
+    },
+    "safety": {
+      "n": 20,
+      "permission_violations": 0,
+      "deletion_residuals": 0,
+      "review_leakage": 0,
+      "all_zero": true
+    },
+    "latency": {
+      "rounds": 5,
+      "samples": 120,
+      "p50_ms": 2079.812000039965,
+      "p95_ms": 2108.1730001606047,
+      "p99_ms": 2116.1774997599423,
+      "mean_ms": 2077.4334891505227
+    },
+    "case_count": 120,
+    "failure_summary": {
+      "quality_false_rejects": 10,
+      "rejection_false_accepts": 6,
+      "reason_counts": {
+        "insufficient_evidence": 54
+      }
+    }
+  },
+  "citation": {
+    "run_meta": {
+      "run_at": "2026-10-13T07:02:02.757394+00:00",
+      "reviewer": "俞家俊",
+      "runner": "scripts/evaluate_citation_claims.py"
+    },
+    "dataset_sha256": "f318f22e567300a35933c0069cfa60ade3fc407d6865fd07239eb442dbbc5cd2",
+    "counts": {
+      "claims": 30,
+      "evidence_links": 30,
+      "invalid_annotations": 0
+    },
+    "metrics": {
+      "grounded_claims": 30,
+      "valid_citations": 30,
+      "supported_claims": 20,
+      "contradicted_claims": 5,
+      "insufficient_claims": 5,
+      "citation_validity": 1.0,
+      "citation_accuracy": 1.0,
+      "citation_coverage": 1.0
+    },
+    "invalid_annotations": [],
+    "contradictions": [
+      "fc-021",
+      "fc-022",
+      "fc-023",
+      "fc-024",
+      "fc-025"
+    ],
+    "per_claim": [
+      {
+        "claim_id": "fc-001",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "valid_evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-002",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "valid_evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-003",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "valid_evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-004",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "valid_evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-005",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "valid_evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-006",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "valid_evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-007",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "valid_evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-008",
+        "claim_kind": "other",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "valid_evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-009",
+        "claim_kind": "applicability",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+        ],
+        "valid_evidence_ids": [
+          "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-010",
+        "claim_kind": "applicability",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+        ],
+        "valid_evidence_ids": [
+          "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-011",
+        "claim_kind": "applicability",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+        ],
+        "valid_evidence_ids": [
+          "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-012",
+        "claim_kind": "other",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "valid_evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-013",
+        "claim_kind": "applicability",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "valid_evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-014",
+        "claim_kind": "other",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "valid_evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-015",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+        ],
+        "valid_evidence_ids": [
+          "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-016",
+        "claim_kind": "numeric",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+        ],
+        "valid_evidence_ids": [
+          "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-017",
+        "claim_kind": "applicability",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        "valid_evidence_ids": [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-018",
+        "claim_kind": "applicability",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        "valid_evidence_ids": [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-019",
+        "claim_kind": "other",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+        ],
+        "valid_evidence_ids": [
+          "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-020",
+        "claim_kind": "applicability",
+        "expected_verdict": "entailed",
+        "evidence_ids": [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        "valid_evidence_ids": [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        "invalid_evidence": [],
+        "supported": true
+      },
+      {
+        "claim_id": "fc-021",
+        "claim_kind": "numeric",
+        "expected_verdict": "contradicted",
+        "evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "valid_evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-022",
+        "claim_kind": "numeric",
+        "expected_verdict": "contradicted",
+        "evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "valid_evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-023",
+        "claim_kind": "numeric",
+        "expected_verdict": "contradicted",
+        "evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "valid_evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-024",
+        "claim_kind": "numeric",
+        "expected_verdict": "contradicted",
+        "evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "valid_evidence_ids": [
+          "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-025",
+        "claim_kind": "numeric",
+        "expected_verdict": "contradicted",
+        "evidence_ids": [
+          "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+        ],
+        "valid_evidence_ids": [
+          "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-026",
+        "claim_kind": "applicability",
+        "expected_verdict": "insufficient",
+        "evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "valid_evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-027",
+        "claim_kind": "applicability",
+        "expected_verdict": "insufficient",
+        "evidence_ids": [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        "valid_evidence_ids": [
+          "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-028",
+        "claim_kind": "applicability",
+        "expected_verdict": "insufficient",
+        "evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "valid_evidence_ids": [
+          "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-029",
+        "claim_kind": "other",
+        "expected_verdict": "insufficient",
+        "evidence_ids": [
+          "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+        ],
+        "valid_evidence_ids": [
+          "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      },
+      {
+        "claim_id": "fc-030",
+        "claim_kind": "causal",
+        "expected_verdict": "insufficient",
+        "evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "valid_evidence_ids": [
+          "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+        ],
+        "invalid_evidence": [],
+        "supported": false
+      }
+    ],
+    "index_snapshot": {
+      "public_index": "medical-rag-public-local",
+      "private_index": "medical-rag-private-local",
+      "matched_evidence_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ]
+    }
+  },
+  "threshold": {
+    "run_meta": {
+      "run_at": "2026-10-13T07:14:56.739690+00:00",
+      "cases_file": "eval\\rag_cases.dev.jsonl",
+      "public_index": "medical-rag-public-local",
+      "private_index": "medical-rag-private-local",
+      "rounds": 5,
+      "gate_policy": "COSINE_ABSOLUTE",
+      "score_space": "cosinesimil"
+    },
+    "rows": [
+      {
+        "threshold": 0.7,
+        "score_space": "cosinesimil",
+        "quality": {
+          "n": 14,
+          "hit_rate": 1.0,
+          "recall_at_k": 0.880952380952381,
+          "precision_at_k": 0.5952380952380951,
+          "mrr": 0.9642857142857143,
+          "ndcg_at_k": 0.8944554497497702,
+          "top1_accuracy": 0.9285714285714286
+        },
+        "rejection": {
+          "n": 2,
+          "correct_empty": 0,
+          "accuracy": 0.0,
+          "false_reject_rate": 0.0
+        },
+        "safety": {
+          "n": 2,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "all_zero": true
+        },
+        "latency": {
+          "rounds": 5,
+          "samples": 18,
+          "p50_ms": 2112.2161000967026,
+          "p95_ms": 2137.4455001205206,
+          "p99_ms": 2943.1843999773264,
+          "mean_ms": 2157.761138941472
+        },
+        "cases": [
+          {
+            "case_id": "pub-home-bp-method",
+            "category": "quality",
+            "returned_ids": [
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-home-bp-target",
+            "category": "quality",
+            "returned_ids": [
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-salt-limit",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-exercise",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-stop-meds",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-missed-dose",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-emergency-signs",
+            "category": "quality",
+            "returned_ids": [
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+              "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+              "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-lifestyle-all",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-weight-loss",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [
+              "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+              "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-hemoglobin",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-anemia",
+            "category": "quality",
+            "returned_ids": [
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-platelet",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-wbc-normal",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-red-cell",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "sec-cross-patient",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-tenant",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          }
+        ]
+      },
+      {
+        "threshold": 0.72,
+        "score_space": "cosinesimil",
+        "quality": {
+          "n": 14,
+          "hit_rate": 1.0,
+          "recall_at_k": 0.880952380952381,
+          "precision_at_k": 0.5952380952380951,
+          "mrr": 0.9642857142857143,
+          "ndcg_at_k": 0.8944554497497702,
+          "top1_accuracy": 0.9285714285714286
+        },
+        "rejection": {
+          "n": 2,
+          "correct_empty": 1,
+          "accuracy": 0.5,
+          "false_reject_rate": 0.0
+        },
+        "safety": {
+          "n": 2,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "all_zero": true
+        },
+        "latency": {
+          "rounds": 5,
+          "samples": 18,
+          "p50_ms": 2073.703399859369,
+          "p95_ms": 2103.7127999588847,
+          "p99_ms": 2130.888399668038,
+          "mean_ms": 2078.5810666210537
+        },
+        "cases": [
+          {
+            "case_id": "pub-home-bp-method",
+            "category": "quality",
+            "returned_ids": [
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-home-bp-target",
+            "category": "quality",
+            "returned_ids": [
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-salt-limit",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-exercise",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-stop-meds",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-missed-dose",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-emergency-signs",
+            "category": "quality",
+            "returned_ids": [
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+              "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+              "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-lifestyle-all",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-weight-loss",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+              "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-hemoglobin",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-anemia",
+            "category": "quality",
+            "returned_ids": [
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-platelet",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-wbc-normal",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-red-cell",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-patient",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-tenant",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          }
+        ]
+      },
+      {
+        "threshold": 0.74,
+        "score_space": "cosinesimil",
+        "quality": {
+          "n": 14,
+          "hit_rate": 1.0,
+          "recall_at_k": 0.880952380952381,
+          "precision_at_k": 0.5952380952380951,
+          "mrr": 0.9285714285714286,
+          "ndcg_at_k": 0.8680932892905886,
+          "top1_accuracy": 0.8571428571428571
+        },
+        "rejection": {
+          "n": 2,
+          "correct_empty": 1,
+          "accuracy": 0.5,
+          "false_reject_rate": 0.0
+        },
+        "safety": {
+          "n": 2,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "all_zero": true
+        },
+        "latency": {
+          "rounds": 5,
+          "samples": 18,
+          "p50_ms": 2072.06550007686,
+          "p95_ms": 2103.861100040376,
+          "p99_ms": 2110.112200025469,
+          "mean_ms": 2073.509977845889
+        },
+        "cases": [
+          {
+            "case_id": "pub-home-bp-method",
+            "category": "quality",
+            "returned_ids": [
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-home-bp-target",
+            "category": "quality",
+            "returned_ids": [
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-salt-limit",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-exercise",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-stop-meds",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-missed-dose",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-emergency-signs",
+            "category": "quality",
+            "returned_ids": [
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+              "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+              "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-lifestyle-all",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-weight-loss",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-hemoglobin",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-anemia",
+            "category": "quality",
+            "returned_ids": [
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-platelet",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-wbc-normal",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-red-cell",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-patient",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-tenant",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          }
+        ]
+      },
+      {
+        "threshold": 0.76,
+        "score_space": "cosinesimil",
+        "quality": {
+          "n": 14,
+          "hit_rate": 1.0,
+          "recall_at_k": 0.880952380952381,
+          "precision_at_k": 0.5952380952380951,
+          "mrr": 0.9285714285714286,
+          "ndcg_at_k": 0.8680932892905886,
+          "top1_accuracy": 0.8571428571428571
+        },
+        "rejection": {
+          "n": 2,
+          "correct_empty": 2,
+          "accuracy": 1.0,
+          "false_reject_rate": 0.0
+        },
+        "safety": {
+          "n": 2,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "all_zero": true
+        },
+        "latency": {
+          "rounds": 5,
+          "samples": 18,
+          "p50_ms": 2083.213800098747,
+          "p95_ms": 2104.2189998552203,
+          "p99_ms": 2106.041199993342,
+          "mean_ms": 2081.2608111753234
+        },
+        "cases": [
+          {
+            "case_id": "pub-home-bp-method",
+            "category": "quality",
+            "returned_ids": [
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-home-bp-target",
+            "category": "quality",
+            "returned_ids": [
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-salt-limit",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-exercise",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-stop-meds",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-missed-dose",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-emergency-signs",
+            "category": "quality",
+            "returned_ids": [
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+              "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+              "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-lifestyle-all",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-weight-loss",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "priv-hemoglobin",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-anemia",
+            "category": "quality",
+            "returned_ids": [
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-platelet",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-wbc-normal",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-red-cell",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-patient",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-tenant",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          }
+        ]
+      },
+      {
+        "threshold": 0.78,
+        "score_space": "cosinesimil",
+        "quality": {
+          "n": 14,
+          "hit_rate": 1.0,
+          "recall_at_k": 0.880952380952381,
+          "precision_at_k": 0.6071428571428571,
+          "mrr": 0.9285714285714286,
+          "ndcg_at_k": 0.8680932892905886,
+          "top1_accuracy": 0.8571428571428571
+        },
+        "rejection": {
+          "n": 2,
+          "correct_empty": 2,
+          "accuracy": 1.0,
+          "false_reject_rate": 0.0
+        },
+        "safety": {
+          "n": 2,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "all_zero": true
+        },
+        "latency": {
+          "rounds": 5,
+          "samples": 18,
+          "p50_ms": 2073.709599673748,
+          "p95_ms": 2098.039499949664,
+          "p99_ms": 2114.015799947083,
+          "mean_ms": 2076.782611095243
+        },
+        "cases": [
+          {
+            "case_id": "pub-home-bp-method",
+            "category": "quality",
+            "returned_ids": [
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-home-bp-target",
+            "category": "quality",
+            "returned_ids": [
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-salt-limit",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-exercise",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-stop-meds",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-missed-dose",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-emergency-signs",
+            "category": "quality",
+            "returned_ids": [
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+              "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+              "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-lifestyle-all",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-weight-loss",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "priv-hemoglobin",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-anemia",
+            "category": "quality",
+            "returned_ids": [
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-platelet",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-wbc-normal",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-red-cell",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-patient",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-tenant",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          }
+        ]
+      },
+      {
+        "threshold": 0.8,
+        "score_space": "cosinesimil",
+        "quality": {
+          "n": 14,
+          "hit_rate": 0.8571428571428571,
+          "recall_at_k": 0.7738095238095238,
+          "precision_at_k": 0.5595238095238095,
+          "mrr": 0.8214285714285714,
+          "ndcg_at_k": 0.7792306502665232,
+          "top1_accuracy": 0.7857142857142857
+        },
+        "rejection": {
+          "n": 2,
+          "correct_empty": 2,
+          "accuracy": 1.0,
+          "false_reject_rate": 0.07142857142857142
+        },
+        "safety": {
+          "n": 2,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "all_zero": true
+        },
+        "latency": {
+          "rounds": 5,
+          "samples": 18,
+          "p50_ms": 2073.6039001494646,
+          "p95_ms": 2121.808999683708,
+          "p99_ms": 2128.335400018841,
+          "mean_ms": 2083.0118500161916
+        },
+        "cases": [
+          {
+            "case_id": "pub-home-bp-method",
+            "category": "quality",
+            "returned_ids": [
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-home-bp-target",
+            "category": "quality",
+            "returned_ids": [
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-salt-limit",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+              "1f18737d-6471-4de4-a790-867fdf9034b8"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-exercise",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-stop-meds",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-missed-dose",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-emergency-signs",
+            "category": "quality",
+            "returned_ids": [
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+              "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+              "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-lifestyle-all",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "1f18737d-6471-4de4-a790-867fdf9034b8",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-weight-loss",
+            "category": "quality",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "pub-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "priv-hemoglobin",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-anemia",
+            "category": "quality",
+            "returned_ids": [
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-platelet",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-wbc-normal",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-red-cell",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-patient",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-tenant",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          }
+        ]
+      },
+      {
+        "threshold": 0.82,
+        "score_space": "cosinesimil",
+        "quality": {
+          "n": 14,
+          "hit_rate": 0.7857142857142857,
+          "recall_at_k": 0.7023809523809524,
+          "precision_at_k": 0.6071428571428571,
+          "mrr": 0.75,
+          "ndcg_at_k": 0.7078020788379517,
+          "top1_accuracy": 0.7142857142857143
+        },
+        "rejection": {
+          "n": 2,
+          "correct_empty": 2,
+          "accuracy": 1.0,
+          "false_reject_rate": 0.21428571428571427
+        },
+        "safety": {
+          "n": 2,
+          "permission_violations": 0,
+          "deletion_residuals": 0,
+          "review_leakage": 0,
+          "all_zero": true
+        },
+        "latency": {
+          "rounds": 5,
+          "samples": 18,
+          "p50_ms": 2073.3794001862407,
+          "p95_ms": 2096.5352999046445,
+          "p99_ms": 2100.1226999796927,
+          "mean_ms": 2075.539738871157
+        },
+        "cases": [
+          {
+            "case_id": "pub-home-bp-method",
+            "category": "quality",
+            "returned_ids": [
+              "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+              "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-home-bp-target",
+            "category": "quality",
+            "returned_ids": [
+              "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-salt-limit",
+            "category": "quality",
+            "returned_ids": [
+              "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+              "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-exercise",
+            "category": "quality",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "pub-stop-meds",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-missed-dose",
+            "category": "quality",
+            "returned_ids": [
+              "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-emergency-signs",
+            "category": "quality",
+            "returned_ids": [
+              "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+              "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-lifestyle-all",
+            "category": "quality",
+            "returned_ids": [
+              "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+              "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+              "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "pub-weight-loss",
+            "category": "quality",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "pub-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "priv-hemoglobin",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-anemia",
+            "category": "quality",
+            "returned_ids": [
+              "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-platelet",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-wbc-normal",
+            "category": "quality",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "priv-red-cell",
+            "category": "quality",
+            "returned_ids": [
+              "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+              "822690e4-42ad-474d-9851-4f6462c23168",
+              "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+            ],
+            "reason": null
+          },
+          {
+            "case_id": "priv-out-of-scope",
+            "category": "rejection",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-patient",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          },
+          {
+            "case_id": "sec-cross-tenant",
+            "category": "safety",
+            "returned_ids": [],
+            "reason": "insufficient_evidence"
+          }
+        ]
+      }
+    ]
+  },
+  "source_gap_audit": {
+    "run_at": "2026-10-13T07:17:44.182031+00:00",
+    "cases_file": "eval\\rag_cases.test.v2.1.jsonl",
+    "retrieval_results": "eval_out\\phase1_probe\\retrieval_eval_results.json",
+    "confirmed_source_gaps": [],
+    "retrieval_misses": [],
+    "gap_count": 0
+  },
+  "asset_audit": {
+    "case_count": 120,
+    "category_counts": {
+      "quality": 70,
+      "rejection": 30,
+      "safety": 20
+    },
+    "missing_gold_evidence_ids": [],
+    "missing_forbidden_evidence_ids": []
+  }
+}

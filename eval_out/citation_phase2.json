@@ -1,0 +1,436 @@
+{
+  "run_meta": {
+    "run_at": "2026-10-13T07:02:02.757394+00:00",
+    "reviewer": "俞家俊",
+    "runner": "scripts/evaluate_citation_claims.py"
+  },
+  "dataset_sha256": "f318f22e567300a35933c0069cfa60ade3fc407d6865fd07239eb442dbbc5cd2",
+  "counts": {
+    "claims": 30,
+    "evidence_links": 30,
+    "invalid_annotations": 0
+  },
+  "metrics": {
+    "grounded_claims": 30,
+    "valid_citations": 30,
+    "supported_claims": 20,
+    "contradicted_claims": 5,
+    "insufficient_claims": 5,
+    "citation_validity": 1.0,
+    "citation_accuracy": 1.0,
+    "citation_coverage": 1.0
+  },
+  "invalid_annotations": [],
+  "contradictions": [
+    "fc-021",
+    "fc-022",
+    "fc-023",
+    "fc-024",
+    "fc-025"
+  ],
+  "per_claim": [
+    {
+      "claim_id": "fc-001",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "valid_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-002",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "valid_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-003",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "valid_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-004",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "valid_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-005",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "valid_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-006",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "valid_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-007",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "valid_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-008",
+      "claim_kind": "other",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "valid_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-009",
+      "claim_kind": "applicability",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "valid_evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-010",
+      "claim_kind": "applicability",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "valid_evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-011",
+      "claim_kind": "applicability",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "valid_evidence_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-012",
+      "claim_kind": "other",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "valid_evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-013",
+      "claim_kind": "applicability",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "valid_evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-014",
+      "claim_kind": "other",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "valid_evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-015",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "valid_evidence_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-016",
+      "claim_kind": "numeric",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "valid_evidence_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-017",
+      "claim_kind": "applicability",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "valid_evidence_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-018",
+      "claim_kind": "applicability",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "valid_evidence_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-019",
+      "claim_kind": "other",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+      ],
+      "valid_evidence_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-020",
+      "claim_kind": "applicability",
+      "expected_verdict": "entailed",
+      "evidence_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "valid_evidence_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "invalid_evidence": [],
+      "supported": true
+    },
+    {
+      "claim_id": "fc-021",
+      "claim_kind": "numeric",
+      "expected_verdict": "contradicted",
+      "evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "valid_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-022",
+      "claim_kind": "numeric",
+      "expected_verdict": "contradicted",
+      "evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "valid_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-023",
+      "claim_kind": "numeric",
+      "expected_verdict": "contradicted",
+      "evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "valid_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-024",
+      "claim_kind": "numeric",
+      "expected_verdict": "contradicted",
+      "evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "valid_evidence_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-025",
+      "claim_kind": "numeric",
+      "expected_verdict": "contradicted",
+      "evidence_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "valid_evidence_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-026",
+      "claim_kind": "applicability",
+      "expected_verdict": "insufficient",
+      "evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "valid_evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-027",
+      "claim_kind": "applicability",
+      "expected_verdict": "insufficient",
+      "evidence_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "valid_evidence_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-028",
+      "claim_kind": "applicability",
+      "expected_verdict": "insufficient",
+      "evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "valid_evidence_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-029",
+      "claim_kind": "other",
+      "expected_verdict": "insufficient",
+      "evidence_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+      ],
+      "valid_evidence_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    },
+    {
+      "claim_id": "fc-030",
+      "claim_kind": "causal",
+      "expected_verdict": "insufficient",
+      "evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "valid_evidence_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "invalid_evidence": [],
+      "supported": false
+    }
+  ],
+  "index_snapshot": {
+    "public_index": "medical-rag-public-local",
+    "private_index": "medical-rag-private-local",
+    "matched_evidence_ids": [
+      "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+      "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+      "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+      "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+      "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+      "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+      "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+    ]
+  }
+}
