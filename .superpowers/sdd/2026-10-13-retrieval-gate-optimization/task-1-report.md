@@ -36,7 +36,7 @@ Result: **All checks passed**.
 ## Commits
 
 - `a4d4c86` — `fix retrieval score-space identity contract`
-- Documentation report commit follows after this file is written.
+- `1f07c27` — `docs: add score-space task report`
 
 ## Concerns
 
