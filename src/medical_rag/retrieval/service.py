@@ -38,6 +38,7 @@ REASON_UNAUTHORIZED_SCOPE = "unauthorized_scope"
 # ``score_space`` 取值域一致（09-24 spec §2.4）：缺省的 OpenSearch
 # ``knn_vector`` 是 ``l2_inv``（``1/(1+L2²)``），显式 ``cosinesimil`` 才是真余弦。
 _SCORE_SPACES = frozenset({"l2_inv", "cosinesimil"})
+_MAPPING_UNAVAILABLE = "mapping_unavailable"
 
 
 class RetrievalService:
@@ -63,8 +64,8 @@ class RetrievalService:
         self.index = index
         self.reranker = reranker
         self.consent_service = consent_service
-        # Deprecated compatibility parameter; score thresholds belong to the
-        # calibrated hybrid path and are intentionally not applied here.
+        # 已弃用的兼容参数；分数阈值属于
+        # 校准后的混合路径，有意不在此处施加。
         self.min_score = min_score
         self.embedding_model = embedding_model
         self.embedding_model_name = embedding_model_name
@@ -294,10 +295,10 @@ class RetrievalService:
         ):
             return self._retrieve_hybrid(query, context, private_allowed, started, embedding_error)
 
-        # A calibrated artifact is only valid when the candidate path exposes
-        # index/model provenance and the calibrated fused gate. Legacy
-        # single-call indexes cannot prove either, so fail closed instead of
-        # returning records from an unknown build.
+        # 只有当候选路径暴露索引/模型溯源
+        # 以及校准后的融合门禁时，校准工件才有效。遗留
+        # 的单次调用索引无法证明任一条件，因此 fail closed，
+        # 而不是返回来自未知构建的记录。
         if self.calibration_artifact is not None:
             return RetrievalResult(
                 items=[],
@@ -349,6 +350,7 @@ class RetrievalService:
                     tenant_id=record.tenant_id,
                     patient_id=record.patient_id,
                     document_id=record.document_id,
+                    locator=record.locator,
                     # 父子块上下文扩展（Task 9）依赖该字段分组；丢失它会让
                     # expand_with_parents 把所有命中归入 None 桶，扩展变成 no-op。
                     parent_block_id=record.parent_block_id,
@@ -465,6 +467,59 @@ class RetrievalService:
             if self._is_authorized(record, context)
             and self._has_citation(record.citation)
         ]
+        vector_spaces = {record.vector_score_space for record in vector if record.vector_score_space}
+        if vector:
+            diagnostics["vector_score_space"] = (
+                sorted(vector_spaces)[0]
+                if len(vector_spaces) == 1
+                else (sorted(vector_spaces) if vector_spaces else "unknown")
+            )
+        mapping_score_space: str | None = None
+        resolver = getattr(self.index, "resolve_vector_score_space", None)
+        if vector_attempted and not vector_errored:
+            if callable(resolver):
+                try:
+                    resolved = resolver()
+                except Exception:
+                    resolved = _MAPPING_UNAVAILABLE
+                mapping_score_space = (
+                    resolved if isinstance(resolved, str) else _MAPPING_UNAVAILABLE
+                )
+            elif len(vector_spaces) == 1:
+                # Legacy test/development indexes have no physical mapping seam;
+                # use their record annotation for compatibility while production
+                # OpenSearchStore always exposes the resolver above.
+                mapping_score_space = next(iter(vector_spaces))
+        diagnostics["mapping_score_space"] = mapping_score_space
+        score_space_match: bool | None = None
+        if (
+            self.gate_policy is GatePolicy.COSINE_ABSOLUTE
+            and vector_attempted
+            and not vector_errored
+            and (callable(resolver) or bool(vector))
+        ):
+            expected = self.score_space
+            mapping_ok = mapping_score_space in _SCORE_SPACES and mapping_score_space == expected
+            records_ok = bool(vector) and all(
+                record.vector_score_space == expected for record in vector
+            )
+            # Empty vector responses carry no record identity; the mapping identity
+            # remains sufficient to validate the gate for this query.
+            if not vector:
+                records_ok = mapping_ok
+            score_space_match = mapping_ok and records_ok
+            diagnostics["score_space_match"] = score_space_match
+            if not score_space_match:
+                diagnostics["status"] = "degraded"
+                stage_elapsed = diagnostics.get("stage_elapsed_ms")
+                if isinstance(stage_elapsed, dict):
+                    stage_elapsed["total"] = (perf_counter() - started) * 1000
+                return RetrievalResult(
+                    items=[],
+                    reason=REASON_CALIBRATION_MISMATCH,
+                    diagnostics=diagnostics,
+                )
+        diagnostics["score_space_match"] = score_space_match
         if self.calibration_artifact is not None:
             artifact = self.calibration_artifact
             breaking = [
@@ -504,13 +559,6 @@ class RetrievalService:
         # **之前**取样：门禁会改写 vector 集合，语义标注应反映原始候选。
         # 任何消费者在对 vector_score 做阈值/比较前都必须先看这个字段；
         # ``unknown`` 表示语义未知（内存索引等非生产实现），不得用于门禁。
-        vector_spaces = {record.vector_score_space for record in vector if record.vector_score_space}
-        if vector:
-            diagnostics["vector_score_space"] = (
-                sorted(vector_spaces)[0]
-                if len(vector_spaces) == 1
-                else (sorted(vector_spaces) if vector_spaces else "unknown")
-            )
         # --- 余弦相关性门禁（09-24 spec §4.3 / §6.1）---------------------------
         # 落点在 ACL/引用过滤之后、RRF 融合之前：门禁是「相关性准入」，只做
         # 减法（I1）。融合只看到相关候选，RRF 排名不被不相关内容干扰。
@@ -645,6 +693,7 @@ class RetrievalService:
                     tenant_id=record.tenant_id,
                     patient_id=record.patient_id,
                     document_id=record.document_id,
+                    locator=record.locator,
                     # Task 9 父子块扩展按该字段分组并调用 search_by_parent；
                     # 不传就等价于关闭上下文扩展（静默 no-op）。
                     parent_block_id=record.parent_block_id,
