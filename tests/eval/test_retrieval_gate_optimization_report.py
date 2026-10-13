@@ -51,6 +51,8 @@ def _retrieval(tmp_path: Path) -> Path:
                 "score_space": "cosinesimil",
                 "mapping_score_space": "cosinesimil",
                 "record_score_space": "cosinesimil",
+                "cosine_threshold": 0.76,
+                "vector_only_cosine_threshold": 0.8,
             },
             "configs": [
                 {
@@ -113,7 +115,10 @@ def _attribution(tmp_path: Path) -> Path:
             },
             "counts": {"total": 2, "manual_review": 1},
             "unresolved_manual_review": ["q"],
-            "per_case": [{"case_id": "q", "labels": ["manual_review"]}],
+            "per_case": [
+                {"case_id": "q", "labels": ["manual_review"]},
+                {"case_id": "r", "labels": ["manual_review"]},
+            ],
         },
     )
 
@@ -146,3 +151,27 @@ def test_valid_combined_artifacts_preserve_labels_and_denominators(tmp_path: Pat
     assert report["failure_attribution"]["counts"]["total"] == 2
     assert report["failure_attribution"]["unresolved_manual_review"] == ["q"]
     assert report["identities"]["mapping_score_space"] == "cosinesimil"
+
+
+def test_committed_artifacts_are_privacy_safe() -> None:
+    paths = [
+        Path("eval_out/phase3_final_retrieval/retrieval_eval_results.json"),
+        Path("eval_out/phase3_failure_attribution.json"),
+        Path("eval_out/phase3_final_evaluation_manifest.json"),
+    ]
+    forbidden_keys = {"question", "gold", "forbidden", "note", "evidence_text", "vector", "embedding"}
+
+    def walk(value: object) -> None:
+        if isinstance(value, dict):
+            assert not forbidden_keys.intersection(value), f"forbidden keys: {forbidden_keys.intersection(value)}"
+            for nested in value.values():
+                walk(nested)
+        elif isinstance(value, list):
+            for nested in value:
+                walk(nested)
+
+    for path in paths:
+        payload = path.read_text(encoding="utf-8")
+        assert "question" not in payload
+        assert "WHO 页面如何定义成人高血压" not in payload
+        walk(json.loads(payload))

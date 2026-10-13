@@ -51,6 +51,18 @@ def build_report(
     snapshot = citation.get("index_snapshot", {})
     if snapshot and (snapshot.get("public_index") != public_index or snapshot.get("private_index") != private_index):
         raise ValueError("citation index identity mismatch")
+    citation_meta = citation.get("run_meta", {})
+    citation_hash = str(citation.get("dataset_sha256", ""))
+    citation_test_hash = citation.get("test_dataset_sha256") or citation_meta.get("test_dataset_sha256")
+    citation_kind = str(citation.get("dataset_kind", citation_meta.get("dataset_kind", "claims")))
+    if citation_test_hash and str(citation_test_hash) != expected_hash:
+        raise ValueError("citation test dataset hash mismatch")
+    if citation_kind in {"test", "frozen_test"} and citation_hash and citation_hash != expected_hash:
+        raise ValueError("citation dataset hash mismatch")
+    counts = citation.get("counts", {})
+    for name in ("claims", "evidence_links", "invalid_annotations"):
+        if name in counts and (not isinstance(counts[name], int) or counts[name] < 0):
+            raise ValueError("citation counts invalid")
     threshold = _read(Path(threshold_result)) if threshold_result else None
     if threshold:
         threshold_meta = threshold.get("run_meta", threshold)
@@ -63,6 +75,18 @@ def build_report(
             raise ValueError("threshold score space mismatch")
         threshold_embedding = threshold_meta.get("embedding_model", threshold.get("embedding_model"))
         if threshold_embedding and retrieval_meta.get("embedding_model") and threshold_embedding != retrieval_meta.get("embedding_model"):
+            raise ValueError("threshold embedding model mismatch")
+        for scope, key in (("public", "public_index_version"), ("private", "private_index_version")):
+            version = threshold_meta.get(key)
+            known_versions = index_metadata.get(scope, {}).get("index_versions", [])
+            if version and known_versions and version not in known_versions:
+                raise ValueError("threshold index version mismatch")
+        known_models = {
+            model
+            for scope in ("public", "private")
+            for model in index_metadata.get(scope, {}).get("embedding_models", [])
+        }
+        if threshold_embedding and known_models and threshold_embedding not in known_models:
             raise ValueError("threshold embedding model mismatch")
     selected = _selected_config(retrieval)
     selected_cfg = selected.get("config", {})
@@ -78,6 +102,22 @@ def build_report(
         "vector_only_cosine_threshold",
         selected.get("vector_only_cosine_threshold", selected_thresholds.get("vector_only_cosine_threshold")),
     )
+    if threshold:
+        required_identity = {
+            "cosine_threshold": retrieval_meta.get("cosine_threshold"),
+            "vector_only_cosine_threshold": retrieval_meta.get("vector_only_cosine_threshold"),
+            "mapping_score_space": retrieval_meta.get("mapping_score_space"),
+            "record_score_space": retrieval_meta.get("record_score_space"),
+            "score_space": retrieval_meta.get("score_space"),
+        }
+        if any(value is None for value in required_identity.values()):
+            raise ValueError("retrieval threshold identity is incomplete")
+        if base_threshold is None or vector_threshold is None:
+            raise ValueError("threshold identity is incomplete")
+        if float(required_identity["cosine_threshold"]) != float(base_threshold) or float(required_identity["vector_only_cosine_threshold"]) != float(vector_threshold):
+            raise ValueError("retrieval threshold identity mismatch")
+        if required_identity["score_space"] != "cosinesimil" or required_identity["mapping_score_space"] != required_identity["record_score_space"]:
+            raise ValueError("retrieval score space identity mismatch")
     if config_base is not None and base_threshold is not None and float(config_base) != float(base_threshold):
         raise ValueError("selected threshold identity mismatch")
     if config_vector is not None and vector_threshold is not None and float(config_vector) != float(vector_threshold):
@@ -90,9 +130,9 @@ def build_report(
     mapping_score_space = next(iter(mapping_spaces), None)
     if len(mapping_spaces) > 1:
         raise ValueError("mapping score space mismatch")
-    record_score_space = retrieval_meta.get("record_score_space") or retrieval_meta.get("score_space")
-    if threshold:
-        record_score_space = threshold_meta.get("score_space", record_score_space)
+    record_score_space = retrieval_meta.get("record_score_space")
+    if threshold and not record_score_space:
+        raise ValueError("record score space identity is missing")
     if mapping_score_space and record_score_space and mapping_score_space != record_score_space:
         raise ValueError("record score space mismatch")
     attribution = _read(Path(failure_attribution)) if failure_attribution else None
@@ -109,6 +149,20 @@ def build_report(
             if observed and expected and observed != expected:
                 raise ValueError(f"failure attribution {key} mismatch")
     selected_cases = list(selected.get("cases", []))
+    case_ids = {str(row.get("case_id")) for row in selected_cases if row.get("case_id") is not None}
+    if threshold and (len(case_ids) != len(selected_cases) or len(selected_cases) != int(assets.get("case_count", len(selected_cases)))):
+        raise ValueError("retrieval case set/count mismatch")
+    if attribution and threshold:
+        per_case = attribution.get("per_case", [])
+        attribution_ids = [str(row.get("case_id")) for row in per_case if isinstance(row, dict)]
+        if len(attribution_ids) != len(set(attribution_ids)) or set(attribution_ids) != case_ids:
+            raise ValueError("failure attribution case IDs mismatch")
+        attribution_counts = attribution.get("counts", {})
+        if attribution_counts.get("total") != len(case_ids):
+            raise ValueError("failure attribution denominator mismatch")
+        unresolved = set(str(value) for value in attribution.get("unresolved_manual_review", []))
+        if not unresolved.issubset(case_ids):
+            raise ValueError("failure attribution unresolved IDs mismatch")
     quality_cases = [row for row in selected_cases if row.get("category") == "quality"]
     rejection_cases = [row for row in selected_cases if row.get("category") == "rejection"]
     selected_rejection = dict(selected.get("rejection", {}))
@@ -125,6 +179,14 @@ def build_report(
     )
     source_gaps = _read(Path(source_gap_audit)) if source_gap_audit else None
     pre_config = next((item for item in retrieval.get("configs", []) if item.get("name") in {"A3-hybrid-rrf60", "A3-hybrid-rrf60-gate"}), None)
+    if pre_config:
+        pre_cases = list(pre_config.get("cases", []))
+        pre_quality = [row for row in pre_cases if row.get("category") == "quality"]
+        pre_rejection = dict(pre_config.get("rejection", {}))
+        pre_rejection["false_reject_rate"] = (
+            sum(1 for row in pre_quality if not row.get("returned_ids")) / len(pre_quality) if pre_quality else 0.0
+        )
+        pre_config = {**pre_config, "rejection": pre_rejection}
     return {
         "run_meta": {
             "run_at": datetime.now(timezone.utc).isoformat(),
@@ -140,6 +202,8 @@ def build_report(
             "mapping_score_space": mapping_score_space,
             "record_score_space": record_score_space,
             "score_space": record_score_space,
+            "public_index_version": threshold_meta.get("public_index_version") if threshold else None,
+            "private_index_version": threshold_meta.get("private_index_version") if threshold else None,
         },
         "selected_thresholds": {
             "cosine_threshold": base_threshold,
@@ -158,7 +222,7 @@ def build_report(
             "pre": pre_config or {},
             "post": {**selected, "rejection": selected_rejection},
         },
-        "citation": citation,
+        "citation": {**citation, "identity": {"dataset_kind": citation_kind, "dataset_sha256": citation_hash or None, "test_dataset_sha256": citation_test_hash or None}},
         "threshold": threshold,
         "failure_attribution": attribution,
         "source_gap_audit": source_gaps,
@@ -174,6 +238,25 @@ def build_report(
 def _markdown(report: dict[str, object]) -> str:
     retrieval = report["retrieval"]
     citation = report["citation"]
+    pre = retrieval.get("pre", {})
+    post = retrieval.get("post", {})
+
+    def metric_lines(label: str, value: dict[str, object]) -> list[str]:
+        quality = value.get("quality", {})
+        rejection = value.get("rejection", {})
+        safety = value.get("safety", {})
+        latency = value.get("latency", {})
+        return [
+            f"- {label} Recall@3：{quality.get('recall_at_k')}",
+            f"- {label} Precision@3：{quality.get('precision_at_k')}",
+            f"- {label} MRR：{quality.get('mrr')}",
+            f"- {label} nDCG@3：{quality.get('ndcg_at_k')}",
+            f"- {label} 拒答准确率：{rejection.get('accuracy')}",
+            f"- {label} 误拒率：{rejection.get('false_reject_rate')}",
+            f"- {label} 安全：{safety}",
+            f"- {label} 延迟：p50={latency.get('p50_ms')} ms，p95={latency.get('p95_ms')} ms，p99={latency.get('p99_ms')} ms",
+        ]
+
     return "\n".join(
         [
             "# 医疗 RAG 检索评测报告（2026-10-13）",
@@ -187,13 +270,8 @@ def _markdown(report: dict[str, object]) -> str:
             "## 检索与拒答",
             "",
             f"- 配置：`{retrieval['config']}`",
-            f"- Recall@3：{retrieval['quality'].get('recall_at_k')}",
-            f"- Precision@3：{retrieval['quality'].get('precision_at_k')}",
-            f"- MRR：{retrieval['quality'].get('mrr')}",
-            f"- nDCG@3：{retrieval['quality'].get('ndcg_at_k')}",
-            f"- 拒答准确率：{retrieval['rejection'].get('accuracy')}",
-            f"- 误拒率：{retrieval['rejection'].get('false_reject_rate')}",
-            f"- 安全全零：{retrieval['safety'].get('all_zero')}",
+            *metric_lines("pre", pre),
+            *metric_lines("post", post),
             f"- answerable 误拒：{retrieval['failure_summary'].get('quality_false_rejects')} 条；拒答误接纳：{retrieval['failure_summary'].get('rejection_false_accepts')} 条",
             f"- pre/post：{retrieval.get('pre', {}).get('name', 'unavailable')} → {retrieval.get('post', {}).get('name', retrieval.get('config'))}",
             f"- 延迟：p50={retrieval['latency'].get('p50_ms')} ms，p95={retrieval['latency'].get('p95_ms')} ms，p99={retrieval['latency'].get('p99_ms')} ms",

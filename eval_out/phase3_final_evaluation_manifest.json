@@ -1,6 +1,6 @@
 {
   "run_meta": {
-    "run_at": "2026-10-13T12:23:46.073212+00:00",
+    "run_at": "2026-10-13T12:41:34.430131+00:00",
     "dataset_sha256": "ed33014ce05d20b8cf98eb915833183a8e9284691eb996d71be89b9a90c20e5b",
     "case_count": 120,
     "frozen_test": true
@@ -12,7 +12,9 @@
     "embedding_dimensions": 512,
     "mapping_score_space": "cosinesimil",
     "record_score_space": "cosinesimil",
-    "score_space": "cosinesimil"
+    "score_space": "cosinesimil",
+    "public_index_version": "public-v1",
+    "private_index_version": "private-v1"
   },
   "selected_thresholds": {
     "cosine_threshold": 0.76,
@@ -82,7 +84,8 @@
       "rejection": {
         "n": 30,
         "correct_empty": 0,
-        "accuracy": 0.0
+        "accuracy": 0.0,
+        "false_reject_rate": 0.0
       },
       "safety": {
         "n": 20,
@@ -2550,7 +2553,10 @@
         "rrf_k": 60,
         "candidate_limit": 50,
         "gate": true,
-        "top_k": 3
+        "top_k": 3,
+        "cosine_threshold": 0.76,
+        "vector_only_cosine_threshold": 0.8,
+        "score_space": "cosinesimil"
       },
       "description": "真实链路配置",
       "quality": {
@@ -5339,6 +5345,11 @@
         "8c09dd65-8322-4ffd-b665-73d136b31b7a",
         "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
       ]
+    },
+    "identity": {
+      "dataset_kind": "claims",
+      "dataset_sha256": "f318f22e567300a35933c0069cfa60ade3fc407d6865fd07239eb442dbbc5cd2",
+      "test_dataset_sha256": null
     }
   },
   "threshold": {
