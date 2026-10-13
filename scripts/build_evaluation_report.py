@@ -72,8 +72,12 @@ def build_report(
         "vector_only_cosine_threshold",
         threshold.get("vector_only_cosine_threshold") if threshold else None,
     )
-    config_base = selected_cfg.get("cosine_threshold")
-    config_vector = selected_cfg.get("vector_only_cosine_threshold")
+    selected_thresholds = selected.get("selected_thresholds", {})
+    config_base = selected_cfg.get("cosine_threshold", selected.get("cosine_threshold", selected_thresholds.get("cosine_threshold")))
+    config_vector = selected_cfg.get(
+        "vector_only_cosine_threshold",
+        selected.get("vector_only_cosine_threshold", selected_thresholds.get("vector_only_cosine_threshold")),
+    )
     if config_base is not None and base_threshold is not None and float(config_base) != float(base_threshold):
         raise ValueError("selected threshold identity mismatch")
     if config_vector is not None and vector_threshold is not None and float(config_vector) != float(vector_threshold):
