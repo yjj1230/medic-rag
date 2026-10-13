@@ -1,8 +1,7 @@
-"""Deterministic retrieval evaluation and privacy-safe metrics.
+"""确定性检索评测与隐私安全指标。
 
-The evaluation helpers operate on identifiers and metadata only.  In
-particular, a retrieval result's passage text is never copied into the
-recorder, making this module safe to use for patient-data diagnostics.
+评测辅助函数只操作标识符和元数据。尤其是，检索结果的正文绝不会被复制进
+记录器，因此本模块用于患者数据诊断是安全的。
 """
 
 from __future__ import annotations
@@ -14,23 +13,23 @@ import re
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping, Sequence
 
-# Score spaces a calibrated absolute threshold may live in.  ``l2_inv`` is
-# OpenSearch's default ``knn_vector`` behaviour (``space_type`` unset → ``l2``,
-# ``_score`` = ``1 / (1 + L2²)``); ``cosinesimil`` is true cosine similarity.
-# The two coincide numerically only at 0.5, so a threshold is meaningless
-# without the space it was measured in (09-24 spec §2.4).
+# 校准后的绝对阈值可能所处的分数空间。``l2_inv`` 是
+# OpenSearch ``knn_vector`` 的默认行为（未设 ``space_type`` → ``l2``，
+# ``_score`` = ``1 / (1 + L2²)``）；``cosinesimil`` 才是真余弦相似度。
+# 两者仅在 0.5 处数值重合，因此一个阈值若不含
+# 它所处的分数空间就没有意义（09-24 spec §2.4）。
 _SCORE_SPACES = frozenset({"l2_inv", "cosinesimil"})
 
-# Visibility values used for per-index calibration dispatch.  Kept as plain
-# strings so this module stays independent of ``retrieval.contracts`` (which
-# imports from here) and cannot introduce an import cycle.
+# 用于按索引分派校准的可见性取值。保持为普通
+# 字符串，使本模块不依赖 ``retrieval.contracts``（后者
+# 从本模块导入），从而不会引入循环导入。
 _VISIBILITY_PUBLIC = "public"
 _VISIBILITY_PRIVATE = "private"
 
 
 @dataclass(frozen=True, slots=True)
 class EvaluationCase:
-    """A synthetic, deterministic retrieval evaluation case."""
+    """一个合成、确定性的检索评测用例。"""
 
     id: str
     question: str
@@ -45,7 +44,7 @@ class EvaluationCase:
 
     @classmethod
     def from_json(cls, data: Mapping[str, Any]) -> "EvaluationCase":
-        """Build a case from a decoded JSON object with strict basics."""
+        """从已解码的 JSON 对象构建用例，并做严格的基础校验。"""
         case_id = str(data["id"])
         question = str(data["question"])
         if not question.strip():
@@ -72,7 +71,7 @@ class EvaluationCase:
 
 @dataclass(frozen=True, slots=True)
 class RetrievalMetrics:
-    """Per-case retrieval quality and zero-tolerance safety measurements."""
+    """单用例的检索质量与零容忍安全度量。"""
 
     hit_rate: float
     recall_at_k: float
@@ -80,18 +79,18 @@ class RetrievalMetrics:
     permission_violations: int = 0
     deletion_residuals: int = 0
     review_required_leakage: int = 0
-    # The ranked-list cutoff this evaluation actually used (see
-    # ``evaluate_retrieval``); hits beyond it were not counted.
+    # 本次评测实际使用的有序列表截断点（见
+    # ``evaluate_retrieval``）；超出它的命中不计入。
     k: int = 0
-    # Binary-relevance nDCG@k: measures *ranking* quality, which recall cannot.
+    # 二元相关性 nDCG@k：度量的是*排序*质量，这是召回率无法反映的。
     ndcg_at_k: float = 0.0
 
 
 def _ndcg_at_k(ranked: Sequence[str], gold: set[str]) -> float:
-    """Binary-relevance nDCG@k over a ranked list of evidence ids.
+    """基于有序证据 id 列表的二元相关性 nDCG@k。
 
-    Duplicated ids contribute at most once: counting the same relevant document
-    twice would let a retriever inflate its own score by repeating a hit.
+    重复的 id 至多计入一次：把同一份相关文档计两次会让检索器通过重复命中
+    来抬高自己的分数。
     """
     if not gold or not ranked:
         return 0.0
@@ -111,17 +110,15 @@ def _ndcg_at_k(ranked: Sequence[str], gold: set[str]) -> float:
 def evaluate_retrieval(
     case: EvaluationCase, evidence_ids: Iterable[str], *, k: int | None = None
 ) -> RetrievalMetrics:
-    """Evaluate ordered evidence IDs for one case.
+    """对某个用例的有序证据 ID 做评测。
 
-    ``hit_rate`` is 1 when at least one gold item is present in the returned
-    list.  For a no-evidence case it is 1 when no evidence is returned.  The
-    same convention makes empty-gold cases useful as explicit refusal tests.
+    当返回列表中存在至少一个 gold 项时 ``hit_rate`` 为 1。对于无证据用例，
+    当没有返回证据时为 1。同一约定使空 gold 用例可被用作显式的拒答测试。
 
-    ``k`` is the ranked-list cutoff.  It defaults to the number of ids supplied
-    (the legacy behaviour, so existing callers keep their numbers).  Hits beyond
-    the cutoff are ignored, and ``recall_at_k`` divides by ``min(k, |gold|)`` so
-    that finding every reachable relevant item within the cutoff is a perfect
-    score rather than a fraction.
+    ``k`` 是有序列表的截断点。它默认等于所提供的 id 数量（旧有行为，因此既有
+    调用方的数值保持不变）。超过截断点的命中被忽略，且 ``recall_at_k`` 除以
+    ``min(k, |gold|)``，从而使在截断点内找齐每一个可达相关项即为满分，而不是
+    一个分数值。
     """
     returned = tuple(str(value) for value in evidence_ids)
     cutoff = len(returned) if k is None else max(0, int(k))
@@ -140,8 +137,8 @@ def evaluate_retrieval(
         mrr = hit
         ndcg = hit
 
-    # Count occurrences: duplicate residuals/violations are still separate
-    # returned hits and must not be hidden by set conversion.
+    # 统计出现次数：重复的残留项/违规仍是各自独立的
+    # 返回命中，不能被集合去重掩盖。
     forbidden = set(case.forbidden_evidence_ids)
     deleted = set(case.deleted_evidence_ids)
     review_required = set(case.review_required_evidence_ids)
@@ -162,26 +159,24 @@ def evaluate_retrieval(
 
 @dataclass(frozen=True, slots=True)
 class CalibrationArtifact:
-    """Immutable calibration metadata bound to one physical index build.
+    """绑定到某一次物理索引构建的不可变校准元数据。
 
-    The artifact deliberately carries only identifiers and gate parameters;
-    evaluation evidence remains a separate, privacy-safe metrics payload.
+    该工件有意只携带标识符与门禁参数；评测证据仍是一份独立、隐私安全的指标载荷。
 
-    ``embedding_model`` must equal the configured ``EMBEDDING_MODEL`` exactly.
-    ``RetrievalService`` compares it both against the query-side model name and
-    per returned record, so a version-pinned spelling such as
-    ``text-embedding-3-small@2026-01`` can never match and would make the
-    strictly gated path unusable.  This docstring previously recommended exactly
-    that spelling, which contradicted the check.
+    ``embedding_model`` 必须与已配置的 ``EMBEDDING_MODEL`` 完全相等。
+    ``RetrievalService`` 会把它同时与查询侧模型名和每条返回记录做比较，因此像
+    ``text-embedding-3-small@2026-01`` 这样带版本固定的拼写永远无法匹配，会让
+    严格门禁路径不可用。本 docstring 此前恰好推荐了那种拼写，
+    与该检查自相矛盾。
     """
 
     index_version: str
     embedding_model: str
     rrf_k: int
-    # Semantics unchanged: the RRF-normalised fused-score threshold.  The
-    # cosine gate below is a *separate* field precisely so an existing deployed
-    # artifact's ``threshold=0.42`` never silently changes meaning from "RRF
-    # 0.42" to "vector score 0.42" (09-24 spec §5.2).
+    # 语义不变：RRF 归一化后的融合分数阈值。下方的
+    # 余弦门禁是一个*独立*字段，正是为了让已部署工件里
+    # 既有的 ``threshold=0.42`` 不会从"RRF
+    # 0.42"悄悄变成"向量分数 0.42"的含义（09-24 spec §5.2）。
     threshold: float
     eval_dataset_version: str
     # --- 余弦相关性门禁（09-24 / 09-28 spec，可选；同时存在即启用）---------
@@ -193,6 +188,9 @@ class CalibrationArtifact:
     # ``index_version``，因此旧 artifact 行为逐字节不变。
     public_index_version: str | None = None
     private_index_version: str | None = None
+    # Optional stricter threshold for candidates returned only by the vector
+    # path.  When omitted, the base cosine threshold applies to those rows too.
+    vector_only_cosine_threshold: float | None = None
 
     def __post_init__(self) -> None:
         for name in ("index_version", "embedding_model", "eval_dataset_version"):
@@ -218,6 +216,17 @@ class CalibrationArtifact:
                     "cosine_threshold requires score_space "
                     "(a threshold without its numeric space is meaningless)"
                 )
+        if self.vector_only_cosine_threshold is not None:
+            if isinstance(self.vector_only_cosine_threshold, bool) or not isinstance(
+                self.vector_only_cosine_threshold, (int, float)
+            ):
+                raise ValueError("vector_only_cosine_threshold must be numeric")
+            if not 0.0 <= float(self.vector_only_cosine_threshold) <= 1.0:
+                raise ValueError("vector_only_cosine_threshold must be between 0 and 1")
+            if self.cosine_threshold is None:
+                raise ValueError(
+                    "vector_only_cosine_threshold requires cosine_threshold"
+                )
         if self.score_space is not None:
             if self.score_space not in _SCORE_SPACES:
                 raise ValueError(f"score_space must be one of {sorted(_SCORE_SPACES)}")
@@ -234,17 +243,16 @@ class CalibrationArtifact:
 
     @property
     def uses_cosine_gate(self) -> bool:
-        """True when this artifact enables the candidate-level cosine gate."""
+        """当该工件启用候选级余弦门禁时为 True。"""
 
         return self.cosine_threshold is not None
 
     def expected_index_version_for(self, visibility: str) -> str | None:
-        """Index version a record of ``visibility`` must match.
+        """``visibility`` 的记录必须匹配的索引版本。
 
-        Legacy artifacts (no per-index versions) fall back to the single global
-        ``index_version``, so their behaviour is unchanged.  A visibility that
-        is not a known value returns ``None`` so the caller fails closed rather
-        than silently skipping the provenance check.
+        遗留工件（无按索引版本）回落到唯一的全局
+        ``index_version``，因此其行为不变。未知的 visibility 取值返回 ``None``，
+        使调用方 fail closed，而不是静默跳过溯源检查。
         """
 
         if self.public_index_version is None and self.private_index_version is None:
@@ -258,7 +266,7 @@ class CalibrationArtifact:
 
 @dataclass(frozen=True, slots=True)
 class RolloutDecision:
-    """Bounded, side-effect-free decision returned by :class:`RolloutGate`."""
+    """:class:`RolloutGate` 返回的有界、无副作用决策。"""
 
     decision: str
     reasons: tuple[str, ...] = ()
@@ -268,7 +276,7 @@ class RolloutDecision:
 
     @property
     def action(self) -> str:
-        """Compatibility alias for callers that call a decision an action."""
+        """为把决策称为动作的调用方提供的兼容别名。"""
 
         return self.decision
 
@@ -294,12 +302,11 @@ class RolloutDecision:
 
 
 class RolloutGate:
-    """Compare an evaluated candidate against a calibrated baseline.
+    """把已评测的候选与校准基线做比较。
 
-    Inputs may be ``{"artifact": artifact, "metrics": metrics}`` mappings,
-    objects exposing those two attributes, or ``(artifact, metrics)`` pairs.
-    The gate returns no alias/controller operation; promotion is an explicit
-    operator action after this decision is reviewed.
+    输入可以是 ``{"artifact": artifact, "metrics": metrics}`` 映射、
+    暴露这两个属性的对象，或 ``(artifact, metrics)`` 元组。门禁不返回别名/控制器
+    操作；在本决策经复核后，晋级是一次显式的运维操作。
     """
 
     _SECURITY_KEYS = (
@@ -431,13 +438,13 @@ class RolloutGate:
 
 @dataclass(slots=True)
 class MetricsRecorder:
-    """In-memory privacy-safe recorder suitable for tests and request scope."""
+    """适合测试与请求作用域的内存、隐私安全记录器。"""
 
     retrievals: list[dict[str, object]] = field(default_factory=list)
     reconciliations: list[dict[str, object]] = field(default_factory=list)
 
     def record_reconciliation(self, **metadata: object) -> None:
-        """Record bounded reconciliation counters/identifiers only."""
+        """只记录有界的对账计数器/标识符。"""
 
         allowed = {
             "scope", "scanned", "residuals", "repaired", "failed", "reason",
@@ -451,7 +458,7 @@ class MetricsRecorder:
         return tuple(MappingProxyType(dict(item)) for item in self.reconciliations)
 
     def record_retrieval(self, result: Any) -> None:
-        """Record only identifiers, scores, and allow-listed metadata."""
+        """只记录标识符、分数和白名单内的元数据。"""
         items = getattr(result, "items", ())
         reason = getattr(result, "reason", None)
         self.retrievals.append(
@@ -473,10 +480,10 @@ class MetricsRecorder:
         return tuple(snapshots)
 
 
-# Reason strings that may be recorded verbatim.  Anything else is hashed, so a
-# missing entry turns a diagnosable failure ("retrieval_unavailable") into an
-# opaque digest in monitoring.  tests/unit/test_chat_route_and_metric_reasons.py
-# fails if retrieval.service declares a reason that is absent here.
+# 可以逐字记录的原因字符串。其他一律做哈希，因此
+# 缺一个条目会把可诊断的失败（"retrieval_unavailable"）变成监控里
+# 不透明的摘要。tests/unit/test_chat_route_and_metric_reasons.py
+# 会在 retrieval.service 声明了此处缺失的原因时失败。
 _SAFE_REASONS = {
     None,
     "insufficient_evidence",
@@ -505,7 +512,7 @@ def _safe_identifier(value: object) -> str:
 
 
 def _safe_diagnostics(diagnostics: Mapping[str, object] | None) -> dict[str, object]:
-    """Keep only known metadata; never retain arbitrary diagnostic text."""
+    """只保留已知元数据；绝不保留任意诊断文本。"""
     safe: dict[str, object] = {}
     for key, value in (diagnostics or {}).items():
         key = str(key)
@@ -534,5 +541,5 @@ def _safe_diagnostics(diagnostics: Mapping[str, object] | None) -> dict[str, obj
     return safe
 
 
-# Compatibility name used by the original observability plan.
+# 原始可观测方案使用的兼容名称。
 Metrics = MetricsRecorder

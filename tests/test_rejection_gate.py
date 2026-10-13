@@ -619,6 +619,16 @@ def test_artifact_rejects_cosine_threshold_without_score_space():
         _artifact(cosine_threshold=0.5)
 
 
+def test_artifact_rejects_vector_only_threshold_without_cosine_gate():
+    with pytest.raises(ValueError):
+        _artifact(vector_only_cosine_threshold=0.75)
+
+
+def test_artifact_accepts_vector_only_threshold_with_cosine_gate():
+    artifact = _artifact(cosine_threshold=0.5, score_space="l2_inv", vector_only_cosine_threshold=0.75)
+    assert artifact.vector_only_cosine_threshold == pytest.approx(0.75)
+
+
 def test_artifact_rejects_score_space_without_cosine_threshold():
     with pytest.raises(ValueError):
         _artifact(score_space="l2_inv")

@@ -5,6 +5,7 @@
   "threshold": 0.42,
   "eval_dataset_version": "rag_cases.dev.jsonl:2026-10-13",
   "cosine_threshold": 0.78,
+  "vector_only_cosine_threshold": null,
   "score_space": "cosinesimil",
   "public_index_version": "public-v1",
   "private_index_version": "private-v1"

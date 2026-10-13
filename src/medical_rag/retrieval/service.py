@@ -58,6 +58,7 @@ class RetrievalService:
         fused_score_threshold: float | None = None,
         rank_gate: int | None = None,
         cosine_threshold: float | None = None,
+        vector_only_cosine_threshold: float | None = None,
         score_space: str | None = None,
         calibration_artifact: CalibrationArtifact | None = None,
     ) -> None:
@@ -117,6 +118,19 @@ class RetrievalService:
                     "cosine_threshold must not be combined with "
                     "fused_score_threshold or rank_gate"
                 )
+        if vector_only_cosine_threshold is not None:
+            if isinstance(vector_only_cosine_threshold, bool) or not isinstance(
+                vector_only_cosine_threshold, (int, float)
+            ):
+                raise ValueError("vector_only_cosine_threshold must be numeric")
+            if not 0.0 <= float(vector_only_cosine_threshold) <= 1.0:
+                raise ValueError("vector_only_cosine_threshold must be between 0 and 1")
+            if cosine_threshold is None and not (
+                calibration_artifact is not None and calibration_artifact.uses_cosine_gate
+            ):
+                raise ValueError(
+                    "vector_only_cosine_threshold requires a cosine gate"
+                )
         if score_space is not None:
             if score_space not in _SCORE_SPACES:
                 raise ValueError(f"score_space must be one of {sorted(_SCORE_SPACES)}")
@@ -139,11 +153,20 @@ class RetrievalService:
         #   rank_gate                 → RANK_GATE
         #   否则                       → TOP_K
         self.cosine_threshold: float | None = None
+        self.vector_only_cosine_threshold: float | None = None
+        self.vector_only_threshold_fallback = False
         self.score_space: str | None = None
         if calibration_artifact is not None and calibration_artifact.uses_cosine_gate:
             self.gate_policy = GatePolicy.COSINE_ABSOLUTE
             self.fused_score_threshold: float | None = None
             self.cosine_threshold = float(calibration_artifact.cosine_threshold)  # type: ignore[arg-type]
+            if calibration_artifact.vector_only_cosine_threshold is None:
+                self.vector_only_cosine_threshold = self.cosine_threshold
+                self.vector_only_threshold_fallback = True
+            else:
+                self.vector_only_cosine_threshold = float(
+                    calibration_artifact.vector_only_cosine_threshold
+                )
             self.score_space = calibration_artifact.score_space
         elif calibration_artifact is not None:
             self.gate_policy = GatePolicy.CALIBRATED
@@ -152,6 +175,11 @@ class RetrievalService:
             self.gate_policy = GatePolicy.COSINE_ABSOLUTE
             self.fused_score_threshold = None
             self.cosine_threshold = float(cosine_threshold)
+            if vector_only_cosine_threshold is None:
+                self.vector_only_cosine_threshold = self.cosine_threshold
+                self.vector_only_threshold_fallback = True
+            else:
+                self.vector_only_cosine_threshold = float(vector_only_cosine_threshold)
             self.score_space = score_space
         elif fused_score_threshold is not None:
             self.gate_policy = GatePolicy.EXPLICIT_THRESHOLD
@@ -414,6 +442,19 @@ class RetrievalService:
                 if self.gate_policy is GatePolicy.COSINE_ABSOLUTE
                 else self.fused_score_threshold
             ),
+            "vector_only_candidates": 0,
+            "vector_only_gated_out": 0,
+            "lexical_vector_intersection": 0,
+            "vector_only_gate_threshold": (
+                self.vector_only_cosine_threshold
+                if self.gate_policy is GatePolicy.COSINE_ABSOLUTE
+                else None
+            ),
+            "vector_only_threshold_fallback": (
+                self.vector_only_threshold_fallback
+                if self.gate_policy is GatePolicy.COSINE_ABSOLUTE
+                else False
+            ),
             "gate_score_space": self.score_space,
             "rank_gate": self.rank_gate,
         }
@@ -425,6 +466,7 @@ class RetrievalService:
                 "threshold": self.calibration_artifact.threshold,
                 "eval_dataset_version": self.calibration_artifact.eval_dataset_version,
                 "cosine_threshold": self.calibration_artifact.cosine_threshold,
+                "vector_only_cosine_threshold": self.calibration_artifact.vector_only_cosine_threshold,
                 "score_space": self.calibration_artifact.score_space,
                 "public_index_version": self.calibration_artifact.public_index_version,
                 "private_index_version": self.calibration_artifact.private_index_version,
@@ -573,7 +615,21 @@ class RetrievalService:
             elif threshold is None:  # pragma: no cover - 策略解析保证非 None
                 diagnostics["gate_skipped_reason"] = "cosine_threshold_missing"
             else:
-                gated = [record for record in vector if record.vector_score >= threshold]
+                lexical_ids = {record.id for record in lexical}
+                vector_only = [record for record in vector if record.id not in lexical_ids]
+                intersection_ids = lexical_ids & {record.id for record in vector}
+                diagnostics["vector_only_candidates"] = len(vector_only)
+                diagnostics["lexical_vector_intersection"] = len(intersection_ids)
+                vector_only_threshold = self.vector_only_cosine_threshold or threshold
+                gated = [
+                    record
+                    for record in vector
+                    if record.vector_score >= threshold
+                    and (
+                        record.id in lexical_ids
+                        or record.vector_score >= vector_only_threshold
+                    )
+                ]
                 gated_ids = {record.id for record in gated}
                 lexical_before = len(lexical)
                 # 词法交集：只保留同时通过余弦门禁的候选（严格于「只过滤向量」，
@@ -581,6 +637,9 @@ class RetrievalService:
                 lexical = [record for record in lexical if record.id in gated_ids]
                 diagnostics["vector_gated_candidates"] = len(gated)
                 diagnostics["vector_candidates_gated_out"] = len(vector) - len(gated)
+                diagnostics["vector_only_gated_out"] = len(vector_only) - sum(
+                    1 for record in gated if record.id not in lexical_ids
+                )
                 diagnostics["lexical_gated_out"] = lexical_before - len(lexical)
                 vector = gated
 
