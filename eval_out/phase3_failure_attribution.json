@@ -1,0 +1,2328 @@
+{
+  "run_meta": {
+    "run_at": "2026-10-13T12:21:21.892271+00:00",
+    "cases_file": "rag_cases.test.v2.1.jsonl",
+    "retrieval_result": "retrieval_eval_results.json",
+    "selected_config": "G1-hybrid-rrf60-gate",
+    "case_count": 120,
+    "public_index": "medical-rag-public-local",
+    "private_index": "medical-rag-private-local",
+    "embedding_model": "BAAI/bge-small-zh-v1.5",
+    "score_space": "cosinesimil",
+    "calibration_artifact": "config/calibration/cosine-gate-2026-10-14.json"
+  },
+  "dataset_sha256": "ed33014ce05d20b8cf98eb915833183a8e9284691eb996d71be89b9a90c20e5b",
+  "counts": {
+    "retrieval_miss": 4,
+    "gate_false_reject": 5,
+    "gate_false_accept": 11,
+    "annotation_issue": 0,
+    "insufficient_corpus": 0,
+    "permission_or_lifecycle": 0,
+    "infrastructure_failure": 0,
+    "manual_review": 100,
+    "total": 120
+  },
+  "per_case": [
+    {
+      "case_id": "who-definition",
+      "category": "quality",
+      "gold_evidence_sha256": "e72bce1d17dc33720b04e1c6bf59e34073443c73fe00b78c35bff2092ec43ebf",
+      "returned_ids": [
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-two-days",
+      "category": "quality",
+      "gold_evidence_sha256": "e72bce1d17dc33720b04e1c6bf59e34073443c73fe00b78c35bff2092ec43ebf",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-silent",
+      "category": "quality",
+      "gold_evidence_sha256": "b7cd8182551ef836b47b9c77cb5a1778ddf94bb833d5f69fa7090fc9dbbf3726",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-numbers",
+      "category": "quality",
+      "gold_evidence_sha256": "6a5f12d031d6c2a62081699124bbe458f54d51db1b6e2aeca9a5e6b7ca93d7cc",
+      "returned_ids": [
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-organ-risk",
+      "category": "quality",
+      "gold_evidence_sha256": "fd68474cf32ac544667223dfb48929e00dc9032d74b64429558df2109352b907",
+      "returned_ids": [
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-activity",
+      "category": "quality",
+      "gold_evidence_sha256": "e72bce1d17dc33720b04e1c6bf59e34073443c73fe00b78c35bff2092ec43ebf",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_reject"
+      ]
+    },
+    {
+      "case_id": "who-salt",
+      "category": "quality",
+      "gold_evidence_sha256": "e72bce1d17dc33720b04e1c6bf59e34073443c73fe00b78c35bff2092ec43ebf",
+      "returned_ids": [
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-tobacco",
+      "category": "quality",
+      "gold_evidence_sha256": "e72bce1d17dc33720b04e1c6bf59e34073443c73fe00b78c35bff2092ec43ebf",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-goal",
+      "category": "quality",
+      "gold_evidence_sha256": "e72bce1d17dc33720b04e1c6bf59e34073443c73fe00b78c35bff2092ec43ebf",
+      "returned_ids": [
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "26af9567-28d0-4e0c-a48e-2bdb3065dc06",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-prevention",
+      "category": "quality",
+      "gold_evidence_sha256": "e72bce1d17dc33720b04e1c6bf59e34073443c73fe00b78c35bff2092ec43ebf",
+      "returned_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "medlineplus-nav",
+      "category": "quality",
+      "gold_evidence_sha256": "30d89f641f3c10688f82f98e55b84f016a470420c55655b69c4194196b424a8f",
+      "returned_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "dash-core",
+      "category": "quality",
+      "gold_evidence_sha256": "1bac84447eb3c677ef04f0d880ead844222bf0aca17f97cfe1ef1bf6e655513f",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "dash-sodium",
+      "category": "quality",
+      "gold_evidence_sha256": "1bac84447eb3c677ef04f0d880ead844222bf0aca17f97cfe1ef1bf6e655513f",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "dash-lower",
+      "category": "quality",
+      "gold_evidence_sha256": "1bac84447eb3c677ef04f0d880ead844222bf0aca17f97cfe1ef1bf6e655513f",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "dash-dairy",
+      "category": "quality",
+      "gold_evidence_sha256": "1bac84447eb3c677ef04f0d880ead844222bf0aca17f97cfe1ef1bf6e655513f",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "dash-sweets",
+      "category": "quality",
+      "gold_evidence_sha256": "1bac84447eb3c677ef04f0d880ead844222bf0aca17f97cfe1ef1bf6e655513f",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_reject"
+      ]
+    },
+    {
+      "case_id": "dash-fat",
+      "category": "quality",
+      "gold_evidence_sha256": "1bac84447eb3c677ef04f0d880ead844222bf0aca17f97cfe1ef1bf6e655513f",
+      "returned_ids": [
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "lifestyle-exercise",
+      "category": "quality",
+      "gold_evidence_sha256": "3f2400aafc550d8f756ba16319d83a4b53e62f6683c0f6d1a27e9a359341e125",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "lifestyle-salt",
+      "category": "quality",
+      "gold_evidence_sha256": "c2d1544800b0faac8ebd912c0a63afcbf5ec13e3fe9106d699c05090dcae0539",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "lifestyle-weight",
+      "category": "quality",
+      "gold_evidence_sha256": "673e2ab0949211af6325f1db5e5077d33164b60346d842c1e5944e962b3a799d",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "lifestyle-drugs",
+      "category": "quality",
+      "gold_evidence_sha256": "3f2400aafc550d8f756ba16319d83a4b53e62f6683c0f6d1a27e9a359341e125",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-types",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-20weeks",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-preeclampsia",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-postpartum",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-warning-headache",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-monitor",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-medication",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-hospital",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-single-reading",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-adult-mix",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "measure-rest",
+      "category": "quality",
+      "gold_evidence_sha256": "fa6e0a066e3288158b4e610db21a373fdb3711ca9b737c865ee00dcbb0a5fb88",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "measure-feet",
+      "category": "quality",
+      "gold_evidence_sha256": "fa6e0a066e3288158b4e610db21a373fdb3711ca9b737c865ee00dcbb0a5fb88",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "measure-arm",
+      "category": "quality",
+      "gold_evidence_sha256": "fa6e0a066e3288158b4e610db21a373fdb3711ca9b737c865ee00dcbb0a5fb88",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "measure-cuff",
+      "category": "quality",
+      "gold_evidence_sha256": "fa6e0a066e3288158b4e610db21a373fdb3711ca9b737c865ee00dcbb0a5fb88",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_reject"
+      ]
+    },
+    {
+      "case_id": "measure-talk",
+      "category": "quality",
+      "gold_evidence_sha256": "fa6e0a066e3288158b4e610db21a373fdb3711ca9b737c865ee00dcbb0a5fb88",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_reject"
+      ]
+    },
+    {
+      "case_id": "measure-repeat",
+      "category": "quality",
+      "gold_evidence_sha256": "fa6e0a066e3288158b4e610db21a373fdb3711ca9b737c865ee00dcbb0a5fb88",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "measure-factors",
+      "category": "quality",
+      "gold_evidence_sha256": "fa6e0a066e3288158b4e610db21a373fdb3711ca9b737c865ee00dcbb0a5fb88",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "measure-record",
+      "category": "quality",
+      "gold_evidence_sha256": "5766f97d800def35f08955038f89178b92a3c8a2c614f5ada0e037ea314cbc1d",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "measure-home-target",
+      "category": "quality",
+      "gold_evidence_sha256": "7348894bf28bc0a0149f8e829d770d5e1e935a1ff1c2a781487a1c4e38606783",
+      "returned_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226",
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "measure-device-use",
+      "category": "quality",
+      "gold_evidence_sha256": "fa6e0a066e3288158b4e610db21a373fdb3711ca9b737c865ee00dcbb0a5fb88",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "meds-stop",
+      "category": "quality",
+      "gold_evidence_sha256": "72a76d9b175637c0fb2f6506e828e8b913d8700e9b5f15227e8fe6c610891124",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "meds-missed",
+      "category": "quality",
+      "gold_evidence_sha256": "72a76d9b175637c0fb2f6506e828e8b913d8700e9b5f15227e8fe6c610891124",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "meds-discomfort",
+      "category": "quality",
+      "gold_evidence_sha256": "72a76d9b175637c0fb2f6506e828e8b913d8700e9b5f15227e8fe6c610891124",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "treat-plan",
+      "category": "quality",
+      "gold_evidence_sha256": "3f2400aafc550d8f756ba16319d83a4b53e62f6683c0f6d1a27e9a359341e125",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "emergency-breath",
+      "category": "quality",
+      "gold_evidence_sha256": "aa9a1cfe268d57aaf32fbca70cc171398dc15f8221d6093bcafb5956a062d261",
+      "returned_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "emergency-no-symptom",
+      "category": "quality",
+      "gold_evidence_sha256": "aa9a1cfe268d57aaf32fbca70cc171398dc15f8221d6093bcafb5956a062d261",
+      "returned_ids": [
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "emergency-vision",
+      "category": "quality",
+      "gold_evidence_sha256": "aa9a1cfe268d57aaf32fbca70cc171398dc15f8221d6093bcafb5956a062d261",
+      "returned_ids": [
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "217f6ad9-8059-4a61-9b1c-5e6884393c21",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "retrieval_miss"
+      ]
+    },
+    {
+      "case_id": "symptom-risk",
+      "category": "quality",
+      "gold_evidence_sha256": "b7cd8182551ef836b47b9c77cb5a1778ddf94bb833d5f69fa7090fc9dbbf3726",
+      "returned_ids": [
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2",
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "1f18737d-6471-4de4-a790-867fdf9034b8"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "retrieval_miss"
+      ]
+    },
+    {
+      "case_id": "symptom-diagnosis",
+      "category": "quality",
+      "gold_evidence_sha256": "b7cd8182551ef836b47b9c77cb5a1778ddf94bb833d5f69fa7090fc9dbbf3726",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "symptom-single",
+      "category": "quality",
+      "gold_evidence_sha256": "b7cd8182551ef836b47b9c77cb5a1778ddf94bb833d5f69fa7090fc9dbbf3726",
+      "returned_ids": [
+        "172bea23-4e91-4ec7-b0d5-9d8cb68e9604",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "retrieval_miss"
+      ]
+    },
+    {
+      "case_id": "who-sodium",
+      "category": "quality",
+      "gold_evidence_sha256": "3aa7a1784ec355552bd5c49cb28edbf83483db0f245d794b3757b6302f5a304e",
+      "returned_ids": [
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "575e36a8-61e6-4d36-a7d9-c8562ab7427a"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "who-medicine",
+      "category": "quality",
+      "gold_evidence_sha256": "e72bce1d17dc33720b04e1c6bf59e34073443c73fe00b78c35bff2092ec43ebf",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "retrieval_miss"
+      ]
+    },
+    {
+      "case_id": "dash-no-special",
+      "category": "quality",
+      "gold_evidence_sha256": "1bac84447eb3c677ef04f0d880ead844222bf0aca17f97cfe1ef1bf6e655513f",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_reject"
+      ]
+    },
+    {
+      "case_id": "preg-fetal",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "preg-postpartum-care",
+      "category": "quality",
+      "gold_evidence_sha256": "d8c1e13a6e81bcfdb36a814688e50098f4a4306d078ca3e33d8f0e70d897cc85",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "medlineplus-diagnosis",
+      "category": "quality",
+      "gold_evidence_sha256": "30d89f641f3c10688f82f98e55b84f016a470420c55655b69c4194196b424a8f",
+      "returned_ids": [
+        "0f5b0f45-7371-44e3-b28e-445ca44d50af",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "causes-meds",
+      "category": "quality",
+      "gold_evidence_sha256": "bc772e1691b762024f710a73b023db05138e2800fcb61ef9b054d4700ef78622",
+      "returned_ids": [
+        "b7c42b88-2417-4035-bd2c-88e64105c1bc",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "risk-check",
+      "category": "quality",
+      "gold_evidence_sha256": "b7cd8182551ef836b47b9c77cb5a1778ddf94bb833d5f69fa7090fc9dbbf3726",
+      "returned_ids": [
+        "c215f4b2-8c97-47b4-9d68-fca55beb14a3",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "crisis-action",
+      "category": "quality",
+      "gold_evidence_sha256": "aa9a1cfe268d57aaf32fbca70cc171398dc15f8221d6093bcafb5956a062d261",
+      "returned_ids": [
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a",
+        "1dba0b0c-0bcd-4f30-b1e2-938ae5a3e5f2"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-rbc-unit",
+      "category": "quality",
+      "gold_evidence_sha256": "80e4f1868f5c3b6de0585e46c2afd0692fb9ff0c1547e256f979d3ace3e3e672",
+      "returned_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-platelet-compare",
+      "category": "quality",
+      "gold_evidence_sha256": "80e4f1868f5c3b6de0585e46c2afd0692fb9ff0c1547e256f979d3ace3e3e672",
+      "returned_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-hgb-low",
+      "category": "quality",
+      "gold_evidence_sha256": "7c6af17272a03796334b2f380aee4d5f3b012bf8824f23da3d9e8fdd2783be7d",
+      "returned_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-wbc-value",
+      "category": "quality",
+      "gold_evidence_sha256": "80e4f1868f5c3b6de0585e46c2afd0692fb9ff0c1547e256f979d3ace3e3e672",
+      "returned_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-report-followup",
+      "category": "quality",
+      "gold_evidence_sha256": "80e4f1868f5c3b6de0585e46c2afd0692fb9ff0c1547e256f979d3ace3e3e672",
+      "returned_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-cbc-items",
+      "category": "quality",
+      "gold_evidence_sha256": "80e4f1868f5c3b6de0585e46c2afd0692fb9ff0c1547e256f979d3ace3e3e672",
+      "returned_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-platelet-unit",
+      "category": "quality",
+      "gold_evidence_sha256": "80e4f1868f5c3b6de0585e46c2afd0692fb9ff0c1547e256f979d3ace3e3e672",
+      "returned_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-hgb-reference",
+      "category": "quality",
+      "gold_evidence_sha256": "80e4f1868f5c3b6de0585e46c2afd0692fb9ff0c1547e256f979d3ace3e3e672",
+      "returned_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-rbc-reference",
+      "category": "quality",
+      "gold_evidence_sha256": "80e4f1868f5c3b6de0585e46c2afd0692fb9ff0c1547e256f979d3ace3e3e672",
+      "returned_ids": [
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168",
+        "217aec3f-e0f4-45d0-a11f-6aaa841ddfcd"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "priv-advice-safety",
+      "category": "quality",
+      "gold_evidence_sha256": "7c6af17272a03796334b2f380aee4d5f3b012bf8824f23da3d9e8fdd2783be7d",
+      "returned_ids": [
+        "2a555496-ac1d-4c2f-b0b8-b1c5909386bb",
+        "3454faf9-3e19-4b8b-84f0-9291d0de2249",
+        "822690e4-42ad-474d-9851-4f6462c23168"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-thyroid",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-asthma",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-fracture",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-diabetes",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-cad",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-copd",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-kidney",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-migraine",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-gout",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-pneumonia",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-lipid",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-anticoag",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-ct",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-liver",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-device",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-dose",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "7ebdec91-4ed7-46dc-8bf6-da34df585366",
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-preg-drug",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "230c6b2f-35f3-446f-8e9b-9b0811b6955f",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-child-bp",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-surgery",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "4d34b07f-7cae-47f6-9d9d-71b1663a4f5f",
+        "6d1ad19f-f0d7-48ff-a856-f66a0ce507ae",
+        "8c09dd65-8322-4ffd-b665-73d136b31b7a"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-lab-diagnosis",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-ignore",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "2d51bf0e-4382-4899-aa27-000f9fd8741f"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-prompt",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-code",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-mixed",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-malformed",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-all-patients",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-brand",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "7498fde6-ae5e-4af3-9bf9-bcdf5fef5226"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "rej-ocr",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-secret",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "rej-guarantee",
+      "category": "rejection",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [
+        "39f7ae94-cf94-49f2-9ba3-9a9ed77bf1f1",
+        "1f18737d-6471-4de4-a790-867fdf9034b8",
+        "b47cac0f-c442-4499-9ac4-44cfc89b9717"
+      ],
+      "reason": "unknown",
+      "diagnostics_summary": {
+        "status": "ok",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "gate_false_accept"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-1",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-2",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-3",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-4",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-5",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-6",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-7",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-8",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-9",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-patient-b-10",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-1",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-2",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-3",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-4",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-5",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-6",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-7",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-8",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-9",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    },
+    {
+      "case_id": "sec-v2-tenant-b-10",
+      "category": "safety",
+      "gold_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "returned_ids": [],
+      "reason": "insufficient_evidence",
+      "diagnostics_summary": {
+        "status": "insufficient_evidence",
+        "review_leakage": 0,
+        "permission_violations": 0,
+        "deletion_residuals": 0
+      },
+      "labels": [
+        "manual_review"
+      ]
+    }
+  ],
+  "unresolved_manual_review": [
+    "who-definition",
+    "who-two-days",
+    "who-silent",
+    "who-numbers",
+    "who-organ-risk",
+    "who-salt",
+    "who-tobacco",
+    "who-goal",
+    "who-prevention",
+    "medlineplus-nav",
+    "dash-core",
+    "dash-sodium",
+    "dash-lower",
+    "dash-dairy",
+    "dash-fat",
+    "lifestyle-exercise",
+    "lifestyle-salt",
+    "lifestyle-weight",
+    "lifestyle-drugs",
+    "preg-types",
+    "preg-20weeks",
+    "preg-preeclampsia",
+    "preg-postpartum",
+    "preg-warning-headache",
+    "preg-monitor",
+    "preg-medication",
+    "preg-hospital",
+    "preg-single-reading",
+    "preg-adult-mix",
+    "measure-rest",
+    "measure-feet",
+    "measure-arm",
+    "measure-repeat",
+    "measure-factors",
+    "measure-record",
+    "measure-home-target",
+    "measure-device-use",
+    "meds-stop",
+    "meds-missed",
+    "meds-discomfort",
+    "treat-plan",
+    "emergency-breath",
+    "emergency-no-symptom",
+    "symptom-diagnosis",
+    "who-sodium",
+    "preg-fetal",
+    "preg-postpartum-care",
+    "medlineplus-diagnosis",
+    "causes-meds",
+    "risk-check",
+    "crisis-action",
+    "priv-rbc-unit",
+    "priv-platelet-compare",
+    "priv-hgb-low",
+    "priv-wbc-value",
+    "priv-report-followup",
+    "priv-cbc-items",
+    "priv-platelet-unit",
+    "priv-hgb-reference",
+    "priv-rbc-reference",
+    "priv-advice-safety",
+    "rej-thyroid",
+    "rej-asthma",
+    "rej-fracture",
+    "rej-cad",
+    "rej-copd",
+    "rej-gout",
+    "rej-pneumonia",
+    "rej-lipid",
+    "rej-anticoag",
+    "rej-ct",
+    "rej-liver",
+    "rej-lab-diagnosis",
+    "rej-prompt",
+    "rej-code",
+    "rej-mixed",
+    "rej-malformed",
+    "rej-all-patients",
+    "rej-ocr",
+    "rej-secret",
+    "sec-v2-patient-b-1",
+    "sec-v2-patient-b-2",
+    "sec-v2-patient-b-3",
+    "sec-v2-patient-b-4",
+    "sec-v2-patient-b-5",
+    "sec-v2-patient-b-6",
+    "sec-v2-patient-b-7",
+    "sec-v2-patient-b-8",
+    "sec-v2-patient-b-9",
+    "sec-v2-patient-b-10",
+    "sec-v2-tenant-b-1",
+    "sec-v2-tenant-b-2",
+    "sec-v2-tenant-b-3",
+    "sec-v2-tenant-b-4",
+    "sec-v2-tenant-b-5",
+    "sec-v2-tenant-b-6",
+    "sec-v2-tenant-b-7",
+    "sec-v2-tenant-b-8",
+    "sec-v2-tenant-b-9",
+    "sec-v2-tenant-b-10"
+  ]
+}

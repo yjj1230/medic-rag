@@ -31,6 +31,7 @@ def build_report(
     asset_audit: Path,
     threshold_result: Path | None,
     source_gap_audit: Path | None = None,
+    failure_attribution: Path | None = None,
 ) -> dict[str, object]:
     retrieval = _read(Path(retrieval_result))
     citation = _read(Path(citation_result))
@@ -52,15 +53,61 @@ def build_report(
         raise ValueError("citation index identity mismatch")
     threshold = _read(Path(threshold_result)) if threshold_result else None
     if threshold:
-        threshold_meta = threshold.get("run_meta", {})
-        if threshold_meta.get("public_index") != public_index or threshold_meta.get("private_index") != private_index:
+        threshold_meta = threshold.get("run_meta", threshold)
+        if threshold_meta.get("public_index") and threshold_meta.get("public_index") != public_index:
             raise ValueError("threshold index identity mismatch")
-        if threshold_meta.get("score_space") != "cosinesimil":
+        if threshold_meta.get("private_index") and threshold_meta.get("private_index") != private_index:
+            raise ValueError("threshold index identity mismatch")
+        threshold_score_space = threshold_meta.get("score_space", threshold.get("score_space"))
+        if threshold_score_space != "cosinesimil":
             raise ValueError("threshold score space mismatch")
+        threshold_embedding = threshold_meta.get("embedding_model", threshold.get("embedding_model"))
+        if threshold_embedding and retrieval_meta.get("embedding_model") and threshold_embedding != retrieval_meta.get("embedding_model"):
+            raise ValueError("threshold embedding model mismatch")
     selected = _selected_config(retrieval)
+    selected_cfg = selected.get("config", {})
+    threshold_meta = (threshold.get("run_meta", threshold) if threshold else {})
+    base_threshold = threshold_meta.get("cosine_threshold", threshold.get("cosine_threshold") if threshold else None)
+    vector_threshold = threshold_meta.get(
+        "vector_only_cosine_threshold",
+        threshold.get("vector_only_cosine_threshold") if threshold else None,
+    )
+    config_base = selected_cfg.get("cosine_threshold")
+    config_vector = selected_cfg.get("vector_only_cosine_threshold")
+    if config_base is not None and base_threshold is not None and float(config_base) != float(base_threshold):
+        raise ValueError("selected threshold identity mismatch")
+    if config_vector is not None and vector_threshold is not None and float(config_vector) != float(vector_threshold):
+        raise ValueError("selected threshold identity mismatch")
+    mapping_spaces = {
+        str(index_metadata.get(scope, {}).get("embedding_mapping", {}).get("space_type", ""))
+        for scope in ("public", "private")
+        if index_metadata.get(scope, {}).get("embedding_mapping", {}).get("space_type")
+    }
+    mapping_score_space = next(iter(mapping_spaces), None)
+    if len(mapping_spaces) > 1:
+        raise ValueError("mapping score space mismatch")
+    record_score_space = retrieval_meta.get("record_score_space") or retrieval_meta.get("score_space")
+    if threshold:
+        record_score_space = threshold_meta.get("score_space", record_score_space)
+    if mapping_score_space and record_score_space and mapping_score_space != record_score_space:
+        raise ValueError("record score space mismatch")
+    attribution = _read(Path(failure_attribution)) if failure_attribution else None
+    # Legacy reports without a threshold remain supported; final gate reports require attribution.
+    if threshold and attribution is None:
+        raise ValueError("failure attribution artifact is required")
+    if attribution:
+        attribution_hash = str(attribution.get("dataset_sha256", ""))
+        if attribution_hash and expected_hash and attribution_hash != expected_hash:
+            raise ValueError("failure attribution dataset hash mismatch")
+        attribution_meta = attribution.get("run_meta", {})
+        for key, expected in (("public_index", public_index), ("private_index", private_index), ("embedding_model", retrieval_meta.get("embedding_model")), ("score_space", record_score_space)):
+            observed = attribution_meta.get(key)
+            if observed and expected and observed != expected:
+                raise ValueError(f"failure attribution {key} mismatch")
     selected_cases = list(selected.get("cases", []))
     quality_cases = [row for row in selected_cases if row.get("category") == "quality"]
     rejection_cases = [row for row in selected_cases if row.get("category") == "rejection"]
+    selected_rejection = dict(selected.get("rejection", {}))
     failure_summary = {
         "quality_false_rejects": sum(1 for row in quality_cases if not row.get("returned_ids")),
         "rejection_false_accepts": sum(1 for row in rejection_cases if row.get("returned_ids")),
@@ -69,7 +116,11 @@ def build_report(
             for reason in sorted({row.get("reason") for row in selected_cases if row.get("reason")})
         },
     }
+    selected_rejection["false_reject_rate"] = (
+        failure_summary["quality_false_rejects"] / len(quality_cases) if quality_cases else 0.0
+    )
     source_gaps = _read(Path(source_gap_audit)) if source_gap_audit else None
+    pre_config = next((item for item in retrieval.get("configs", []) if item.get("name") in {"A3-hybrid-rrf60", "A3-hybrid-rrf60-gate"}), None)
     return {
         "run_meta": {
             "run_at": datetime.now(timezone.utc).isoformat(),
@@ -82,20 +133,30 @@ def build_report(
             "private_index": private_index,
             "embedding_model": retrieval_meta.get("embedding_model"),
             "embedding_dimensions": retrieval_meta.get("embedding_dimensions"),
-            "score_space": threshold.get("run_meta", {}).get("score_space") if threshold else None,
+            "mapping_score_space": mapping_score_space,
+            "record_score_space": record_score_space,
+            "score_space": record_score_space,
+        },
+        "selected_thresholds": {
+            "cosine_threshold": base_threshold,
+            "vector_only_cosine_threshold": vector_threshold,
+            "score_space": record_score_space,
         },
         "retrieval": {
             "config": selected.get("name"),
             "dataset_sha256": retrieval_hash,
             "quality": selected.get("quality", {}),
-            "rejection": selected.get("rejection", {}),
+            "rejection": selected_rejection,
             "safety": selected.get("safety", {}),
             "latency": selected.get("latency", {}),
             "case_count": len(selected_cases),
             "failure_summary": failure_summary,
+            "pre": pre_config or {},
+            "post": {**selected, "rejection": selected_rejection},
         },
         "citation": citation,
         "threshold": threshold,
+        "failure_attribution": attribution,
         "source_gap_audit": source_gaps,
         "asset_audit": {
             "case_count": assets.get("case_count"),
@@ -116,6 +177,8 @@ def _markdown(report: dict[str, object]) -> str:
             f"- 冻结集：{report['run_meta']['case_count']} 条；SHA-256：`{report['run_meta']['dataset_sha256']}`",
             f"- 索引：`{report['identities']['public_index']}` / `{report['identities']['private_index']}`",
             f"- 模型：`{report['identities']['embedding_model']}`，维度 {report['identities']['embedding_dimensions']}",
+            f"- 分数空间：映射 `{report['identities']['mapping_score_space']}`；记录 `{report['identities']['record_score_space']}`",
+            f"- 门禁阈值：cosine={report['selected_thresholds']['cosine_threshold']}；vector-only={report['selected_thresholds']['vector_only_cosine_threshold']}",
             "",
             "## 检索与拒答",
             "",
@@ -125,8 +188,11 @@ def _markdown(report: dict[str, object]) -> str:
             f"- MRR：{retrieval['quality'].get('mrr')}",
             f"- nDCG@3：{retrieval['quality'].get('ndcg_at_k')}",
             f"- 拒答准确率：{retrieval['rejection'].get('accuracy')}",
+            f"- 误拒率：{retrieval['rejection'].get('false_reject_rate')}",
             f"- 安全全零：{retrieval['safety'].get('all_zero')}",
             f"- answerable 误拒：{retrieval['failure_summary'].get('quality_false_rejects')} 条；拒答误接纳：{retrieval['failure_summary'].get('rejection_false_accepts')} 条",
+            f"- pre/post：{retrieval.get('pre', {}).get('name', 'unavailable')} → {retrieval.get('post', {}).get('name', retrieval.get('config'))}",
+            f"- 延迟：p50={retrieval['latency'].get('p50_ms')} ms，p95={retrieval['latency'].get('p95_ms')} ms，p99={retrieval['latency'].get('p99_ms')} ms",
             "",
             "## 引用",
             "",
@@ -134,6 +200,11 @@ def _markdown(report: dict[str, object]) -> str:
             f"- Citation validity：{citation.get('metrics', {}).get('citation_validity')}",
             f"- Citation accuracy：{citation.get('metrics', {}).get('citation_accuracy')}",
             f"- Citation coverage：{citation.get('metrics', {}).get('citation_coverage')}",
+            "",
+            "## 失败归因",
+            "",
+            f"- 标签计数（分母 {((report.get('failure_attribution') or {}).get('counts') or {}).get('total', 0)}）：{((report.get('failure_attribution') or {}).get('counts') or {})}",
+            f"- 未决人工复核 ID：{((report.get('failure_attribution') or {}).get('unresolved_manual_review') or [])}",
             "",
             "## 知识缺口",
             "",
@@ -151,6 +222,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--citation-result", required=True)
     parser.add_argument("--asset-audit", required=True)
     parser.add_argument("--threshold-result")
+    parser.add_argument("--failure-attribution")
     parser.add_argument("--source-gap-audit")
     parser.add_argument("--out", required=True)
     args = parser.parse_args(argv)
@@ -160,6 +232,7 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.asset_audit),
         Path(args.threshold_result) if args.threshold_result else None,
         Path(args.source_gap_audit) if args.source_gap_audit else None,
+        Path(args.failure_attribution) if args.failure_attribution else None,
     )
     output = Path(args.out)
     output.parent.mkdir(parents=True, exist_ok=True)
