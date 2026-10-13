@@ -153,6 +153,21 @@ def test_calibration_provenance_mismatch_fails(tmp_path: Path) -> None:
         )
 
 
+def test_missing_mapping_identity_fails(tmp_path: Path) -> None:
+    assets = json.loads(_assets(tmp_path).read_text(encoding="utf-8"))
+    assets["index_metadata"]["public"].pop("embedding_mapping")
+    assets["index_metadata"]["private"].pop("embedding_mapping")
+    assets_path = _write(tmp_path / "assets-missing-mapping.json", assets)
+    with pytest.raises(ValueError, match="mapping score space metadata"):
+        build_report(
+            _retrieval(tmp_path),
+            _citation(tmp_path),
+            assets_path,
+            _threshold(tmp_path),
+            failure_attribution=_attribution(tmp_path),
+        )
+
+
 def test_valid_combined_artifacts_preserve_labels_and_denominators(tmp_path: Path) -> None:
     report = build_report(
         _retrieval(tmp_path),

@@ -140,6 +140,8 @@ def build_report(
     mapping_score_space = next(iter(mapping_spaces), None)
     if len(mapping_spaces) > 1:
         raise ValueError("mapping score space mismatch")
+    if threshold and not mapping_score_space:
+        raise ValueError("mapping score space metadata missing")
     record_score_space = retrieval_meta.get("record_score_space")
     if threshold and not record_score_space:
         raise ValueError("record score space identity is missing")
