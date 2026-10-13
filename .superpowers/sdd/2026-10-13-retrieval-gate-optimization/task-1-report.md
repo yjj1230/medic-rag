@@ -45,6 +45,7 @@ The existing in-memory/fake retrieval seams do not expose physical mapping metad
 ## Review fixes (2026-10-13)
 
 - Explicit `vector_score_space` is now treated as a configured expectation. `resolve_vector_score_space()` always reads the physical mapping and returns the physical identity, allowing the service to reject an explicit-vs-physical mismatch.
+- An explicit expectation that differs from the physical mapping now resolves to `mapping_unavailable`, so it cannot be mistaken for a valid physical identity even when the gate happens to use the physical space.
 - Public and private configured indexes are both checked. Divergent, missing, malformed, unsupported, or unavailable mappings resolve to `mapping_unavailable`.
 - Added a direct record-space mismatch regression test where the mapping matches the gate but a returned record carries a different `vector_score_space`.
 - Kept `chat/orchestrator.py` unchanged because the approved Task 1 file list limits the contract to `RetrievalService` diagnostics; orchestrator propagation belongs to a later task or an explicitly expanded scope.

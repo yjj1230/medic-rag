@@ -41,7 +41,7 @@ def test_explicit_score_space_is_checked_against_physical_mapping() -> None:
         vector_score_space="cosinesimil",
     )
 
-    assert store.resolve_vector_score_space() == "l2_inv"
+    assert store.resolve_vector_score_space() == "mapping_unavailable"
 
 
 def test_resolve_vector_score_space_fails_closed_when_public_and_private_diverge() -> None:

@@ -84,6 +84,7 @@ class OpenSearchStore(SearchIndex, CandidateRetriever):
         self.public_index = public_index
         self.private_index = private_index
         self.vector_score_space = vector_score_space
+        self._configured_vector_score_space = vector_score_space
         self._resolved_vector_score_space: str | None = None
         self._mapping_score_space_resolved = False
 
@@ -125,6 +126,11 @@ class OpenSearchStore(SearchIndex, CandidateRetriever):
             if len(spaces) != 1:
                 return MAPPING_UNAVAILABLE
             resolved_space = next(iter(spaces))
+            if (
+                self._configured_vector_score_space is not None
+                and self._configured_vector_score_space != resolved_space
+            ):
+                return MAPPING_UNAVAILABLE
             self._resolved_vector_score_space = resolved_space
             if self.vector_score_space is None:
                 self.vector_score_space = resolved_space
