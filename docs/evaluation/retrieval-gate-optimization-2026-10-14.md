@@ -9,6 +9,7 @@
 ## 检索与拒答
 
 - 配置：`G1-hybrid-rrf60-gate`
+- pre 分母：answerable=70；rejection=30
 - pre Recall@3：0.9428571428571428
 - pre Precision@3：0.32857142857142857
 - pre MRR：0.8119047619047619
@@ -17,6 +18,7 @@
 - pre 误拒率：0.0
 - pre 安全：{'n': 20, 'permission_violations': 0, 'deletion_residuals': 0, 'review_leakage': 0, 'all_zero': True}
 - pre 延迟：p50=28.02249975502491 ms，p95=41.5154998190701 ms，p99=43.8701999373734 ms
+- post 分母：answerable=70；rejection=30
 - post Recall@3：0.8714285714285714
 - post Precision@3：0.3619047619047619
 - post MRR：0.7476190476190476

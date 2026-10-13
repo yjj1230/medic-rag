@@ -113,8 +113,8 @@ def _attribution(tmp_path: Path) -> Path:
                 "embedding_model": "m",
                 "score_space": "cosinesimil",
             },
-            "counts": {"total": 2, "manual_review": 1},
-            "unresolved_manual_review": ["q"],
+            "counts": {"total": 2, "manual_review": 2},
+            "unresolved_manual_review": ["q", "r"],
             "per_case": [
                 {"case_id": "q", "labels": ["manual_review"]},
                 {"case_id": "r", "labels": ["manual_review"]},
@@ -178,7 +178,7 @@ def test_valid_combined_artifacts_preserve_labels_and_denominators(tmp_path: Pat
     )
     assert report["retrieval"]["quality"]["n"] == 1
     assert report["failure_attribution"]["counts"]["total"] == 2
-    assert report["failure_attribution"]["unresolved_manual_review"] == ["q"]
+    assert report["failure_attribution"]["unresolved_manual_review"] == ["q", "r"]
     assert report["identities"]["mapping_score_space"] == "cosinesimil"
 
 

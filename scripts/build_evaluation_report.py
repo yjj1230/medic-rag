@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -172,8 +173,23 @@ def build_report(
         attribution_counts = attribution.get("counts", {})
         if attribution_counts.get("total") != len(case_ids):
             raise ValueError("failure attribution denominator mismatch")
+        label_counts: Counter[str] = Counter()
+        manual_review_ids: set[str] = set()
+        for row in per_case:
+            labels = row.get("labels", []) if isinstance(row, dict) else []
+            if not isinstance(labels, list):
+                raise ValueError("failure attribution labels invalid")
+            for label in labels:
+                label_counts[str(label)] += 1
+                if str(label) == "manual_review":
+                    manual_review_ids.add(str(row.get("case_id")))
+        if sum(int(value) for key, value in attribution_counts.items() if key != "total") != len(case_ids):
+            raise ValueError("failure attribution label denominator mismatch")
+        for label, count in label_counts.items():
+            if int(attribution_counts.get(label, -1)) != count:
+                raise ValueError("failure attribution label count mismatch")
         unresolved = set(str(value) for value in attribution.get("unresolved_manual_review", []))
-        if not unresolved.issubset(case_ids):
+        if unresolved != manual_review_ids:
             raise ValueError("failure attribution unresolved IDs mismatch")
     quality_cases = [row for row in selected_cases if row.get("category") == "quality"]
     rejection_cases = [row for row in selected_cases if row.get("category") == "rejection"]
@@ -261,6 +277,7 @@ def _markdown(report: dict[str, object]) -> str:
         safety = value.get("safety", {})
         latency = value.get("latency", {})
         return [
+            f"- {label} 分母：answerable={quality.get('n')}；rejection={rejection.get('n')}",
             f"- {label} Recall@3：{quality.get('recall_at_k')}",
             f"- {label} Precision@3：{quality.get('precision_at_k')}",
             f"- {label} MRR：{quality.get('mrr')}",
