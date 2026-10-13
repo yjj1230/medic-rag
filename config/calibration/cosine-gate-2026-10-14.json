@@ -1,0 +1,12 @@
+{
+  "index_version": "artifact-2026-10-14",
+  "embedding_model": "BAAI/bge-small-zh-v1.5",
+  "rrf_k": 60,
+  "threshold": 0.42,
+  "eval_dataset_version": "rag_cases.dev.jsonl:sha256:3afe6c21d2257ef881891b9698eb2f35ecb6a5af35d5c0cb4ed12a766bc05dfa",
+  "cosine_threshold": 0.76,
+  "vector_only_cosine_threshold": 0.8,
+  "score_space": "cosinesimil",
+  "public_index_version": "public-v1",
+  "private_index_version": "private-v1"
+}
