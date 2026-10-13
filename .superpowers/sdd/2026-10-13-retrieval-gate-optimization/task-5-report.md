@@ -20,3 +20,5 @@ Citation metrics are reported against the separately identified claims dataset h
 `build_report` now requires and cross-checks retrieval calibration path/hash, selected base/vector thresholds, mapping and record score spaces, embedding model, index versions, citation identity/counts, and attribution case IDs/denominators. The committed retrieval artifact removes the duplicate raw case payload containing question and gold text. Regression coverage scans serialized final artifacts for forbidden fields and values.
 
 Validation: focused report tests 8 passed; evaluation and rejection tests 78 passed; full suite 93 passed; Ruff passed.
+
+Final provenance hardening requires both calibration identity fields and both public/private mapping spaces whenever a threshold artifact is supplied. Missing or mutated values fail closed. Updated validation: focused report tests 12 passed; evaluation and rejection tests 82 passed; full suite 97 passed; Ruff passed.

@@ -93,12 +93,12 @@ def build_report(
             raise ValueError("threshold embedding model mismatch")
         calibration_path = retrieval_meta.get("calibration_artifact_path")
         calibration_hash = retrieval_meta.get("calibration_artifact_sha256")
-        if calibration_path:
-            if not threshold_path or Path(str(calibration_path)).resolve() != threshold_path.resolve():
-                raise ValueError("calibration artifact path mismatch")
-        if calibration_hash:
-            if not threshold_path or hashlib.sha256(threshold_path.read_bytes()).hexdigest() != str(calibration_hash):
-                raise ValueError("calibration artifact hash mismatch")
+        if not calibration_path or not calibration_hash:
+            raise ValueError("calibration artifact identity is incomplete")
+        if not threshold_path or Path(str(calibration_path)).resolve() != threshold_path.resolve():
+            raise ValueError("calibration artifact path mismatch")
+        if hashlib.sha256(threshold_path.read_bytes()).hexdigest() != str(calibration_hash):
+            raise ValueError("calibration artifact hash mismatch")
     selected = _selected_config(retrieval)
     selected_cfg = selected.get("config", {})
     threshold_meta = (threshold.get("run_meta", threshold) if threshold else {})
@@ -141,7 +141,11 @@ def build_report(
     mapping_score_space = next(iter(mapping_spaces), None)
     if len(mapping_spaces) > 1:
         raise ValueError("mapping score space mismatch")
-    if threshold and not mapping_score_space:
+    mapping_missing = any(
+        not index_metadata.get(scope, {}).get("embedding_mapping", {}).get("space_type")
+        for scope in ("public", "private")
+    )
+    if threshold and (mapping_missing or not mapping_score_space):
         raise ValueError("mapping score space metadata missing")
     record_score_space = retrieval_meta.get("record_score_space")
     if threshold and not record_score_space:
