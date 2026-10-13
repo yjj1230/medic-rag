@@ -109,7 +109,7 @@ class OpenSearchStore(SearchIndex, CandidateRetriever):
             mapping = get_mapping(index=self.public_index)
             if not isinstance(mapping, dict):
                 return MAPPING_UNAVAILABLE
-            body = mapping.get(self.public_index)
+            body = mapping if "mappings" in mapping else mapping.get(self.public_index)
             if not isinstance(body, dict):
                 body = next((value for value in mapping.values() if isinstance(value, dict)), {})
             properties = (body.get("mappings") or {}).get("properties")
