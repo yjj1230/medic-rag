@@ -90,14 +90,13 @@ class OpenSearchStore(SearchIndex, CandidateRetriever):
     def resolve_vector_score_space(self) -> str:
         """Return the vector score space declared by the physical mapping.
 
-        The explicit constructor value is an operator supplied identity and takes
-        precedence.  Otherwise only ``embedding.method.space_type`` is accepted;
-        a missing or inaccessible mapping returns ``mapping_unavailable`` so callers
-        can fail closed instead of guessing the OpenSearch default.
+        The explicit constructor value is an operator supplied expectation.  The
+        physical mapping is always read and compared against it.  Only
+        ``embedding.method.space_type`` values in the supported score-space set are
+        accepted; a missing, divergent, or inaccessible mapping returns
+        ``mapping_unavailable`` so callers can fail closed instead of guessing.
         """
 
-        if self.vector_score_space is not None:
-            return self.vector_score_space
         if self._mapping_score_space_resolved:
             return self._resolved_vector_score_space or MAPPING_UNAVAILABLE
         self._mapping_score_space_resolved = True
@@ -106,21 +105,30 @@ class OpenSearchStore(SearchIndex, CandidateRetriever):
             get_mapping = getattr(indices, "get_mapping", None)
             if not callable(get_mapping):
                 return MAPPING_UNAVAILABLE
-            mapping = get_mapping(index=self.public_index)
-            if not isinstance(mapping, dict):
+            spaces: set[str] = set()
+            for index_name in dict.fromkeys((self.public_index, self.private_index)):
+                mapping = get_mapping(index=index_name)
+                if not isinstance(mapping, dict):
+                    return MAPPING_UNAVAILABLE
+                body = mapping if "mappings" in mapping else mapping.get(index_name)
+                if not isinstance(body, dict):
+                    body = next(
+                        (value for value in mapping.values() if isinstance(value, dict)), {}
+                    )
+                properties = (body.get("mappings") or {}).get("properties")
+                embedding = properties.get("embedding") if isinstance(properties, dict) else None
+                method = embedding.get("method") if isinstance(embedding, dict) else None
+                space_type = method.get("space_type") if isinstance(method, dict) else None
+                if space_type not in _SCORE_SPACES:
+                    return MAPPING_UNAVAILABLE
+                spaces.add(space_type)
+            if len(spaces) != 1:
                 return MAPPING_UNAVAILABLE
-            body = mapping if "mappings" in mapping else mapping.get(self.public_index)
-            if not isinstance(body, dict):
-                body = next((value for value in mapping.values() if isinstance(value, dict)), {})
-            properties = (body.get("mappings") or {}).get("properties")
-            embedding = properties.get("embedding") if isinstance(properties, dict) else None
-            method = embedding.get("method") if isinstance(embedding, dict) else None
-            space_type = method.get("space_type") if isinstance(method, dict) else None
-            if space_type not in _SCORE_SPACES:
-                return MAPPING_UNAVAILABLE
-            self._resolved_vector_score_space = space_type
-            self.vector_score_space = space_type
-            return space_type
+            resolved_space = next(iter(spaces))
+            self._resolved_vector_score_space = resolved_space
+            if self.vector_score_space is None:
+                self.vector_score_space = resolved_space
+            return resolved_space
         except Exception:
             return MAPPING_UNAVAILABLE
 

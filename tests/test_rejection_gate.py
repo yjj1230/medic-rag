@@ -534,6 +534,35 @@ def test_mapping_unavailable_fails_closed_for_strict_gate(
     assert result.diagnostics["score_space_match"] is False
 
 
+def test_record_score_space_mismatch_fails_closed_when_mapping_matches_gate(
+    make_record,
+    make_query,
+    hybrid_index,
+    cosine_artifact,
+    make_service,
+    embedding_model_name,
+    context,
+    monkeypatch,
+):
+    index = hybrid_index(
+        vector=[make_record("vec-1", vector_score=0.62, vector_score_space="cosinesimil")]
+    )
+    monkeypatch.setattr(index, "resolve_vector_score_space", lambda: "l2_inv", raising=False)
+    service = make_service(
+        index,
+        calibration_artifact=cosine_artifact,
+        embedding_model_name=embedding_model_name,
+    )
+
+    result = service.retrieve(make_query(), context)
+
+    assert result.items == []
+    assert result.reason == REASON_CALIBRATION_MISMATCH
+    assert result.diagnostics["mapping_score_space"] == "l2_inv"
+    assert result.diagnostics["vector_score_space"] == "cosinesimil"
+    assert result.diagnostics["score_space_match"] is False
+
+
 def test_retrieval_unavailable_is_distinct_from_insufficient_evidence(
     make_query, hybrid_index, cosine_artifact, make_service,
     embedding_model_name, context,

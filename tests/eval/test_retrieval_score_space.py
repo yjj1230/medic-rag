@@ -32,7 +32,29 @@ def test_resolve_vector_score_space_reads_cosinesimil_mapping_without_source_tex
     store = OpenSearchStore(client, public_index="medical-rag-public")
 
     assert store.resolve_vector_score_space() == "cosinesimil"
-    assert client.indices.requested == ["medical-rag-public"]
+    assert client.indices.requested == ["medical-rag-public", "medical-rag-private"]
+
+
+def test_explicit_score_space_is_checked_against_physical_mapping() -> None:
+    store = OpenSearchStore(
+        _MappingClient(_mapping("l2_inv")),
+        vector_score_space="cosinesimil",
+    )
+
+    assert store.resolve_vector_score_space() == "l2_inv"
+
+
+def test_resolve_vector_score_space_fails_closed_when_public_and_private_diverge() -> None:
+    class _DivergentIndices:
+        def get_mapping(self, *, index: str) -> dict[str, Any]:
+            return _mapping("cosinesimil" if index.endswith("public") else "l2_inv")
+
+    class _DivergentClient:
+        indices = _DivergentIndices()
+
+    store = OpenSearchStore(_DivergentClient())
+
+    assert store.resolve_vector_score_space() == "mapping_unavailable"
 
 
 def test_resolve_vector_score_space_fails_closed_when_mapping_method_is_missing() -> None:

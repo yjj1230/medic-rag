@@ -41,3 +41,24 @@ Result: **All checks passed**.
 ## Concerns
 
 The existing in-memory/fake retrieval seams do not expose physical mapping metadata. For those seams, the service preserves compatibility by inferring a single annotated record space; production `OpenSearchStore` always exposes the mapping resolver and therefore fails closed on unavailable mapping metadata.
+
+## Review fixes (2026-10-13)
+
+- Explicit `vector_score_space` is now treated as a configured expectation. `resolve_vector_score_space()` always reads the physical mapping and returns the physical identity, allowing the service to reject an explicit-vs-physical mismatch.
+- Public and private configured indexes are both checked. Divergent, missing, malformed, unsupported, or unavailable mappings resolve to `mapping_unavailable`.
+- Added a direct record-space mismatch regression test where the mapping matches the gate but a returned record carries a different `vector_score_space`.
+- Kept `chat/orchestrator.py` unchanged because the approved Task 1 file list limits the contract to `RetrievalService` diagnostics; orchestrator propagation belongs to a later task or an explicitly expanded scope.
+
+Review-fix verification:
+
+`.venv/Scripts/python.exe -m pytest tests/eval/test_retrieval_score_space.py tests/test_rejection_gate.py -q`
+
+Result: **40 passed**.
+
+`.venv/Scripts/python.exe -m pytest tests/eval -q`
+
+Result: **22 passed**.
+
+`.venv/Scripts/ruff.exe check src/medical_rag/retrieval/opensearch_store.py src/medical_rag/retrieval/service.py tests/test_rejection_gate.py tests/eval/test_retrieval_score_space.py`
+
+Result: **All checks passed**.
