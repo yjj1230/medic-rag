@@ -98,3 +98,93 @@ def test_accepts_json_cases_and_selects_named_config(tmp_path: Path) -> None:
     result = attribute_failures(cases, retrieval)
     assert result["per_case"][0]["labels"] == ["gate_false_accept"]
     assert result["run_meta"]["selected_config"] == "G1-hybrid-rrf60-gate"
+
+
+def test_redacts_arbitrary_reason_and_uses_row_level_diagnostics(tmp_path: Path) -> None:
+    cases = _write_jsonl(
+        tmp_path / "cases.jsonl",
+        [
+            {"id": "permission", "category": "rejection", "gold_evidence_ids": []},
+            {"id": "mapping", "category": "quality", "gold_evidence_ids": ["g1"]},
+        ],
+    )
+    dataset_sha256 = hashlib.sha256(cases.read_bytes()).hexdigest()
+    retrieval = _retrieval(
+        tmp_path / "retrieval.json",
+        [
+            {
+                "case_id": "permission",
+                "returned_ids": ["forbidden"],
+                "reason": "patient-evidence-secret-token",
+                "permission_violations": 1,
+                "status": "ok",
+            },
+            {
+                "case_id": "mapping",
+                "returned_ids": [],
+                "reason": "mapping_unavailable",
+                "status": "degraded",
+            },
+        ],
+        dataset_sha256,
+    )
+    result = attribute_failures(cases, retrieval)
+    rows = {row["case_id"]: row for row in result["per_case"]}
+    assert rows["permission"]["labels"] == ["permission_or_lifecycle"]
+    assert rows["permission"]["reason"] == "unknown"
+    assert rows["permission"]["diagnostics_summary"] == {"permission_violations": 1, "status": "ok"}
+    assert rows["mapping"]["labels"] == ["infrastructure_failure"]
+    serialized = json.dumps(result, ensure_ascii=False)
+    assert "patient-evidence-secret-token" not in serialized
+
+
+def test_validates_selected_config_hash_and_extra_rows_and_redacts_paths(tmp_path: Path) -> None:
+    cases = _write_jsonl(tmp_path / "private-cases.jsonl", [{"id": "a", "category": "quality", "gold_evidence_ids": []}])
+    dataset_sha256 = hashlib.sha256(cases.read_bytes()).hexdigest()
+    retrieval = tmp_path / "private-retrieval.json"
+    retrieval.write_text(
+        json.dumps(
+            {
+                "dataset_sha256": dataset_sha256,
+                "configs": [
+                    {
+                        "name": "G1-hybrid-rrf60-gate",
+                        "dataset_sha256": "wrong-selected-hash",
+                        "cases": [{"case_id": "a", "returned_ids": []}],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="selected config dataset hash mismatch"):
+        attribute_failures(cases, retrieval)
+
+    retrieval.write_text(
+        json.dumps(
+            {
+                "dataset_sha256": dataset_sha256,
+                "configs": [
+                    {
+                        "name": "G1-hybrid-rrf60-gate",
+                        "dataset_sha256": dataset_sha256,
+                        "cases": [
+                            {"case_id": "a", "returned_ids": []},
+                            {"case_id": "extra", "returned_ids": []},
+                        ],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="retrieval cases not present"):
+        attribute_failures(cases, retrieval)
+
+    retrieval.write_text(
+        json.dumps({"dataset_sha256": dataset_sha256, "cases": [{"case_id": "a", "returned_ids": []}]}),
+        encoding="utf-8",
+    )
+    result = attribute_failures(cases, retrieval)
+    assert result["run_meta"]["cases_file"] == cases.name
+    assert result["run_meta"]["retrieval_result"] == retrieval.name

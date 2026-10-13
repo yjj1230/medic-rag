@@ -32,6 +32,20 @@ _REASON_TOKENS = {
     "insufficient_evidence",
     "vector_path_unavailable",
     "infrastructure_failure",
+    "calibration_artifact_mismatch",
+    "mapping_unavailable",
+    "score_space_mismatch",
+    "embedding_unavailable",
+    "opensearch_unavailable",
+    "index_unavailable",
+    "vector_error",
+    "degraded",
+    "infrastructure",
+    "error",
+    "exception",
+    "failed",
+    "unavailable",
+    "calibration_mismatch",
     "backend_error",
     "timeout",
     "permission_denied",
@@ -66,9 +80,12 @@ _SAFE_DIAGNOSTIC_KEYS = {
     "lexical_vector_intersection",
     "lexical_gated_out",
     "permission_violations",
+    "permission_violation",
     "deletion_residuals",
+    "deletion_residual",
     "review_leakage",
     "lifecycle_violations",
+    "lifecycle_violation",
     "forbidden_returned",
     "acl_denied",
     "candidate_count",
@@ -146,9 +163,9 @@ def _gold_hash(ids: list[str]) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
-def _result_rows(value: Any) -> tuple[list[dict[str, Any]], str | None]:
+def _result_rows(value: Any) -> tuple[list[dict[str, Any]], str | None, Mapping[str, Any] | None]:
     if not isinstance(value, dict):
-        return _rows(value, kind="retrieval"), None
+        return _rows(value, kind="retrieval"), None, None
     configs = value.get("configs")
     selected_name: str | None = None
     rows_value: Any = value
@@ -158,7 +175,8 @@ def _result_rows(value: Any) -> tuple[list[dict[str, Any]], str | None]:
             raise ValueError("retrieval config must be an object")
         selected_name = str(selected.get("name", "")) or None
         rows_value = selected
-    return _rows(rows_value, kind="retrieval"), selected_name
+        return _rows(rows_value, kind="retrieval"), selected_name, selected
+    return _rows(rows_value, kind="retrieval"), selected_name, value
 
 
 def _artifact_hash(value: Mapping[str, Any]) -> str | None:
@@ -176,8 +194,6 @@ def _artifact_hash(value: Mapping[str, Any]) -> str | None:
 def _safe_reason(raw: Any) -> str:
     value = str(raw or "").strip()
     if value in _REASON_TOKENS:
-        return value
-    if _TOKEN_RE.fullmatch(value):
         return value
     return "unknown"
 
@@ -199,12 +215,26 @@ def _safe_diagnostics(raw: Any) -> dict[str, object]:
     return safe
 
 
-def _number(diag: Mapping[str, object], *keys: str) -> float:
+def _has_violation(diag: Mapping[str, object], *keys: str) -> bool:
     for key in keys:
         value = diag.get(key)
-        if isinstance(value, (int, float)) and not isinstance(value, bool):
-            return float(value)
-    return 0.0
+        if value is True:
+            return True
+        if isinstance(value, (int, float)) and not isinstance(value, bool) and value > 0:
+            return True
+    return False
+
+
+def _diagnostic_view(result: Mapping[str, Any]) -> dict[str, object]:
+    merged: dict[str, object] = {}
+    for key in ("diagnostics", "diagnostics_summary"):
+        nested = result.get(key)
+        if isinstance(nested, Mapping):
+            merged.update(nested)
+    for key in _SAFE_DIAGNOSTIC_KEYS:
+        if key in result:
+            merged[key] = result[key]
+    return _safe_diagnostics(merged)
 
 
 def _has_reason(reason: str, *tokens: str) -> bool:
@@ -232,16 +262,45 @@ def _is_rejection(case: Mapping[str, Any]) -> bool:
 
 def _classify(case: Mapping[str, Any], result: Mapping[str, Any], reason: str, diagnostics: Mapping[str, object], returned: list[str]) -> str:
     if (
-        _has_reason(reason, "infrastructure", "backend", "timeout", "vector_path_unavailable", "exception", "error", "missing_retrieval_result")
+        _has_reason(
+            reason,
+            "infrastructure",
+            "backend",
+            "timeout",
+            "vector_path_unavailable",
+            "exception",
+            "error",
+            "missing_retrieval_result",
+            "calibration_artifact_mismatch",
+            "mapping_unavailable",
+            "score_space_mismatch",
+            "embedding_unavailable",
+            "opensearch_unavailable",
+            "index_unavailable",
+            "vector_error",
+            "degraded",
+        )
         or diagnostics.get("vector_error") is True
         or diagnostics.get("embedding_degraded") is True
         or diagnostics.get("calibration_artifact_mismatch") is True
         or diagnostics.get("score_space_match") is False
+        or str(diagnostics.get("status", "")).lower() in {"error", "degraded", "unavailable", "failed"}
     ):
         return "infrastructure_failure"
     if (
         _has_reason(reason, "permission", "lifecycle", "forbidden", "deleted", "acl")
-        or _number(diagnostics, "permission_violations", "deletion_residuals", "lifecycle_violations", "forbidden_returned", "acl_denied") > 0
+        or _has_violation(
+            diagnostics,
+            "permission_violations",
+            "permission_violation",
+            "deletion_residuals",
+            "deletion_residual",
+            "lifecycle_violations",
+            "lifecycle_violation",
+            "forbidden_returned",
+            "acl_denied",
+            "review_leakage",
+        )
     ):
         return "permission_or_lifecycle"
 
@@ -278,10 +337,13 @@ def attribute_failures(cases_file: Path, retrieval_result: Path, *, asset_audit:
         case_map[case_id] = row
 
     retrieval_value = _load(retrieval_result)
-    retrieval_rows, selected_config = _result_rows(retrieval_value)
+    retrieval_rows, selected_config, selected_value = _result_rows(retrieval_value)
     retrieval_hash = _artifact_hash(retrieval_value) if isinstance(retrieval_value, Mapping) else None
     if retrieval_hash and retrieval_hash != dataset_sha256:
         raise ValueError(f"dataset hash mismatch: retrieval={retrieval_hash} cases={dataset_sha256}")
+    selected_hash = _artifact_hash(selected_value) if selected_value is not None else None
+    if selected_hash and selected_hash != dataset_sha256:
+        raise ValueError(f"selected config dataset hash mismatch: retrieval={selected_hash} cases={dataset_sha256}")
     if asset_audit is not None:
         audit_value = _load(Path(asset_audit))
         if not isinstance(audit_value, Mapping):
@@ -296,6 +358,9 @@ def attribute_failures(cases_file: Path, retrieval_result: Path, *, asset_audit:
         if case_id in result_map:
             raise ValueError(f"duplicate retrieval case ID: {case_id}")
         result_map[case_id] = row
+    extra_ids = sorted(set(result_map) - set(case_map))
+    if extra_ids:
+        raise ValueError(f"retrieval cases not present in cases file: {', '.join(extra_ids)}")
 
     per_case: list[dict[str, object]] = []
     label_counts: Counter[str] = Counter()
@@ -305,7 +370,7 @@ def attribute_failures(cases_file: Path, retrieval_result: Path, *, asset_audit:
         raw_returned = result.get("returned_ids", result.get("retrieved_evidence_ids", []))
         returned = [str(item) for item in raw_returned] if isinstance(raw_returned, (list, tuple)) else []
         reason = _safe_reason(result.get("reason")) if result else "missing_retrieval_result"
-        diagnostics = _safe_diagnostics(result.get("diagnostics", result.get("diagnostics_summary", {})))
+        diagnostics = _diagnostic_view(result)
         label = _classify(case, result, reason, diagnostics, returned)
         row = {
             "case_id": case_id,
@@ -326,8 +391,8 @@ def attribute_failures(cases_file: Path, retrieval_result: Path, *, asset_audit:
     return {
         "run_meta": {
             "run_at": datetime.now(timezone.utc).isoformat(),
-            "cases_file": str(cases_file),
-            "retrieval_result": str(retrieval_result),
+            "cases_file": cases_file.name,
+            "retrieval_result": retrieval_result.name,
             "selected_config": selected_config,
             "case_count": len(per_case),
         },

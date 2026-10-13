@@ -25,3 +25,17 @@ Implemented and committed the privacy-safe failure attribution utility.
 
 - `gold_evidence_sha256` is the SHA-256 of a canonical JSON array containing sorted, de-duplicated gold evidence IDs. The raw IDs remain out of the report.
 - Retrieval results without a matching case row are treated as infrastructure failures; missing result rows are attributed the same way instead of being silently counted as gate rejects.
+
+## Review fixes (2026-10-13)
+
+- Restricted emitted reasons to a fixed allowlist; arbitrary identifier-like reason strings now become `unknown` and are absent from the serialized report.
+- Merged row-level retrieval diagnostics with nested diagnostics before attribution, including numeric and boolean permission, lifecycle, deletion, ACL, and review-leakage flags. Permission/lifecycle attribution remains ahead of gate false accept.
+- Added infrastructure reason coverage for calibration artifact mismatch, unavailable mappings/indexes, score-space mismatch, embedding/backend failures, and degraded/unavailable statuses.
+- Validated dataset hashes carried by the selected retrieval config as well as top-level/meta artifacts.
+- Rejected retrieval rows whose case IDs are absent from the cases file.
+- Reduced run metadata to input basenames so caller paths cannot carry PHI.
+
+Review-fix verification:
+
+- `.venv/Scripts/python.exe -m pytest tests/eval/test_retrieval_failure_attribution.py -q` — **5 passed**
+- `.venv/Scripts/ruff.exe check scripts/retrieval_failure_attribution.py tests/eval/test_retrieval_failure_attribution.py` — **All checks passed**
