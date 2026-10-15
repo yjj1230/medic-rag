@@ -28,7 +28,7 @@ def _extract_anchor_entities(messages: tuple[ChatMessage, ...]) -> list[str]:
 
 
 class ContextCompletionStep:
-    """Resolve referents ('it', 'that result') using recent chat history."""
+    """用近期对话历史解析指代（"它"、"那个结果"）。"""
 
     def __init__(self, history_size: int = 4) -> None:
         self.history_size = history_size

@@ -29,10 +29,10 @@ class ParsingWorker:
         service = self.service_factory()
         try:
             result = service.process(job_id)
-            # Parsing commits durable IndexJobs/Outbox rows.  Indexing is
-            # handed off to the lease-aware orchestrator when configured;
-            # explicit synchronous ParsingService writers remain supported for
-            # deterministic tests and local callers.
+            # 解析会提交持久化的 IndexJobs/Outbox 行。索引
+            # 在配置后交接给可感知租约的编排器；
+            # 显式的同步 ParsingService 写入器仍为确定性的
+            # 测试和本地调用方提供支持。
             if self.orchestrator_factory is not None:
                 orchestrator = self.orchestrator_factory()
                 run_once = getattr(orchestrator, "run_once", None)
@@ -83,14 +83,12 @@ def build_parsing_service_factory(
     object_store: ObjectStore,
     **kwargs: object,
 ) -> Callable[[], ParsingService]:
-    """Composition-root factory for :class:`ParsingWorker`'s ``service_factory``.
+    """:class:`ParsingWorker` 的 ``service_factory`` 的组合根工厂。
 
-    Uses :func:`build_parser_adapters` so env config actually activates remote
-    OCR: a non-empty ``ocr_service_url`` wires the remote :class:`RemoteOCRParser`
-    (images) plus the per-PDF backend factory (scanned-PDF backfill); an empty
-    URL (default) keeps the deterministic native-only adapters and the remote
-    backend disabled.  Each call opens a fresh short session via
-    ``session_factory``.
+    使用 :func:`build_parser_adapters`，让环境配置真正激活远端 OCR：
+    非空的 ``ocr_service_url`` 会接线远端 :class:`RemoteOCRParser`（图像）
+    外加逐 PDF 后端工厂（扫描 PDF 回填）；URL 为空（默认）则保持确定性的
+    原生适配器，远端后端关闭。每次调用都通过 ``session_factory`` 新开一个短会话。
     """
     adapters: ParserAdapters = build_parser_adapters(settings)
 

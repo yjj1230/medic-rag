@@ -27,13 +27,13 @@ from medical_rag.parsing.adapters import (
 )
 from medical_rag.parsing.contracts import ParsedBlock, ParsedDocument, ParsedSegment
 
-# Page-level block ID prefix for OCR output (page identity is the key fix vs the
-# legacy ``_build_ocr_blocks`` which hard-codes page 1).
+# OCR 输出的页级块 ID 前缀（页标识是关键修复点，对比
+# 硬编码第 1 页的旧 ``_build_ocr_blocks``）。
 _PAGE_BLOCK_ID = "p{page}-ocr-{index}"
 
 
 class PerPageOCRBackend(Protocol):
-    """Recognise the text of one page at a time (returns OCR text lines)."""
+    """一次识别一页的文本（返回 OCR 文本行）。"""
 
     page_count: int
 
@@ -42,11 +42,10 @@ class PerPageOCRBackend(Protocol):
 
 @dataclass(frozen=True, slots=True)
 class DeterministicPerPageOCRBackend:
-    """Deterministic per-page OCR using the fixture transport.
+    """使用 fixture 传输的确定性逐页 OCR。
 
-    ``pages`` maps a 1-based page index to its OCR text lines; ``page_count`` is
-    the total number of pages in the scanned document.  A missing page yields no
-    text (``[]``), which the parser treats as blank.
+    ``pages`` 把从 1 开始的页索引映射到其 OCR 文本行；``page_count`` 是扫描
+    文档的总页数。缺失的页不产生文本（``[]``），解析器将其视为空白。
     """
 
     pages: dict[int, list[str]]
@@ -91,12 +90,12 @@ def _ocr_blocks_for_page(
 
 
 class PerPageOCRParser:
-    """OCRParser adapter that preserves page identity in per-page blocks.
+    """在逐页块中保留页标识的 OCRParser 适配器。
 
-    Implements the existing :class:`OCRParser` protocol (``parse_images``) so it
-    can slot into ``ParserAdapters.ocr``.  The returned :class:`ParsedDocument`
-    uses ``file_type="image"`` so ``DocumentCleaner`` marks it ``ocr_source=True``
-    and emits ``FLAG_OCR_NOISE_CHECKED``.
+    实现既有的 :class:`OCRParser` 协议（``parse_images``），因此它能接入
+    ``ParserAdapters.ocr``。返回的 :class:`ParsedDocument` 使用 ``file_type="image"``，
+    使 ``DocumentCleaner`` 将其标记为 ``ocr_source=True`` 并发出
+    ``FLAG_OCR_NOISE_CHECKED``。
     """
 
     def __init__(self, backend: PerPageOCRBackend) -> None:
@@ -179,7 +178,7 @@ def ocr_backfill_pdf(
             continue
         lines = backend.recognize_page(page_index)
         for block in _ocr_blocks_for_page(page_index, lines, language_hints):
-            # Never duplicate an existing native block for the same anchor.
+            # 绝不为同一锚点重复已有的原生块。
             if any(existing.source_anchor == block.source_anchor for existing in merged_blocks):
                 continue
             merged_blocks.append(block)

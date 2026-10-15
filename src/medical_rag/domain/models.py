@@ -22,10 +22,9 @@ from medical_rag.domain.enums import (
 
 @dataclass(frozen=True, slots=True)
 class VersionBundle:
-    """Frozen value object carrying every version identity for one index operation.
+    """承载一次索引操作全部版本标识的不可变值对象。
 
-    The bundle is the single cohesive construction site for the per-record
-    rebuild identity exposed on IndexJob.
+    该捆绑包是暴露在 IndexJob 上的单条记录重建标识的唯一、内聚的构造处。
     """
 
     parser_version: str
@@ -42,7 +41,7 @@ class Base(DeclarativeBase):
 
 
 class UTCDateTime(TypeDecorator):
-    """Keep lease/retry timestamps comparable across SQLite and PostgreSQL."""
+    """让租约/重试时间戳在 SQLite 与 PostgreSQL 之间保持可比。"""
 
     impl = DateTime
     cache_ok = True
@@ -83,9 +82,9 @@ class Tenant(TimestampMixin, Base):
 
 class Patient(TimestampMixin, Base):
     __tablename__ = "patients"
-    # NOTE: exactly one ``__table_args__`` per class body.  A second
-    # declaration silently replaces the first, which previously dropped the
-    # unique ``(tenant_id, external_user_id)`` index from the metadata.
+    # 注意：每个类体只能有一个 ``__table_args__``。第二处
+    # 声明会静默替换第一处，此前这会让唯一的
+    # ``(tenant_id, external_user_id)`` 索引从元数据中丢失。
     __table_args__ = (
         Index("ix_patients_tenant_id", "tenant_id"),
         Index("uq_patients_tenant_external_user", "tenant_id", "external_user_id", unique=True),
@@ -159,9 +158,9 @@ class ParseJob(TimestampMixin, Base):
     __tablename__ = "parse_jobs"
     __table_args__ = (
         Index("ix_parse_jobs_status", "status"),
-        # Task 11 (n3b): the parsing→indexing handoff queries ParseJob by
-        # document_version_id (orchestrator/IndexWorker), so index it rather
-        # than scanning the whole table for every queued evidence job.
+        # Task 11（n3b）：解析→索引的交接按 document_version_id
+        # 查询 ParseJob（orchestrator/IndexWorker），因此
+        # 要给它建索引，而不是为每个排队中的证据作业扫描整张表。
         Index("ix_parse_jobs_document_version", "document_version_id"),
     )
 
@@ -179,15 +178,13 @@ class ParseJob(TimestampMixin, Base):
 
 
 class IndexJob(TimestampMixin, Base):
-    """Durable outbox-style job for private evidence indexing.
+    """持久化的 outbox 式私有证据索引作业。
 
-    The composite idempotency identity of one evidence unit for a document
-    version is captured by ``idempotency_key`` (parser + cleaner + chunker +
-    extractor + embedding model + index version), so that any pipeline-composition
-    change invalidates a rebuild rather than reusing a stale index record.  The
-    four-field ``uq_index_jobs_idempotency`` uniqueness key is preserved for
-    migration compatibility and is reinforced by the eight-field
-    ``ix_index_jobs_rebuild_idempotency`` unique index (Task 8).
+    某个文档版本的一条证据单元的复合幂等标识由 ``idempotency_key`` 捕获
+    （parser + cleaner + chunker + extractor + embedding model + index version），
+    这样任何管线组合的变更都会使重建失效，而不是复用一条陈旧的索引记录。
+    四字段的 ``uq_index_jobs_idempotency`` 唯一键为迁移兼容性而保留，
+    并由八字段的 ``ix_index_jobs_rebuild_idempotency`` 唯一索引加固（Task 8）。
     """
 
     __tablename__ = "index_jobs"
@@ -202,10 +199,10 @@ class IndexJob(TimestampMixin, Base):
             "embedding_model",
             unique=True,
         ),
-        # Task 8: per-record rebuild identity.  Unique so the database also
-        # guards the composite; NULL legacy version fields are treated as
-        # distinct by SQLite/PostgreSQL unique-index semantics, matching the
-        # historical parser/embedding defaults that were never NULL.
+        # Task 8：单条记录的重建标识。设为唯一，这样数据库也会
+        # 守护该复合键；NULL 的旧版本字段会被
+        # SQLite/PostgreSQL 唯一索引语义视为互不相同，与
+        # 历史上从未为 NULL 的 parser/embedding 默认值相匹配。
         Index(
             "ix_index_jobs_rebuild_idempotency",
             "document_version_id",
@@ -238,9 +235,9 @@ class IndexJob(TimestampMixin, Base):
     embedding_model: Mapped[str] = mapped_column(
         String(200), nullable=False, default="none"
     )
-    # --- Task 8: complete pipeline versions threaded from VersionBundle ---
-    # Optional because older index rows predate these columns; a VersionBundle
-    # always carries the authoritative (non-blank) values for new rows.
+    # --- Task 8：从 VersionBundle 贯穿而来的完整管线版本 ---
+    # 可选，因为更早的索引行早于这些列；而 VersionBundle
+    # 总是为新行携带权威的（非空）取值。
     cleaner_version: Mapped[str | None] = mapped_column(String(100))
     chunker_version: Mapped[str | None] = mapped_column(String(100))
     extractor_version: Mapped[str | None] = mapped_column(String(100))
@@ -255,12 +252,11 @@ class IndexJob(TimestampMixin, Base):
 
     @property
     def idempotency_key(self) -> tuple[UUID, UUID, str, str | None, str | None, str | None, str, str]:
-        """Return the per-record rebuild identity (Task 8 composite).
+        """返回单条记录的重建标识（Task 8 复合键）。
 
-        A change to any pipeline stage (parser, cleaner, chunker, extractor,
-        embedding model, or index version) yields a different identity, so a
-        re-run with an upgraded component is never mistaken for the same
-        index attempt.
+        任一管线阶段（parser、cleaner、chunker、extractor、embedding model 或
+        index version）的变更都会产生不同的标识，因此用升级后的组件重跑
+        绝不会被误认为是同一次索引尝试。
         """
 
         return (
@@ -278,16 +274,16 @@ class IndexJob(TimestampMixin, Base):
     def _utc(value: datetime) -> datetime:
         return value if value.tzinfo is not None else value.replace(tzinfo=UTC)
 
-    # ``IndexJob.lease`` was removed: leasing is owned exclusively by
-    # ``OutboxService.claim``, which applies the same eligibility, lease-expiry,
-    # and due/backoff predicates inside a single conditional UPDATE (so the
-    # acquisition is atomic at the database level).  The ORM-level variant had
-    # no production caller at all -- only two tests used it -- and a second,
-    # read-then-write implementation of the same rules could silently diverge
-    # from the atomic one.
+    # ``IndexJob.lease`` 已被移除：租约完全由
+    # ``OutboxService.claim`` 负责，它在单条条件式 UPDATE 中
+    # 施加相同的资格、租约到期
+    # 与到期/退避谓词（因此获取在数据库层面是原子的）。
+    # ORM 级别的变体完全没有
+    # 生产调用方 —— 只有两个测试用它 —— 而同一套规则的第二份
+    # 先读后写实现可能会与原子实现静默分歧。
 
     def retry(self, error_code: str, now: datetime) -> None:
-        """Clear ownership and schedule deterministic exponential backoff."""
+        """清除所有权并安排确定性的指数退避。"""
 
         if self.status in {IndexJobStatus.SUCCEEDED, IndexJobStatus.PERMANENT_FAILED}:
             return
@@ -302,7 +298,7 @@ class IndexJob(TimestampMixin, Base):
 
 
 class OutboxEvent(TimestampMixin, Base):
-    """Durable, privacy-safe handoff from source writes to indexing workers."""
+    """从源写入到索引 worker 的持久化、隐私安全交接。"""
 
     __tablename__ = "outbox_events"
     __table_args__ = (
@@ -343,11 +339,12 @@ class EvidenceUnit(TimestampMixin, Base):
     source_anchor: Mapped[str | None] = mapped_column(String(500))
     confidence: Mapped[float | None]
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    # --- Task 5: expanded evidence + medical-fact provenance (additive, nullable) ---
+    # --- Task 5：扩展证据 + 医学事实溯源（增量式，可空）---
     # 原文/清洗文本分层保留（原文永不覆盖）；retrieval text 恒为 clean_text。
     raw_text: Mapped[str | None] = mapped_column(Text)
     clean_text: Mapped[str | None] = mapped_column(Text)
     section_path: Mapped[list | None] = mapped_column(JSON)
+    locator: Mapped[dict | None] = mapped_column(JSON)
     parent_block_id: Mapped[str | None] = mapped_column(String(200))
     chunk_index: Mapped[int | None] = mapped_column(Integer)
     parser_version: Mapped[str | None] = mapped_column(String(100))
@@ -381,7 +378,7 @@ class MedicalFact(TimestampMixin, Base):
     source_anchor: Mapped[str | None] = mapped_column(String(500), nullable=False)
     confidence: Mapped[float] = mapped_column(nullable=False)
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    # --- Task 5: expanded fact provenance + review state (additive, nullable) ---
+    # --- Task 5：扩展事实溯源 + 复核状态（增量式，可空）---
     # name/value/unit/reference_range 保持既有语义；以下为其规范化/溯源镜像。
     canonical_name: Mapped[str | None] = mapped_column(String(200))
     raw_name: Mapped[str | None] = mapped_column(String(200))
@@ -427,26 +424,41 @@ class KnowledgeChunk(TimestampMixin, Base):
     location: Mapped[str | None] = mapped_column(String(500))
     page_number: Mapped[int | None] = mapped_column(Integer)
     section: Mapped[str | None] = mapped_column(String(300))
+    locator: Mapped[dict | None] = mapped_column(JSON)
     url: Mapped[str | None] = mapped_column(String(1000))
     active: Mapped[bool] = mapped_column(default=False, nullable=False)
 
     def citation(self):
         from medical_rag.knowledge.contracts import Citation
 
+        locator = self._locator_object()
         return Citation(
             source_id=str(self.source_id),
             title=self.source.title,
             version=self.source.source_version,
-            location=self.location or self.section,
+            location=self.location or (locator.display_location() if locator else self.section),
             url=self.url,
+            chunk_id=str(self.id),
+            locator=locator,
         )
+
+    def _locator_object(self):
+        if not self.locator:
+            return None
+        from medical_rag.provenance.contracts import SourceLocator
+
+        payload = dict(self.locator)
+        if payload.get("bbox") is not None:
+            payload["bbox"] = tuple(payload["bbox"])
+        payload["section_path"] = tuple(payload.get("section_path") or ())
+        return SourceLocator(**{key: value for key, value in payload.items() if key in SourceLocator.__dataclass_fields__})
 
 
 class ChatSession(TimestampMixin, Base):
     __tablename__ = "chat_sessions"
     __table_args__ = (
-        # The answer path looks sessions up by their owner-pair; without this the
-        # lookup is a sequential scan on the hottest table in the service.
+        # 答案路径按所有者对查找会话；没有这个索引，
+        # 该查找就是对本服务最热表的一次全表扫描。
         Index("ix_chat_sessions_tenant_patient", "tenant_id", "patient_id"),
     )
 
@@ -461,14 +473,14 @@ class ChatSession(TimestampMixin, Base):
 class ChatMessage(TimestampMixin, Base):
     __tablename__ = "chat_messages"
     __table_args__ = (
-        # History replay: WHERE session_id = ? ORDER BY created_at DESC LIMIT n.
-        # ``id`` is the tiebreaker so the ordering is total and the index can
-        # serve the sort instead of re-sorting the fetched rows.
+        # 历史回放：WHERE session_id = ? ORDER BY created_at DESC LIMIT n。
+        # ``id`` 作为平局裁决键，使排序是全序，索引也就能
+        # 直接服务该排序，而无需对取回的行重新排序。
         Index("ix_chat_messages_session_created", "session_id", "created_at", "id"),
-        # Idempotency probe: the retry guard filters on a JSON key.  A functional
-        # index on the extracted value keeps that lookup off a sequential scan;
-        # SQLAlchemy renders the expression in the dialect's own syntax, so
-        # PostgreSQL gets the same indexed predicate SQLite does.
+        # 幂等性探测：重试保护按一个 JSON 键过滤。在提取出的值上
+        # 建立函数索引，可以让该查找免于全表扫描；
+        # SQLAlchemy 会按方言自身的语法渲染该表达式，因此
+        # PostgreSQL 得到与 SQLite 相同的带索引谓词。
         #
         # P1-1（评审 2026-10-12）：索引升级为 UNIQUE —— orchestrator 的幂等检查
         # 是先 SELECT 后 INSERT（TOCTOU），并发同 key 请求会双双通过检查并重复

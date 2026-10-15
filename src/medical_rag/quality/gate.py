@@ -27,7 +27,7 @@ from medical_rag.domain.enums import QualityStatus
 from medical_rag.parsing.contracts import CleanedDocument, EvidenceUnitDraft, MedicalFactDraft
 from medical_rag.quality.contracts import QualityDecision
 
-# Stable reason keys surfaced across the gate → reasons → persistence (quality_flags).
+# 贯穿门禁 → reasons → 持久化（quality_flags）的稳定原因键。
 REASON_EMPTY_DOCUMENT = "empty_document"
 REASON_MISSING_SOURCE_ANCHOR = "missing_source_anchor"
 REASON_LOW_TEXT_COVERAGE = "low_text_coverage"
@@ -41,7 +41,7 @@ REASON_HARD_SPLIT = "hard_split"
 REASON_MISSING_PAGES = "missing_pages"
 REASON_CONFIDENCE_UNAVAILABLE = "confidence_unavailable"
 
-_SUSPICIOUS_CATEGORIES = frozenset({"Cc", "Cf"})  # control + format chars
+_SUSPICIOUS_CATEGORIES = frozenset({"Cc", "Cf"})  # 控制字符 + 格式字符
 _REPLACEMENT_CHAR = "\ufffd"
 _STRUCTURAL_WHITESPACE = frozenset("\t\n\r ")
 
@@ -63,14 +63,14 @@ class QualityPolicy:
     max_duplicate_block_ratio: float = 0.25
     min_table_column_consistency: float = 0.80
     min_ocr_confidence: float = 0.80
-    min_fact_coverage: float = 0.0  # fact extraction is optional for review gating
-    max_hard_split_ratio: float = 0.0  # any hard-split chunk flags review
+    min_fact_coverage: float = 0.0  # 事实抽取对复核门禁是可选的
+    max_hard_split_ratio: float = 0.0  # 任何硬切分块都会触发复核
     # 结构性页覆盖下限：声明页数中被证据真正覆盖的比例低于此值即 FAIL（内容确实缺失）。
     min_page_coverage: float = 0.5
 
 
 # ---------------------------------------------------------------------------
-# Private pure metric functions (independently testable).
+# 私有的纯度量函数（可独立测试）。
 # ---------------------------------------------------------------------------
 
 
@@ -167,8 +167,8 @@ def _row_cell_counts(lines: list[str]) -> list[int]:
 
 
 def _table_column_consistency(document: CleanedDocument) -> float:
-    """Per-table column consistency: the minimum consistency across tables, so a
-    ragged table drags the whole document down (fail-soft toward review)."""
+    """逐表列一致性：取各表一致性的最小值，因此一个
+    参差不齐的表会把整份文档拉低（fail-soft 倾向复核）。"""
     tables = [b for b in document.cleaned_blocks if b.block_type == "table"]
     if not tables:
         return 1.0
@@ -281,7 +281,7 @@ def _hard_split_ratio(evidence: list[EvidenceUnitDraft]) -> float:
 
 
 class QualityGate:
-    """Evaluate one parsed/cleaned document against a :class:`QualityPolicy`."""
+    """针对 :class:`QualityPolicy` 评测一个已解析/已清洗的文档。"""
 
     def __init__(self, policy: QualityPolicy | None = None) -> None:
         self.policy = policy or QualityPolicy()
@@ -294,7 +294,7 @@ class QualityGate:
     ) -> QualityDecision:
         policy = self.policy
 
-        # --- complete metric dictionary, returned verbatim for observability ---
+        # --- 完整度量字典，为可观测性原样返回 ---
         metrics: dict[str, float] = {
             "text_coverage": _text_coverage(document, evidence),
             "non_empty_block_ratio": _non_empty_block_ratio(document),
@@ -311,7 +311,7 @@ class QualityGate:
 
         reasons: list[str] = []
 
-        # --- hard structural failure: no usable content (stable reason) ---
+        # --- 硬性结构失败：无可用内容（稳定原因）---
         has_content = bool(_non_empty_blocks(document)) or any(
             (item.text or "").strip() for item in evidence
         )
@@ -319,7 +319,7 @@ class QualityGate:
             reasons.append(REASON_EMPTY_DOCUMENT)
             return QualityDecision.fail(reasons, metrics)
 
-        # --- soft review signals (NEEDS_REVIEW) ---
+        # --- 软性复核信号（NEEDS_REVIEW）---
         if metrics["anchor_coverage"] < policy.min_anchor_coverage:
             reasons.append(REASON_MISSING_SOURCE_ANCHOR)
         if metrics["text_coverage"] < policy.min_text_coverage:
@@ -343,7 +343,7 @@ class QualityGate:
         if metrics["hard_split_ratio"] > policy.max_hard_split_ratio:
             reasons.append(REASON_HARD_SPLIT)
 
-        # --- hard structural failure: declared pages are missing (content gone) ---
+        # --- 硬性结构失败：声明的页缺失（内容已丢失）---
         # 这是"内容确实缺失"而非阈值擦边，因此与 empty_document 一样归 FAIL；
         # 已算出的软信号一并返回，便于运营出口看到完整画像。
         if metrics["page_coverage"] < policy.min_page_coverage:

@@ -6,12 +6,11 @@ from medical_rag.retrieval.contracts import SearchRecord
 
 
 class HybridRanker:
-    """Deterministic Reciprocal Rank Fusion for lexical and vector results.
+    """针对词法与向量结果的确定性倒数排名融合（RRF）。
 
-    Raw BM25 and vector scores are retained for diagnostics only.  Ordering is
-    based exclusively on rank contributions, then on a stable record id.
-    ``calibrated_score`` is normalized to a ``0..1`` range where a document
-    ranked first by both paths scores 1.0.
+    原始 BM25 与向量分数仅为诊断而保留。排序完全基于排名贡献，其次基于稳定的
+    记录 id。``calibrated_score`` 被归一化到 ``0..1`` 区间，其中被两条路径都排在
+    第一的文档得分为 1.0。
     """
 
     def __init__(self, *, rrf_k: int = 60) -> None:
@@ -54,8 +53,8 @@ class HybridRanker:
             if existing is None:
                 records[record.id] = record
             else:
-                # Keep metadata from the lexical hit while preserving scores
-                # contributed by each path for diagnostics.
+                # 保留词法命中的元数据，同时保留各条路径
+                # 贡献的分数以供诊断。
                 records[record.id] = replace(
                     existing,
                     vector_score=record.vector_score,
@@ -66,10 +65,10 @@ class HybridRanker:
                 self.rrf_k + vector_rank
             )
 
-        # The largest possible raw RRF value is two rank-1 contributions.  A
-        # normalized companion score makes a threshold meaningful across
-        # candidate-set sizes while avoiding any comparison of BM25/vector
-        # score scales.
+        # 原始 RRF 可能的最大值是两个第一名贡献之和。一个
+        # 归一化的伴随分数让阈值在不同候选集规模之间
+        # 都有意义，同时避免对 BM25/向量
+        # 分数尺度做任何比较。
         max_raw = 2.0 / (self.rrf_k + 1)
         fused = [
             replace(

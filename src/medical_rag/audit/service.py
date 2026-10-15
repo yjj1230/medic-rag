@@ -72,11 +72,10 @@ class AuditService:
         worker_id: str | None = None,
         outcome: str | None = None,
     ) -> AuditEvent:
-        """Record retry/failure state for a durable index job.
+        """记录一个持久化索引作业的重试/失败状态。
 
-        Index workers can call this seam after each attempt.  Only bounded
-        identifiers and counters are persisted; provider exception messages
-        are intentionally not accepted.
+        索引 worker 可以在每次尝试后调用这个接缝。只持久化有界的标识符和计数器；
+        提供方的异常消息有意不接受。
         """
 
         return self.record(
@@ -104,7 +103,7 @@ class AuditService:
         outcome: str = "requested",
         metadata: Mapping[str, object] | None = None,
     ) -> AuditEvent:
-        """Record a bounded lifecycle transition without source text."""
+        """记录一次有界的状态迁移，且不含源文本。"""
 
         payload = {
             "event_type": str(event_type)[:120],
@@ -129,7 +128,7 @@ class AuditService:
         reason: str,
         metadata: Mapping[str, object] | None = None,
     ) -> AuditEvent:
-        """Record a privacy-safe stale-index scan/repair outcome."""
+        """记录一次隐私安全的陈旧索引扫描/修复结果。"""
 
         payload = {
             "scope": str(scope)[:40],

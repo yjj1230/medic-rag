@@ -1,1 +1,1 @@
-"""Permission-aware public and private retrieval."""
+"""权限感知的公开与私有检索。"""

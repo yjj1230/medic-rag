@@ -1,2 +1,2 @@
-"""Audit event services."""
+"""审计事件服务。"""
 

@@ -1,19 +1,15 @@
-"""Database engine and per-request session wiring.
+"""数据库引擎与按请求的会话接线。
 
-Two rules drive this module:
+本模块由两条规则驱动：
 
-1. **One engine per process.**  ``create_engine`` builds a connection pool;
-   calling it per request throws that pool away and opens a fresh connection
-   for every query.  The engine is therefore created once at startup (the
-   ``create_app`` lifespan) and handed to the request dependency through
-   ``app.state``.  A per-request ``create_session_factory()`` made the pool
-   meaningless and multiplied connection setup by the number of dependencies
-   resolving a session on each request.
+1. **每进程一个引擎。** ``create_engine`` 会构建连接池；按请求调用它会丢弃该连接池，
+   并为每次查询新开一条连接。因此引擎在启动时（``create_app`` 的 lifespan）只创建
+   一次，并通过 ``app.state`` 交给请求依赖。按请求调用 ``create_session_factory()``
+   会让连接池失去意义，并把连接建立的次数乘以每个请求上解析会话的依赖数量。
 
-2. **No silent fallback to a fresh engine.**  ``get_session`` failing closed is
-   correct: serving a request from an engine nobody configured means running
-   against an unintended database.  Tests opt in explicitly by overriding the
-   dependency with their own session.
+2. **不静默回落到新引擎。** ``get_session`` fail closed 是正确的：用一个没人配置过的
+   引擎服务请求，意味着在对一个非预期的数据库操作。测试通过用自己的会话来覆盖该依赖
+   来显式选择加入。
 """
 from collections.abc import Generator
 
@@ -23,13 +19,13 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from medical_rag.core.config import Settings
 
-# ``app.state`` attribute holding the process-wide session factory.  Exported so
-# the composition root and the request dependency cannot drift apart.
+# 存放进程级会话工厂的 ``app.state`` 属性。导出它是为了
+# 让组合根与请求依赖不会彼此漂移。
 SESSION_FACTORY_STATE = "db_session_factory"
 
 
 def create_db_engine(settings: Settings) -> Engine:
-    """Build an engine lazily; creating it does not connect to the database."""
+    """惰性构建引擎；创建它并不会连接数据库。"""
     return create_engine(settings.database_url, pool_pre_ping=True)
 
 
@@ -39,11 +35,10 @@ def create_session_factory(settings: Settings) -> sessionmaker[Session]:
 
 
 def get_session(request: Request) -> Generator[Session, None, None]:
-    """Request-scoped session from the process-wide factory.
+    """来自进程级工厂的按请求作用域会话。
 
-    A missing factory is a composition bug (the process is serving requests
-    without its configured database), so it fails closed rather than dialling
-    the default DSN.
+    工厂缺失属于组合缺陷（进程在没有配置好数据库的情况下服务请求），
+    因此它会 fail closed，而不是去连默认 DSN。
     """
     factory = getattr(request.app.state, SESSION_FACTORY_STATE, None)
     if factory is None:

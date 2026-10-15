@@ -1,20 +1,17 @@
-"""Quality gate contracts: QUALITY FAIL write policy and decision value object.
+"""质量门禁契约：QUALITY FAIL 的写入策略与判定值对象。
 
-DECIDED FAIL WRITE POLICY (write-but-flag):
-  A NEEDS_REVIEW decision NEVER discards evidence rows.  The parse
-  transaction still persists every normalized EvidenceUnit and MedicalFact
-  (with ``retrieval_eligible=False`` and quality flags), and the index worker
-  may write those records to the private index marked ``retrieval_eligible``
-  False.  Every retrieval/search path filters ineligible records, so nothing
-  flagged is ever surfaced as usable evidence.
+已确定的 FAIL 写入策略（write-but-flag）：
+  一个 NEEDS_REVIEW 判定绝不丢弃证据行。解析事务仍会持久化每一条规范化的
+  EvidenceUnit 与 MedicalFact（``retrieval_eligible=False`` 并带质量标志），
+  索引 worker 可以把这些记录写入私有索引并标记 ``retrieval_eligible``
+  为 False。所有检索/搜索路径都会过滤不合格记录，因此任何被标记的内容
+  绝不会作为可用证据被展示。
 
-  FAIL today returns only when the document/evidence is **truly empty** (no
-  content to retain at all), so no evidence rows or facts are persisted in
-  that path.  If a future gate returns FAIL while retaining evidence, the
-  contract below (write-but-flag, never delete) applies the same as
-  NEEDS_REVIEW: rows are persisted ``retrieval_eligible=False``, indexed
-  flagged non-retrievable, and only a SEARCHABLE / retrievable IndexJob is
-  suppressed.  FAIL never deletes evidence rows.
+  当前的 FAIL 只在文档/证据**完全为空**（根本没有任何内容可保留）时返回，
+  因此该路径不持久化任何证据行或事实。若未来的门禁在保留证据的同时返回 FAIL，
+  下方契约（write-but-flag，绝不删除）将与 NEEDS_REVIEW 同样适用：行以
+  ``retrieval_eligible=False`` 持久化，索引时标记为不可检索，只有
+  SEARCHABLE / 可检索的 IndexJob 被抑制。FAIL 绝不删除证据行。
 """
 
 from __future__ import annotations
@@ -28,11 +25,10 @@ from medical_rag.domain.enums import QualityStatus
 
 @dataclass(frozen=True, slots=True)
 class QualityDecision:
-    """Quality gate judgement: status ∈ PASS | NEEDS_REVIEW | FAIL.
+    """质量门禁判定：status ∈ PASS | NEEDS_REVIEW | FAIL。
 
-    NEEDS_REVIEW / FAIL content is still persisted (write-but-flag), but is
-    never exposed as retrieval evidence.  Status is a runtime-validated
-    :class:`QualityStatus` StrEnum.
+    NEEDS_REVIEW / FAIL 内容仍会被持久化（write-but-flag），但绝不作为检索证据
+    暴露。status 是运行期校验的 :class:`QualityStatus` StrEnum。
     """
 
     status: Literal["PASS", "NEEDS_REVIEW", "FAIL"] | QualityStatus
@@ -41,8 +37,8 @@ class QualityDecision:
     retrieval_eligible: bool = True
 
     def __post_init__(self) -> None:
-        # Runtime-validate the status (fail-closed): coerce to the StrEnum so
-        # a mistyped value raises here rather than constructing silently.
+        # 运行期校验 status（fail-closed）：强制转换为该 StrEnum，使
+        # 拼错的值在此抛错，而不是静默构造。
         object.__setattr__(self, "status", QualityStatus(self.status))
         # 设计 §9：PASS→可检索，NEEDS_REVIEW/FAIL→不可检索；构造时强制一致（fail-closed）。
         if self.retrieval_eligible != (self.status == QualityStatus.PASS):
@@ -60,7 +56,7 @@ class QualityDecision:
         reasons: Iterable[str],
         metrics: Mapping[str, float] | None = None,
     ) -> QualityDecision:
-        """Mark for manual review: content is retained but not retrievable."""
+        """标记为需人工复核：内容保留但不可检索。"""
 
         return cls(
             status=QualityStatus.NEEDS_REVIEW,
@@ -75,7 +71,7 @@ class QualityDecision:
         reasons: Iterable[str],
         metrics: Mapping[str, float] | None = None,
     ) -> QualityDecision:
-        """Mark as hard failure with a stable reason; content retained but not retrievable."""
+        """以稳定原因标记为硬失败；内容保留但不可检索。"""
 
         return cls(
             status=QualityStatus.FAIL,

@@ -1,2 +1,2 @@
-"""Document ingestion and deletion services."""
+"""文档摄取与删除服务。"""
 

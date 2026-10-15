@@ -34,6 +34,13 @@ def _false_reject_rate(cases: list[dict[str, object]]) -> float:
     return sum(1 for row in answerable if not row.get("returned_ids")) / len(answerable)
 
 
+def _false_accept_rate(cases: list[dict[str, object]]) -> float:
+    rejection = [row for row in cases if row.get("category") == "rejection"]
+    if not rejection:
+        return 0.0
+    return sum(1 for row in rejection if row.get("returned_ids")) / len(rejection)
+
+
 def _normalize_thresholds(values: list[float] | tuple[float, ...], name: str) -> list[float]:
     normalized = sorted({round(float(value), 10) for value in values})
     if not normalized or any(value < 0.0 or value > 1.0 for value in normalized):
@@ -168,6 +175,7 @@ def run_threshold_sweep(
         cases = _safe_cases(result.get("cases", []))
         rejection = dict(result.get("rejection", {})) if isinstance(result.get("rejection"), dict) else {}
         rejection["false_reject_rate"] = _false_reject_rate(cases)
+        rejection["false_accept_rate"] = _false_accept_rate(cases)
         safety = dict(result.get("safety", {})) if isinstance(result.get("safety"), dict) else {}
         partitions = _candidate_partitions(result, cases)
         score_space = result.get("score_space", "cosinesimil")
@@ -201,21 +209,68 @@ def run_threshold_sweep(
                 ),
             }
         )
-    return {
-        "run_meta": {
-            "run_at": datetime.now(timezone.utc).isoformat(),
-            "cases_file": str(cases_file),
-            "public_index": public_index,
-            "private_index": private_index,
-            "rounds": rounds,
-            "grid": {
-                "base_thresholds": bases,
-                "vector_only_thresholds": vector_values,
-                "valid_pairs": len(pairs),
-            },
-            "gate_policy": "COSINE_ABSOLUTE_TWO_LEVEL",
-            "score_space": "cosinesimil",
+    run_meta: dict[str, object] = {
+        "run_at": datetime.now(timezone.utc).isoformat(),
+        "cases_file": str(cases_file),
+        "public_index": public_index,
+        "private_index": private_index,
+        "rounds": rounds,
+        "grid": {
+            "base_thresholds": bases,
+            "vector_only_thresholds": vector_values,
+            "valid_pairs": len(pairs),
         },
+        "gate_policy": "COSINE_ABSOLUTE_TWO_LEVEL",
+    }
+    if cases_file.is_file():
+        run_meta["dataset_sha256"] = _dataset_sha256(cases_file)
+    contexts = [
+        row.get("calibration_context")
+        for row in rows
+        if isinstance(row.get("calibration_context"), dict)
+    ]
+    identities = [
+        row.get("score_space_identity")
+        for row in rows
+        if isinstance(row.get("score_space_identity"), dict)
+    ]
+    if contexts:
+        for key in (
+            "embedding_model",
+            "public_index",
+            "private_index",
+            "public_index_version",
+            "private_index_version",
+            "mapping_score_space",
+        ):
+            values = {context.get(key) for context in contexts if context.get(key) is not None}
+            if len(values) > 1:
+                raise ValueError(f"measured calibration context has conflicting {key}")
+            if values:
+                run_meta[key] = next(iter(values))
+    if identities:
+        mappings = {identity.get("mapping") for identity in identities if identity.get("mapping") is not None}
+        if len(mappings) > 1:
+            raise ValueError("measured score-space mappings conflict")
+        if mappings:
+            run_meta["mapping_score_space"] = next(iter(mappings))
+        expected_spaces = {identity.get("expected", "cosinesimil") for identity in identities}
+        if len(expected_spaces) > 1:
+            raise ValueError("measured score-space expectations conflict")
+        measured_spaces = {row.get("score_space") for row in rows if row.get("score_space") is not None}
+        if len(measured_spaces) > 1:
+            raise ValueError("measured score spaces conflict")
+        if measured_spaces and expected_spaces and measured_spaces != expected_spaces:
+            raise ValueError("measured score space does not match identity")
+        run_meta["score_space"] = next(iter(measured_spaces or expected_spaces))
+    elif rows:
+        measured_spaces = {row.get("score_space") for row in rows if row.get("score_space") is not None}
+        if len(measured_spaces) > 1:
+            raise ValueError("measured score spaces conflict")
+        if measured_spaces:
+            run_meta["score_space"] = next(iter(measured_spaces))
+    return {
+        "run_meta": run_meta,
         "rows": rows,
     }
 
@@ -397,8 +452,11 @@ def _real_runner(
     }
     result["calibration_context"] = {
         "embedding_model": embedding.model_name,
+        "public_index": public_index,
+        "private_index": private_index,
         "public_index_version": "public-v1",
         "private_index_version": getattr(settings, "embedding_index_version", "private-v1"),
+        "mapping_score_space": mapping_space,
     }
     return result
 
@@ -419,15 +477,11 @@ def _select_lowest_risk(rows: list[dict[str, object]]) -> dict[str, object]:
     if not safe_rows:
         raise RuntimeError("no zero-safety-violation threshold pair was measured")
 
-    def key(row: dict[str, object]) -> tuple[float, float, float, float, float, float]:
-        quality = row.get("quality", {})
+    def key(row: dict[str, object]) -> tuple[float, float, float, float]:
         rejection = row.get("rejection", {})
-        latency = row.get("latency", {})
         return (
             float(rejection.get("false_reject_rate", 1.0)) if isinstance(rejection, dict) else 1.0,
-            1.0 - float(rejection.get("accuracy", 0.0)) if isinstance(rejection, dict) else 1.0,
-            float(latency.get("p95_ms", float("inf"))) if isinstance(latency, dict) else float("inf"),
-            -float(quality.get("recall_at_k", 0.0)) if isinstance(quality, dict) else 0.0,
+            float(rejection.get("false_accept_rate", 1.0)) if isinstance(rejection, dict) else 1.0,
             float(row.get("base_threshold", 1.0)),
             float(row.get("vector_only_threshold", 1.0)),
         )

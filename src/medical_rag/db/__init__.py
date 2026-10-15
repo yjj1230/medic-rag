@@ -1,2 +1,2 @@
-"""Database session package."""
+"""数据库会话包。"""
 

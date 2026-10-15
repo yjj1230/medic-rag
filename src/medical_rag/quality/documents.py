@@ -1,23 +1,14 @@
-"""Read-time derived document quality status (Task 7).
+"""读取时派生的文档质量状态（Task 7）。
 
-Pure, side-effect-free derivation used by the documents list endpoint.  The
-rules are deliberately explicit:
+documents 列表端点使用的纯函数式、无副作用推导。规则有意显式化：
 
-* ``FAILED_PARSE`` — the latest stable ParseJob failed OR the document has no
-  usable (active, non-deleted) version.
-* ``NEEDS_REVIEW`` — any active version is ``DocumentStatus.NEEDS_REVIEW``.
-* ``READY`` — otherwise.
+* ``FAILED_PARSE`` —— 最新的稳定 ParseJob 失败，或该文档没有可用
+  （活动、未删除）版本。
+* ``NEEDS_REVIEW`` —— 任一活动版本为 ``DocumentStatus.NEEDS_REVIEW``。
+* ``READY`` —— 其他情况。
 
-``failure_reason_code`` / ``failure_reason_label`` derive from the most recent
-stable ParseJob's persisted ``error_code`` via the single mapping site in
-:mod:`medical_rag.quality.codes`.  ``READY`` always returns ``None``.
-
-Notes on ``retrieval_eligible``: Task 6 persists ``DocumentVersion.status`` to
-``NEEDS_REVIEW`` (and its evidence ``retrieval_eligible=False``) whenever the
-soft threshold gate fires, so the version-status check below is the operative
-signal.  A hard FAIL sets version status ``FAILED`` and is captured by the
-FAILED_PARSE branch.  No separate evidence scan is required for the pilot
-exit signal.
+``failure_reason_code`` / ``failure_reason_label`` 经 :mod:`medical_rag.quality.codes`
+中的唯一映射处，从最近一次稳定 ParseJob 持久化的 ``error_code`` 推导而来。
 """
 
 from __future__ import annotations
@@ -28,19 +19,19 @@ from medical_rag.domain.enums import DocumentStatus, ParseJobStatus
 from medical_rag.domain.models import Document, DocumentVersion, ParseJob
 from medical_rag.quality.codes import failure_reason_label, normalize_error_code
 
-# Operative values surfaced as ``quality_status``.
+# 作为 ``quality_status`` 暴露的实际取值。
 FAILED_PARSE = "FAILED_PARSE"
 NEEDS_REVIEW = "NEEDS_REVIEW"
 READY = "READY"
 
-# Statuses that represent a settled, stable ParseJob (the ones whose
-# error_code we trust for the failure reason).
+# 代表已定局、稳定 ParseJob 的状态（其 error_code
+# 我们信任用于失败原因的那些）。
 #
-# Design note (option A): a ParseJob stuck in PENDING/RUNNING with a
-# ``worker_publish_failed`` (or any non-final) error_code is intentionally NOT
-# part of this set, so it does not surface in the quality column in the pilot.
-# The task left publish failures out of the quality decision; surfacing them
-# is out of scope for Task 7.
+# 设计说明（选项 A）：卡在 PENDING/RUNNING 且带
+# ``worker_publish_failed``（或任何非终态）error_code 的 ParseJob 有意*不*
+# 属于本集合，因此它不会在试点中出现在质量列里。
+# 该任务把发布失败排除在质量判定之外；暴露它们
+# 超出 Task 7 的范围。
 _FINAL_PARSE_STATUSES = frozenset(
     {
         ParseJobStatus.SUCCEEDED,
@@ -52,7 +43,7 @@ _FINAL_PARSE_STATUSES = frozenset(
 
 @dataclass(frozen=True, slots=True)
 class DerivedQuality:
-    """Derived read-time document quality signal (additive, never stored)."""
+    """派生出的读取时文档质量信号（增量式，绝不存储）。"""
 
     quality_status: str  # READY | NEEDS_REVIEW | FAILED_PARSE
     failure_reason_code: str | None
@@ -62,7 +53,7 @@ class DerivedQuality:
 def _latest_parse_job(
     jobs: list[ParseJob],
 ) -> ParseJob | None:
-    """Return the most recent stable ParseJob (newest finished/created first)."""
+    """返回最近的稳定 ParseJob（最新的已完成/已创建优先）。"""
     stable = [j for j in jobs if j.status in _FINAL_PARSE_STATUSES]
     if not stable:
         return None
@@ -78,20 +69,20 @@ def derive_document_quality(
     versions: list[DocumentVersion],
     parse_jobs: list[ParseJob],
 ) -> DerivedQuality:
-    """Derive the read-time quality status + reason for one document."""
-    del document  # kept in the signature for call clarity / future signals
+    """为单个文档推导读取时的质量状态 + 原因。"""
+    del document  # 保留在签名中以便调用清晰 / 供未来信号使用
     active = _active_versions(versions)
     latest_job = _latest_parse_job(parse_jobs)
 
-    # FAILED_PARSE: no usable version, or the latest stable parse failed.
+    # FAILED_PARSE：没有可用版本，或最近一次稳定解析失败。
     if not active or (latest_job is not None and latest_job.status == ParseJobStatus.FAILED):
         return _with_reason(FAILED_PARSE, latest_job)
 
-    # NEEDS_REVIEW: any active version awaiting review.
+    # NEEDS_REVIEW：任一活动版本等待复核。
     if any(v.status == DocumentStatus.NEEDS_REVIEW for v in active):
         return _with_reason(NEEDS_REVIEW, latest_job)
 
-    # READY.
+    # READY。
     return DerivedQuality(READY, None, None)
 
 

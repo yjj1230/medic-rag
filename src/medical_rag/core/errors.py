@@ -1,5 +1,5 @@
 class MedicalRagError(Exception):
-    """Base exception for expected application-level policy failures."""
+    """应用级预期策略失败的基类异常。"""
 
 
 class AuthenticationRequired(MedicalRagError):

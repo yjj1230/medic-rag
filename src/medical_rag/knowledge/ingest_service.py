@@ -53,7 +53,7 @@ class KnowledgeSourceRegistry:
         return entity
 
     def _deactivate_previous_versions(self, current: KnowledgeSource) -> None:
-        """Deactivate older active versions of the same titled source."""
+        """停用同一标题源的较旧活动版本。"""
 
         previous = self.session.scalars(
             select(KnowledgeSource).where(
@@ -114,8 +114,8 @@ class KnowledgeSourceRegistry:
     def deactivate(self, source_id: UUID) -> KnowledgeSource:
         return self.set_active(source_id, False)
 
-    # Explicitly named aliases keep lifecycle callers readable and preserve a
-    # small public seam for API handlers that do not need the registry object.
+    # 显式命名的别名让生命周期调用方读起来清晰，并为不需要
+    # registry 对象的 API 处理器保留一个小的公开接缝。
     deactivate_source = deactivate
 
 
@@ -149,12 +149,11 @@ class KnowledgeIngestService:
         return KnowledgeSourceRegistry(self.session, self.outbox).set_active(source_id, True)
 
     def _version_bundle(self) -> VersionBundle:
-        """Build the single VersionBundle for the public ingest path.
+        """为公开 ingest 路径构建唯一的 VersionBundle。
 
-        Public records share the same value-object shape as private evidence
-        but intentionally carry no private ACL fields.  The cleaner/chunker
-        stage versions are read from the configured shared chunk chain so a
-        stage upgrade is observable on every public index record.
+        公开记录与私有证据共享同一个值对象形态，但有意不携带私有 ACL 字段。
+        cleaner/chunker 阶段版本从已配置的共享块链读取，因此阶段升级在每一条
+        公开索引记录上都能被观测到。
         """
         semantic = getattr(self.chunker, "_semantic", None)
         cleaner = getattr(self.chunker, "_cleaner", None)
@@ -207,11 +206,11 @@ class KnowledgeIngestService:
                 select(KnowledgeChunk).where(KnowledgeChunk.source_id == source.id)
             ).all()
         }
-        # Medical safety: content that the new revision no longer contains must
-        # stop being retrievable.  Skipping only on "hash already exists" makes
-        # re-ingest monotonic -- a removed paragraph (e.g. "drug X is no longer
-        # recommended") stays active, citable, and searchable forever, and
-        # reconciliation cannot catch it because it is still a table row.
+        # 医学安全：新修订版不再包含的内容必须
+        # 停止可被检索。只依据"哈希已存在"跳过，会让
+        # 重新摄取变得单调 —— 一段被移除的段落（例如"药物 X 不再
+        # 被推荐"）会永远保持活动、可引用、可搜索，而
+        # 对账抓不到它，因为它仍是一行表记录。
         for content_hash, chunk in existing_by_hash.items():
             if content_hash in current_hashes or not chunk.active:
                 continue
@@ -237,8 +236,8 @@ class KnowledgeIngestService:
                 skipped += 1
                 continue
             if existing is not None:
-                # Re-activated content: keep the row (its identity and hash are
-                # unchanged) and re-emit it so the index is refreshed too.
+                # 重新激活的内容：保留该行（其标识和哈希未变）
+                # 并重新发出它，这样索引也会刷新。
                 chunk = existing
                 created += 1
             else:
@@ -249,6 +248,7 @@ class KnowledgeIngestService:
                     location=draft.location,
                     page_number=draft.page_number,
                     section=draft.section,
+                    locator=draft.locator.to_dict() if draft.locator is not None else None,
                     url=draft.url,
                     active=False,
                 )
@@ -256,6 +256,8 @@ class KnowledgeIngestService:
                 self.session.flush()
                 existing_by_hash[draft.content_hash] = chunk
                 created += 1
+            if draft.locator is not None and chunk.locator is None:
+                chunk.locator = draft.locator.to_dict()
             record = PublicIndexRecord(
                 id=str(chunk.id),
                 text=chunk.text,
@@ -276,6 +278,7 @@ class KnowledgeIngestService:
                 cleaner_version=bundle.cleaner_version,
                 chunker_version=bundle.chunker_version,
                 extractor_version=bundle.extractor_version,
+                locator=chunk._locator_object(),
             )
             pending.append((chunk, record))
         if pending and self.embedding_pipeline is not None:
@@ -283,7 +286,7 @@ class KnowledgeIngestService:
                 [record.text for _, record in pending], self.embedding_model_name
             )
             indexed_records: list[PublicIndexRecord] = []
-            for index, (chunk, record) in enumerate(pending):
+            for index, (_chunk, record) in enumerate(pending):
                 record = replace(
                     record,
                     embedding=vectors[index],
@@ -292,16 +295,23 @@ class KnowledgeIngestService:
                     index_version=self.embedding_index_version,
                 )
                 indexed_records.append(record)
-                chunk.active = True
                 indexed += 1
-            self._index_batch(indexed_records)
         else:
             if pending and self.public_index is not None and not self.allow_unembedded:
                 raise RuntimeError("embedding pipeline is required before public index upsert")
-            self._index_batch([record for _, record in pending])
+            indexed_records = [record for _, record in pending]
+            indexed = len(pending)
+
+        if pending:
+            # Commit the database state before causing an external index side effect.
+            # Chunks remain inactive until the index write succeeds, so a failed
+            # OpenSearch write is retryable and a failed DB commit cannot leave a
+            # ghost record in the index.
+            self.session.commit()
+            self._index_batch(indexed_records)
             for chunk, _record in pending:
                 chunk.active = True
-                indexed += 1
+
         self.session.commit()
         return IngestReceipt(
             created_chunks=created,
@@ -346,11 +356,11 @@ class KnowledgeIngestService:
         )
         bundle = self._version_bundle()
         records = [
-            # ``location`` is taken from the stored column rather than falling
-            # back to ``section`` here: the ingest path writes exactly this
-            # value, and a re-activation that produced a *more* retrievable
-            # record than a fresh ingest would be an asymmetry nobody could
-            # reason about later.
+            # ``location`` 取自存储的列，而不是在此回落到
+            # ``section``：ingest 路径写入的正是这个
+            # 值，而一次重新激活若产出的记录比一次全新
+            # ingest 的*更*可检索，那就是一种日后无人能
+            # 推理清楚的不对称。
             PublicIndexRecord(
                 id=str(chunk.id),
                 text=chunk.text,
@@ -371,6 +381,7 @@ class KnowledgeIngestService:
                 cleaner_version=bundle.cleaner_version,
                 chunker_version=bundle.chunker_version,
                 extractor_version=bundle.extractor_version,
+                locator=chunk._locator_object(),
             )
             for chunk in chunks
         ]
@@ -393,8 +404,8 @@ class KnowledgeIngestService:
         self._index_batch(records)
         self.session.commit()
         return IngestReceipt(
-            # Nothing is created or skipped here: these chunk rows already
-            # existed, they are only being made retrievable again.
+            # 这里不创建也不跳过任何东西：这些块行本就
+            # 存在，只是重新变得可检索而已。
             created_chunks=0,
             skipped_chunks=0,
             indexed_chunks=len(records) if self.public_index is not None else 0,

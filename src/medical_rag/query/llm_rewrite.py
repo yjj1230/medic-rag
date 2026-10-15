@@ -14,10 +14,10 @@ _REWRITE_SYSTEM = (
 
 
 class LLMRewriteStep:
-    """Optional LLM fallback that rewrites the query for retrieval.
+    """可选的 LLM 兜底，为检索改写查询。
 
-    Enabled by config; routes through ModelGateway so consent/audit still apply.
-    Any failure degrades gracefully (no rewrite, no error propagated).
+    由配置启用；经 ModelGateway 路由，因此知情同意/审计仍然生效。任何失败都优雅
+    降级（不改写，不向上抛错）。
     """
 
     def __init__(self, gateway, *, enabled: bool = False, model: str = "gpt-5.5") -> None:
@@ -51,8 +51,8 @@ class LLMRewriteStep:
                 ctx.current = text
                 ctx.used_llm = True
         except Exception:
-            # Graceful degradation: a failed rewrite must not block the query.
-            # Logged rather than silently swallowed so a broken gateway is
-            # visible instead of looking like "the rewrite was not needed".
+            # 优雅降级：改写失败不得阻塞查询。
+            # 记录日志而非静默吞掉，使损坏的网关
+            # 可见，而不至于看起来像"并不需要改写"。
             logger.warning("LLM 查询改写失败，保留规则改写结果", exc_info=True)
         return ctx

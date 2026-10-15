@@ -1,8 +1,7 @@
-"""Transactional, deterministic SQLite-friendly Outbox repository.
+"""事务性、确定性、对 SQLite 友好的 Outbox 仓储。
 
-The repository intentionally stores only identifiers and content hashes in
-event payloads.  Patient text remains in the source tables and is read by the
-index worker after a lease has been acquired.
+该仓储有意在事件载荷中只保存标识符和内容哈希。患者文本留在源表中，
+由索引 worker 在取得租约后读取。
 """
 
 from __future__ import annotations
@@ -28,12 +27,12 @@ class OutboxDispatch:
 
 
 class OutboxService:
-    """Persist and claim index handoff records in the caller's transaction."""
+    """在调用方的事务中持久化并认领索引交接记录。"""
 
     def __init__(self, session: Session, metrics: object | None = None) -> None:
         self.session = session
-        # Task 11: optional bounded observability recorder (no-op when None).
-        # Deliberately untyped import to keep the seam decoupled.
+        # Task 11：可选的有界可观测记录器（为 None 时为空操作）。
+        # 有意不做类型标注的导入，以保持接缝解耦。
         self.metrics = metrics
 
     @staticmethod
@@ -66,20 +65,17 @@ class OutboxService:
         fail_after_event: bool = False,
         version_bundle: VersionBundle | None = None,
     ) -> OutboxDispatch:
-        """Create one OutboxEvent and IndexJob atomically.
+        """原子地创建一条 OutboxEvent 和一个 IndexJob。
 
-        ``VersionBundle`` carries the complete pipeline-version composition
-        (parser/cleaner/chunker/extractor/embedding/index), which is persisted
-        onto the IndexJob and echoed into the JSON payload.  When supplied it is
-        authoritative for the version fields; the individual
-        ``index_version``/``parser_version``/``embedding_model`` parameters are
-        kept for backward compatibility and derived from the bundle when omitted.
-        Duplicate delivery with the same identity returns the existing event and
-        its IndexJob before any new rows are created (idempotency).
+        ``VersionBundle`` 承载完整的管线版本组合
+        （parser/cleaner/chunker/extractor/embedding/index），它会被持久化到
+        IndexJob 上并回显进 JSON 载荷。提供时它对版本字段具有权威性；为了向后
+        兼容仍保留单个的 ``index_version``/``parser_version``/``embedding_model``
+        参数，省略时从捆绑包推导。以相同标识重复投递会在任何新行创建之前返回
+        已存在的事件及其 IndexJob（幂等性）。
 
-        No commit is issued so source writes can include these rows in their
-        existing transaction.  On any error the session is rolled back, which
-        removes both rows together.
+        不发起提交，这样源写入可以把这些行纳入其既有事务。一旦出错会话会回滚，
+        两行会被一起移除。
         """
 
         bundle = version_bundle
@@ -89,8 +85,8 @@ class OutboxService:
         embedding_dimensions = (
             bundle.embedding_dimensions if bundle is not None else None
         )
-        # The bundle is authoritative when present; legacy individual params
-        # remain the fallback for callers that have not migrated yet.
+        # 捆绑包存在时具有权威性；遗留的单个参数
+        # 仍作为尚未迁移的调用方的兜底。
         effective_parser = (
             bundle.parser_version if bundle is not None else parser_version
         )
@@ -170,7 +166,7 @@ class OutboxService:
             self.session.rollback()
             raise
 
-    # Concise alias useful to source writers.
+    # 对源写入器有用的简洁别名。
     create_event_and_job = create_index_event
 
     def create_lifecycle_event(
@@ -181,14 +177,12 @@ class OutboxService:
         idempotency_key: str,
         payload: dict,
     ) -> OutboxEvent:
-        """Persist an identifier/hash-only lifecycle event without an IndexJob.
+        """持久化一条仅含标识符/哈希的生命周期事件，不带 IndexJob。
 
-        Lifecycle changes (deletion, source deactivation, review transitions,
-        and version replacement) are consumed by reconciliation rather than a
-        single evidence indexing job.  Keeping them in the same durable
-        Outbox table gives retries and audit consumers one privacy-safe seam.
-        The method deliberately does not commit so callers can include the
-        event in their source transaction.
+        生命周期变更（删除、源停用、复核状态迁移、版本替换）由对账流程消费，
+        而不是由单条证据索引作业消费。把它们留在同一张持久化 Outbox 表中，
+        使重试和审计消费方共享一个隐私安全的接缝。该方法刻意不提交，以便调用方
+        把事件纳入其源事务。
         """
 
         if not event_type or not event_type.strip():
@@ -212,13 +206,13 @@ class OutboxService:
         self.session.flush()
         return event
 
-    # Alias used by lifecycle writers that do not need to know whether an
-    # event also creates an IndexJob.
+    # 供生命周期写入器使用的别名，它们无需知道某个
+    # 事件是否也会创建一个 IndexJob。
     create_lifecycle = create_lifecycle_event
 
     @staticmethod
     def _record_metric(metrics: object | None, name: str) -> None:
-        """Emit one bounded counter onto the optional recorder (no-op when unset)."""
+        """向可选记录器发出一个有界计数器（未设置时为空操作）。"""
         if metrics is None:
             return
         increment = getattr(metrics, "increment", None)
@@ -269,14 +263,14 @@ class OutboxService:
     ) -> list[IndexJob]:
         if limit <= 0:
             return []
-        # The candidate SELECT must apply the same due/backoff predicate as
-        # ``claim``.  Without it the oldest ``limit`` rows -- including jobs
-        # parked in a backoff of up to an hour -- consume the whole batch
-        # window and every younger, immediately-due job is starved, making the
-        # queue look frozen instead of merely slow.
+        # 候选 SELECT 必须施加与 ``claim`` 相同的到期/退避谓词。
+        # 没有它，最旧的 ``limit`` 行 —— 包括那些停在一小时退避中的作业 ——
+        # 会吃掉整个批次窗口，所有更年轻的、
+        # 立即到期的作业都被饿死，让队列
+        # 看起来像冻结了，而不只是变慢。
         due = or_(IndexJob.next_retry_at.is_(None), IndexJob.next_retry_at <= now)
-        # Order by the effective availability time so overdue retries are
-        # picked before newly created work, instead of by row age alone.
+        # 按有效可用时间排序，让逾期的重试先于
+        # 新建的工作被拾取，而不是仅按行的年龄排序。
         available_at = func.coalesce(IndexJob.next_retry_at, IndexJob.created_at)
         jobs = self.session.scalars(
             select(IndexJob)
@@ -286,8 +280,8 @@ class OutboxService:
                         IndexJobStatus.PENDING,
                         IndexJobStatus.FAILED,
                         IndexJobStatus.RETRYABLE_FAILED,
-                        # Expired leases are recoverable work.  ``claim``
-                        # applies the lease-expiry predicate atomically.
+                        # 过期的租约是可恢复的工作。``claim``
+                        # 会原子地施加租约到期谓词。
                         IndexJobStatus.LEASED,
                         IndexJobStatus.RUNNING,
                     ]
@@ -332,8 +326,8 @@ class OutboxService:
         return event
 
 
-# Repository and service are intentionally the same deterministic seam for
-# now; a production adapter can wrap this class without changing callers.
+# 仓储与当前的服务有意是同一个确定性接缝；
+# 生产适配器可以在不改变调用方的情况下包装这个类。
 OutboxRepository = OutboxService
 
 

@@ -1,2 +1,2 @@
-"""Patient-facing medical RAG application."""
+"""面向患者的医疗 RAG 应用。"""
 

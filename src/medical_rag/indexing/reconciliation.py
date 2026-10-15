@@ -1,4 +1,4 @@
-"""Privacy-safe database/index reconciliation and deterministic repair."""
+"""隐私安全的数据库/索引对账与确定性修复。"""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ from medical_rag.observability.metrics import MetricsRecorder
 
 @dataclass(frozen=True, slots=True)
 class ReconciliationItem:
-    """A residual represented only by identifiers and index metadata."""
+    """仅由标识符与索引元数据表示的残留项。"""
 
     item_id: str
     scope: str
@@ -100,34 +100,31 @@ class RepairReceipt:
 
 
 class _LifecycleChanged(RuntimeError):
-    """The source became ineligible between scan and repair."""
+    """源在扫描与修复之间变为不合格。"""
 
 
 class _RebuildRequired(RuntimeError):
-    """The residual cannot be repaired in place without writing a bare record.
+    """该残留项无法在不写入一条裸记录的情况下就地修复。
 
-    Raised instead of upserting an index-ready record with no embedding: the
-    rebuild must go through a path that owns embeddings (the ``IndexWorker`` for
-    private evidence, the ingest path for public chunks).
+    这里选择抛错，而不是 upsert 一条没有向量的、可索引记录：重建必须走
+    拥有向量化的路径（私有证据走 ``IndexWorker``，公开块走 ingest 路径）。
     """
 
 
 class ReconciliationService:
-    """Compare source lifecycle/version/hash metadata with index metadata.
+    """把源的 lifecycle/version/hash 元数据与索引元数据做比较。
 
-    The scan path never reads or serializes index passage text.  Repair never
-    writes an index-ready record that lacks an embedding: a stale/missing record
-    is either removed and handed to the normal write path (a fresh ``IndexJob``
-    that re-embeds, re-checks eligibility and anchors), or -- when its content
-    hash is unchanged and only the index identity moved -- re-emitted with the
-    vector it already carries.  Deleted, inactive, and review-required rows are
-    always physically removed instead of being re-indexed as tombstones.
+    扫描路径绝不读取或序列化索引正文。修复绝不写入缺少向量的可索引记录：
+    陈旧/缺失的记录要么被移除并交给常规写入路径（一个新的 ``IndexJob``，重新
+    向量化、重新检查资格与锚点），要么 —— 当其内容哈希未变、只是索引标识变了时 ——
+    用其已携带的向量重新发出。已删除、未激活和需复核的行总是被物理移除，
+    而不是作为墓碑被重新索引。
     """
 
-    #: Expected public identity is configuration, not a constant.  These
-    #: defaults mirror :class:`~medical_rag.knowledge.ingest_service.KnowledgeIngestService`
-    #: so a scan compares records against the identity the ingest path really
-    #: writes; a deployment with a different composition passes its values in.
+    #: 期望的公开标识属于配置，而非常量。这些
+    #: 默认值与 :class:`~medical_rag.knowledge.ingest_service.KnowledgeIngestService`
+    #: 保持一致，因此扫描会把记录与 ingest 路径真正
+    #: 写入的标识做比较；组合不同的部署把自己的取值传进来。
     DEFAULT_PUBLIC_INDEX_VERSION = "public-v1"
     DEFAULT_PUBLIC_PARSER_VERSION = "knowledge-parser-v1"
 
@@ -149,13 +146,13 @@ class ReconciliationService:
         self.session = session
         self.private_index = private_index if private_index is not None else private_writer
         self.public_index = public_index if public_index is not None else public_writer
-        # Repair (delete/upsert) goes to a dedicated writer when one is
-        # composed; the scan-side index object is the fallback so callers with
-        # a single combined adapter behave exactly as before.  This split is
-        # what the production wiring needs: ``OpenSearchStore`` can enumerate
-        # metadata but has no delete seam, while ``OpenSearchIndexWriter`` can
-        # delete but cannot enumerate.  Collapsing them into one attribute made
-        # public residuals unrepaired by construction.
+        # 在已组合时，修复（删除/upsert）会交给一个专用写入器；
+        # 扫描侧的索引对象作为兜底，因此使用单一
+        # 合并适配器的调用方行为与以前完全一致。这一拆分
+        # 正是生产接线所需要的：``OpenSearchStore`` 能枚举
+        # 元数据但没有删除接缝，而 ``OpenSearchIndexWriter`` 能
+        # 删除却无法枚举。把它们合并为一个属性会使得
+        # 公开残留项在构造上就无法修复。
         self.private_writer = (
             private_writer if private_writer is not None else self.private_index
         )
@@ -188,20 +185,22 @@ class ReconciliationService:
             "id", "visibility", "tenant_id", "patient_id", "document_id",
             "document_version_id", "evidence_unit_id", "source_id", "source_version",
             "content_hash", "parser_version", "embedding_model", "index_version",
-            "retrieval_eligible", "source_active", "deleted",
+            "retrieval_eligible", "source_active", "deleted", "locator",
         ):
             item = getter(key, None)
             if item is not None:
+                if hasattr(item, "to_dict") and callable(item.to_dict):
+                    item = item.to_dict()
                 result[key] = str(item) if isinstance(item, UUID) else item
-        # The read model (``SearchRecord``) keeps the public source identity inside
-        # its ``citation`` and has no top-level fields for it, while the write model
-        # (``IndexRecord``) has both.  Reading only the top level made the scan
-        # compare ``expected["source_id"]`` / ``["source_version"]`` against missing
-        # observed values and report *every* healthy public record as ``stale`` --
-        # a residual that repair cannot clear either, since a public rebuild needs
-        # the ingest write path.  On a live index the scan would have been
-        # permanently red, which is worse than useless: it trains operators to
-        # ignore it.
+        # 读模型（``SearchRecord``）把公开源标识放在
+        # 其 ``citation`` 里，没有对应的顶层字段，而写模型
+        # （``IndexRecord``）两者都有。只读顶层会让扫描
+        # 把 ``expected["source_id"]`` / ``["source_version"]`` 与缺失的
+        # 观测值比较，并把*每一条*健康的公开记录都报成 ``stale`` ——
+        # 而修复也清不掉这种残留项，因为公开重建需要
+        # ingest 写入路径。在真实索引上，这种扫描会
+        # 永久标红，比无用更糟：它会把运维训练成
+        # 忽视它。
         citation = getter("citation", None)
         if citation is not None:
             for key, value in (
@@ -282,6 +281,7 @@ class ReconciliationService:
                 "retrieval_eligible": eligible,
                 "source_active": eligible,
                 "deleted": deleted,
+                "locator": evidence.locator,
             }
         return expected
 
@@ -301,15 +301,16 @@ class ReconciliationService:
                 "source_id": str(source.id),
                 "source_version": source.source_version,
                 "content_hash": chunk.content_hash,
-                # Taken from the configured ingest identity.  Hardcoding these
-                # here classified every record written by a differently
-                # configured ingest as stale (and the old repair then rewrote it
-                # with the constant and no embedding).
+                # 取自已配置的 ingest 标识。把这里硬编码
+                # 会把由不同配置的 ingest 写入的每条记录
+                # 都判为陈旧（而旧的修复随后会用这个常量
+                # 重写它，且不带向量）。
                 "parser_version": self.public_parser_version,
                 "index_version": self.public_index_version,
                 "retrieval_eligible": active,
                 "source_active": active,
                 "deleted": False,
+                "locator": chunk.locator,
             }
         return expected
 
@@ -319,11 +320,10 @@ class ReconciliationService:
         observed: Mapping[str, object],
         version_keys: tuple[str, ...],
     ) -> bool:
-        """Return True when a version field genuinely moved.
+        """当某个版本字段确实发生变化时返回 True。
 
-        Only fields the data actually carries on both sides are compared: a
-        record that never stored a version (for example ``embedding_model`` on
-        the public ingest path) must not be reported as a migration.
+        只比较数据在两侧都真正携带的字段：一条从未存储过版本的记录
+        （例如公开 ingest 路径上的 ``embedding_model``）不得被报告为一次迁移。
         """
 
         for key in version_keys:
@@ -353,25 +353,26 @@ class ReconciliationService:
         if expected.get("content_hash") is not None and (
             observed.get("content_hash") != expected.get("content_hash")
         ):
-            # Content moved: the record's prose (and therefore its vector) is
-            # stale.  Checked before versions so a real content change is never
-            # mislabelled as a metadata-only migration.
+            # 内容变了：该记录的正文（因而其向量）已
+            # 陈旧。在版本之前检查，这样真实的内容变更绝不会
+            # 被误标为仅元数据的迁移。
             return "hash_mismatch"
         if ReconciliationService._version_mismatch(expected, observed, version_keys):
-            # An index/parser upgrade is not stale content: the hash still
-            # matches, so the record and its vector are current.
+            # 索引/解析器升级不是内容陈旧：哈希仍然
+            # 匹配，因此该记录及其向量都是最新的。
             return "version_migration"
         for key in (
             "visibility", "tenant_id", "patient_id", "document_id", "document_version_id",
             "evidence_unit_id", "source_id", "source_version", "retrieval_eligible",
             "source_active", "deleted",
+            "locator",
         ):
             if key in expected and observed.get(key) != expected.get(key):
                 return "stale"
         return None
 
     def _record_by_id(self, writer: object, record_id: str) -> object | None:
-        """Read one observed record's metadata from the writer, if it exposes it."""
+        """从写入器读取一条观测记录的元数据（若写入器暴露该能力）。"""
 
         getter = getattr(writer, "get", None)
         if callable(getter):
@@ -386,7 +387,7 @@ class ReconciliationService:
 
     @staticmethod
     def _has_embedding(record: object | None) -> bool:
-        """Return True only for a record that carries a usable vector."""
+        """仅当记录携带可用向量时才返回 True。"""
 
         if record is None:
             return False
@@ -398,8 +399,8 @@ class ReconciliationService:
         except TypeError:
             return False
 
-    #: Version fields compared per scope.  Private records carry the full
-    #: pipeline identity; public ingest records carry parser/index only.
+    #: 按作用域比较的版本字段。私有记录携带完整的
+    #: 管线标识；公开 ingest 记录只携带 parser/index。
     _PRIVATE_VERSION_KEYS = ("parser_version", "embedding_model", "index_version")
     _PUBLIC_VERSION_KEYS = ("parser_version", "index_version")
 
@@ -408,9 +409,9 @@ class ReconciliationService:
         if reason in {"deleted", "inactive", "orphaned", "duplicate"}:
             return "delete"
         if reason == "version_migration":
-            # Private records can be handed back to the durable write path;
-            # public records have no IndexJob seam, so they are re-emitted with
-            # the vector they already carry.
+            # 私有记录可以交回持久化写入路径；
+            # 公开记录没有 IndexJob 接缝，因此会带着其
+            # 已携带的向量重新发出。
             return "rebuild" if scope == "private" else "reindex"
         return "rebuild"
 
@@ -484,8 +485,8 @@ class ReconciliationService:
                 except TypeError:
                     method(UUID(item.record_id or item.item_id))
                 return
-        # Document-level deletion is the final compatibility fallback.  It is
-        # only used when an exact-record seam is unavailable.
+        # 文档级删除是最后的兼容兜底。仅在
+        # 精确记录接缝不可用时才使用。
         method = getattr(writer, "delete_document", None)
         if callable(method):
             document_id = item.observed.get("document_id") or item.expected.get("document_id")
@@ -495,14 +496,13 @@ class ReconciliationService:
         raise RuntimeError("index writer does not provide a safe delete seam")
 
     def _rebuild_private(self, writer: object, item: ReconciliationItem) -> None:
-        """Hand a stale/missing private record back to the durable write path.
+        """把陈旧/缺失的私有记录交回持久化写入路径。
 
-        The replacement record is *not* built here.  Writing one directly meant
-        hardcoded versions and ``embedding=None``, which turned a searchable
-        record into an unembedded one and bypassed the ``IndexWorker``'s
-        eligibility, anchor, and embedding-dimension checks.  A fresh
-        ``IndexJob`` re-enters that path instead; the observed record is removed
-        so the rebuilt record replaces it rather than coexisting with it.
+        替代记录*不*在这里构建。直接写一条意味着硬编码版本和
+        ``embedding=None``，这会把一条可检索记录变成一条未向量化的记录，
+        并绕过 ``IndexWorker`` 的资格、锚点和向量维度检查。改为让一个新的
+        ``IndexJob`` 重新进入该路径；观测到的记录会被移除，这样重建的记录
+        是替换它，而不是与之并存。
         """
 
         expected = item.expected
@@ -530,9 +530,9 @@ class ReconciliationService:
         embedding_model = (job.embedding_model if job else None) or "none"
         index_version = (job.index_version if job else None) or "private-v1"
         current_hash = sha256(evidence.text.encode("utf-8")).hexdigest()
-        # The 4-field idempotency identity (version, evidence, parser, model) is
-        # uniquely indexed, so a job with this identity already existing is the
-        # same unit of work -- requeue it rather than fighting the constraint.
+        # 四字段幂等标识（version、evidence、parser、model）是
+        # 唯一索引的，因此已存在同标识的作业就是
+        # 同一个工作单元 —— 重新入队，而不是与约束对抗。
         requeued = self.session.scalar(
             select(IndexJob).where(
                 IndexJob.document_version_id == version.id,
@@ -569,10 +569,10 @@ class ReconciliationService:
 
     @staticmethod
     def _reindex_record(record: object, expected: Mapping[str, object]) -> object:
-        """Re-emit an observed record under the expected index identity.
+        """在期望的索引标识下重新发出观测到的记录。
 
-        Only identity metadata changes; the text, content hash, and -- critically
-        -- the vector the record already carries are preserved.
+        只有标识元数据变化；文本、内容哈希以及 —— 关键地 ——
+        该记录已携带的向量都保持不变。
         """
 
         patch: dict[str, object] = {}
@@ -587,7 +587,7 @@ class ReconciliationService:
     def _reindex(self, writer: object, item: ReconciliationItem) -> None:
         record = self._record_by_id(writer, item.record_id or item.item_id)
         if not self._has_embedding(record):
-            # Never rewrite an index-ready record without a vector.
+            # 绝不在没有向量的情况下重写一条可索引记录。
             raise _RebuildRequired("observed record has no embedding to preserve")
         updated = self._reindex_record(record, item.expected)
         upsert = getattr(writer, "upsert", None)
@@ -602,9 +602,9 @@ class ReconciliationService:
         if item.scope == "private":
             self._rebuild_private(writer, item)
             return
-        # Public records have no IndexJob seam (their writer is the ingest
-        # path), and this service has no embedding provider, so it cannot
-        # rebuild one without violating the no-unembedded-write rule.
+        # 公开记录没有 IndexJob 接缝（其写入器是 ingest
+        # 路径），而本服务没有向量化提供方，因此它无法
+        # 在不违反"不得写入未向量化记录"规则的前提下重建一条。
         raise _RebuildRequired("public rebuild requires the ingest write path")
 
     def repair(self, item: ReconciliationItem) -> RepairReceipt:
@@ -620,17 +620,17 @@ class ReconciliationService:
                 try:
                     self._upsert(writer, item)
                 except _LifecycleChanged:
-                    # A stale scan must never resurrect evidence after a
-                    # concurrent tombstone/deactivation.  Remove the
-                    # observed residual instead of writing a stale record.
+                    # 陈旧扫描绝不能在并发的
+                    # 墓碑/停用之后把证据复活。移除
+                    # 观测到的残留项，而不是写入一条陈旧记录。
                     self._delete(writer, item)
                     receipt = RepairReceipt(item.item_id, item.scope, "delete", True, "lifecycle_blocked")
                     self._audit(item, receipt)
                     return receipt
                 except _RebuildRequired:
-                    # Reported as a hard residual so an operator or the ingest
-                    # path can rebuild it with a real embedding; nothing is
-                    # written, so no unembedded record can ever appear.
+                    # 报告为硬残留项，供运维或 ingest
+                    # 路径用真实向量重建它；什么都不
+                    # 写入，因此未向量化的记录永远不会出现。
                     receipt = RepairReceipt(
                         item.item_id, item.scope, item.action, False,
                         "rebuild_required", "rebuild_required",

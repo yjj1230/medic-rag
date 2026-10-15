@@ -1,2 +1,2 @@
-"""Application configuration and cross-cutting concerns."""
+"""应用配置与横切关注点。"""
 

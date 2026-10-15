@@ -15,7 +15,7 @@ from medical_rag.models.factory import resolve_embedding
 from medical_rag.retrieval.contracts import PrivateIndexWriter
 from medical_rag.storage.object_store import ObjectStore, S3ObjectStore
 
-# Re-exported: routes import ``get_session`` from here.
+# 重新导出：路由从这里导入 ``get_session``。
 __all__ = [
     "get_chat_orchestrator",
     "get_embedding_model",
@@ -55,7 +55,7 @@ def get_object_store(settings: Settings = Depends(get_settings)) -> ObjectStore:
 
 
 def _configured_index_writer(request: Request, state_name: str, visibility: str):
-    """Return a fully configured visibility-scoped writer or fail closed."""
+    """返回一个完整配置、按可见性限定作用域的写入器，否则 fail closed。"""
     writer = getattr(request.app.state, state_name, None)
     required = ("upsert", "ensure_mapping")
     if visibility == "private":
@@ -71,20 +71,19 @@ def _configured_index_writer(request: Request, state_name: str, visibility: str)
 
 
 def get_public_index_writer(request: Request):
-    """Return the configured public-index writer or fail closed.
+    """返回已配置的公开索引写入器，否则 fail closed。
 
-    Production startup wires this object on ``app.state``; tests may explicitly
-    override the dependency with a deterministic writer.
+    生产启动会把该对象接到 ``app.state`` 上；测试可以用确定性的写入器显式
+    覆盖此依赖。
     """
     return _configured_index_writer(request, "public_index_writer", "public")
 
 
 def get_private_index_writer(request: Request) -> PrivateIndexWriter:
-    """Return the configured private-index writer or fail closed.
+    """返回已配置的私有索引写入器，否则 fail closed。
 
-    Deletion must not report success while the private index is unreachable or
-    absent.  Production startup wires this object on ``app.state``; tests may
-    explicitly override the dependency with a deterministic writer.
+    在私有索引不可达或缺失时，删除操作不得报告成功。生产启动会把该对象接到
+    ``app.state`` 上；测试可以用确定性的写入器显式覆盖此依赖。
     """
 
     return _configured_index_writer(request, "private_index_writer", "private")
@@ -95,19 +94,18 @@ def get_job_publisher(settings: Settings = Depends(get_settings)) -> JobPublishe
 
 
 def get_embedding_model(settings: Settings = Depends(get_settings)):
-    """Build the configured embedding adapter (backend resolved in one place)."""
+    """构建已配置的向量化适配器（后端只在一处解析）。"""
     return resolve_embedding(settings).model
 
 
 def get_embedding_pipeline(
     settings: Settings = Depends(get_settings),
 ) -> EmbeddingPipeline | None:
-    """Build the configured batching/validation embedding seam.
+    """构建已配置的批处理/校验向量化接缝。
 
-    ``dimensions`` comes from the *resolution* rather than ``settings`` so the
-    pipeline's validation, the index mapping and the vectors actually produced
-    are one number.  ``EMBEDDING_DIMENSIONS`` and the local model's real output
-    size are cross-checked inside :func:`resolve_embedding`.
+    ``dimensions`` 来自*解析结果*而非 ``settings``，这样管线校验、索引映射和实际
+    产出的向量用的是同一个数字。``EMBEDDING_DIMENSIONS`` 与本地模型的真实输出
+    维度会在 :func:`resolve_embedding` 内部交叉校验。
     """
     embedding = resolve_embedding(settings)
     if embedding.model is None:
@@ -121,7 +119,7 @@ def get_embedding_pipeline(
 
 
 def get_chat_orchestrator(request: Request):
-    """Return the application-composed orchestrator; production injects it at startup."""
+    """返回应用组合的编排器；生产在启动时注入它。"""
     orchestrator = getattr(request.app.state, "chat_orchestrator", None)
     if orchestrator is None:
         raise RuntimeError("聊天编排器尚未配置")
@@ -129,10 +127,10 @@ def get_chat_orchestrator(request: Request):
 
 
 def get_index_orchestrator(request: Request) -> IndexOrchestrator:
-    """Return the startup-composed durable index orchestrator.
+    """返回启动时组合的持久化索引编排器。
 
-    No implicit in-memory or private-only fallback is allowed here.  Tests can
-    override this dependency with an explicit deterministic orchestrator.
+    这里不允许任何隐式的内存兜底或仅私有兜底。测试可以用显式、确定性的
+    编排器覆盖此依赖。
     """
     orchestrator = getattr(request.app.state, "index_orchestrator", None)
     if not isinstance(orchestrator, IndexOrchestrator):

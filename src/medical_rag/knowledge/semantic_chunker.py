@@ -1,14 +1,12 @@
-"""Deterministic, semantic, table-aware chunking of cleaned documents.
+"""对清洗后文档做确定性、语义化、表格感知的分块。
 
-SemanticChunker has one responsibility: turn a CleanedDocument into a list of
-EvidenceUnitDraft values by splitting at semantic boundaries.  Heading blocks
-are boundaries (they never become chunk text themselves); table blocks are
-split per-row-group with the normalized header repeated in every child chunk.
+SemanticChunker 只有一个职责：在语义边界处切分，把 CleanedDocument 变成一组
+EvidenceUnitDraft 值。标题块是边界（它们本身从不成为块文本）；表格块按行组切分，
+并在每个子块中重复规范化表头。
 
-This module deliberately reuses the section ownership established by
-TextSourceParser / LayoutNormalizer: each body block already carries its
-section_path, so the chunker only reads ``block.section_path`` and never
-re-derives headings.
+本模块有意复用 TextSourceParser / LayoutNormalizer 已建立的章节归属：每个正文块
+已经携带自己的 section_path，因此分块器只读取 ``block.section_path``，绝不重新
+推导标题。
 """
 
 from __future__ import annotations
@@ -20,6 +18,7 @@ from typing import Protocol, Sequence
 
 from medical_rag.domain.enums import EvidenceKind
 from medical_rag.parsing.contracts import CleanedDocument, EvidenceUnitDraft, ParsedBlock
+from medical_rag.provenance.contracts import locator_from_block
 
 # 中文字符/token 折算基准（历史常量，保留供外部引用；实际计数见 HeuristicTokenCounter）。
 CHARS_PER_TOKEN = 1.5
@@ -429,6 +428,13 @@ class SemanticChunker:
             prefix = self._bounded_overlap_prefix(state.prev_text, text)
             if prefix:
                 clean_text = f"{prefix}\n{text}"
+        locator = locator_from_block(
+            block,
+            state.chunk_index,
+            cell_range=cell_range if cell_range is not None else block.cell_range,
+            page_total=document.page_total,
+        )
+        source_anchor = block.source_anchor or locator.build_anchor() or None
         state.drafts.append(
             EvidenceUnitDraft(
                 text=clean_text,
@@ -436,7 +442,7 @@ class SemanticChunker:
                 page_number=block.page_number,
                 sheet_name=block.sheet_name,
                 cell_range=cell_range if cell_range is not None else block.cell_range,
-                source_anchor=block.source_anchor,
+                source_anchor=source_anchor,
                 language=block.language,
                 confidence=block.confidence,
                 raw_text=raw_text,
@@ -449,6 +455,7 @@ class SemanticChunker:
                 chunker_version=self.version,
                 quality_flags=quality_flags,
                 retrieval_eligible=True,
+                locator=locator,
             )
         )
         state.chunk_index += 1

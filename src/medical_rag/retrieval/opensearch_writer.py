@@ -1,4 +1,4 @@
-"""Production OpenSearch write adapter with explicit public/private boundaries."""
+"""带显式公开/私有边界的生产 OpenSearch 写入适配器。"""
 
 from __future__ import annotations
 
@@ -47,10 +47,10 @@ DEFAULT_SEARCH_ANALYZER = "ik_smart"
 
 
 class OpenSearchIndexWriter:
-    """Idempotent bulk writer for one physical OpenSearch index.
+    """针对某个物理 OpenSearch 索引的幂等批量写入器。
 
-    The writer never mutates aliases.  A separate instance must be used for
-    public and private indexes; visibility is an explicit safety boundary.
+    该写入器绝不修改别名。公开与私有索引必须使用各自独立的实例；
+    可见性是一条显式的安全边界。
     """
 
     def __init__(
@@ -121,8 +121,8 @@ class OpenSearchIndexWriter:
         payload = record.to_dict()
         if isinstance(payload.get("embedding"), tuple):
             payload["embedding"] = list(payload["embedding"])
-        # OpenSearch does not need a Python-only field and public documents
-        # must not contain patient ACL values.
+        # OpenSearch 不需要一个纯 Python 字段，而公开文档
+        # 不得包含患者 ACL 取值。
         if record.visibility == "public":
             payload.pop("tenant_id", None)
             payload.pop("patient_id", None)
@@ -212,11 +212,30 @@ class OpenSearchIndexWriter:
                 "sheet_name": {"type": "keyword"},
                 "cell_range": {"type": "keyword"},
                 "source_anchor": {"type": "keyword"},
+                "locator": {
+                    "type": "object",
+                    "dynamic": "strict",
+                    "properties": {
+                        "locator_type": {"type": "keyword"},
+                        "page_number": {"type": "integer"},
+                        "page_total": {"type": "integer"},
+                        "section_path": {"type": "keyword"},
+                        "block_id": {"type": "keyword"},
+                        "reading_order": {"type": "integer"},
+                        "chunk_index": {"type": "integer"},
+                        "char_start": {"type": "integer"},
+                        "char_end": {"type": "integer"},
+                        "bbox": {"type": "float"},
+                        "sheet_name": {"type": "keyword"},
+                        "cell_range": {"type": "keyword"},
+                        "source_anchor": {"type": "keyword"},
+                    },
+                },
                 "parent_block_id": {"type": "keyword"},
-                # Task 5 provenance mirrors: ``retrieval/indexing.py`` writes
-                # both fields, so they must be declared here — undeclared
-                # fields are dynamically mapped to ``text``, which makes
-                # ordinal sorting / filtering on chunk_index unreliable.
+                # Task 5 溯源镜像：``retrieval/indexing.py`` 会写入
+                # 这两个字段，因此必须在此声明 —— 未声明的
+                # 字段会被动态映射为 ``text``，这会让对 chunk_index
+                # 的序号排序 / 过滤变得不可靠。
                 "chunk_index": {"type": "integer"},
                 "section_path": {"type": "keyword"},
                 "url": {"type": "keyword"},
@@ -251,10 +270,10 @@ class OpenSearchIndexWriter:
             return receipt
         body: list[dict[str, Any]] = []
         for record in normalized:
-            # ``doc_as_upsert`` is an *update-body* parameter only: repeating it
-            # in the action metadata is rejected by OpenSearch with
+            # ``doc_as_upsert`` 只是*更新体*参数：在 action 元数据里
+            # 重复它会被 OpenSearch 拒绝，报
             # ``illegal_argument_exception: unknown parameter [doc_as_upsert]``
-            # (verified against OpenSearch 2.18), so it is set once below.
+            # （已对照 OpenSearch 2.18 验证），因此它在下方只设置一次。
             body.append({"update": {
                 "_index": self.index_name,
                 "_id": record.id,
@@ -298,7 +317,7 @@ class OpenSearchIndexWriter:
             raise OpenSearchWriteError("OpenSearch document deletion rejected")
 
     def delete_record(self, record_id: str | UUID) -> None:
-        """Idempotently remove one deterministic record by its index ID."""
+        """按其索引 ID 幂等地移除一条确定性记录。"""
 
         try:
             response = self.client.delete(index=self.index_name, id=str(record_id), ignore=[404])

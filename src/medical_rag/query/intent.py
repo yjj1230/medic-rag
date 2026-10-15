@@ -43,10 +43,10 @@ def _confidence(ranked: list[tuple[Intent, int]]) -> float:
 
 
 class IntentRouter:
-    """Rule-first intent classifier with optional LLM fallback.
+    """规则优先的意图分类器，带可选 LLM 兜底。
 
-    The LLM fallback is wired by the caller (orchestrator). When disabled or
-    unavailable, the router returns the best rule match or ORDINARY.
+    LLM 兜底由调用方（编排器）接线。被禁用或不可用时，路由器返回最佳规则匹配
+    或 ORDINARY。
     """
 
     def __init__(self, llm_classifier=None, *, enable_llm: bool = False) -> None:

@@ -50,23 +50,38 @@ def build_report(
         raise ValueError("public index identity mismatch")
     if private_index and str(index_metadata.get("private", {}).get("index", private_index)) != private_index:
         raise ValueError("private index identity mismatch")
+    threshold_path = Path(threshold_result) if threshold_result else None
+    threshold = _read(threshold_path) if threshold_path else None
     snapshot = citation.get("index_snapshot", {})
     if snapshot and (snapshot.get("public_index") != public_index or snapshot.get("private_index") != private_index):
         raise ValueError("citation index identity mismatch")
     citation_meta = citation.get("run_meta", {})
-    citation_hash = str(citation.get("dataset_sha256", ""))
+    citation_kind = citation.get("dataset_kind") or citation_meta.get("dataset_kind")
+    claims_hash_value = citation.get("claims_dataset_sha256") or citation_meta.get("claims_dataset_sha256")
+    citation_hash_value = citation.get("dataset_sha256")
     citation_test_hash = citation.get("test_dataset_sha256") or citation_meta.get("test_dataset_sha256")
-    citation_kind = str(citation.get("dataset_kind", citation_meta.get("dataset_kind", "claims")))
-    if citation_test_hash and str(citation_test_hash) != expected_hash:
-        raise ValueError("citation test dataset hash mismatch")
-    if citation_kind in {"test", "frozen_test"} and citation_hash and citation_hash != expected_hash:
-        raise ValueError("citation dataset hash mismatch")
     counts = citation.get("counts", {})
+    if threshold:
+        if citation_kind != "claims":
+            raise ValueError("citation dataset identity is missing or ambiguous")
+        if not isinstance(claims_hash_value, str) or not claims_hash_value:
+            raise ValueError("citation claims dataset hash is missing")
+        if citation_hash_value is not None and str(citation_hash_value) != claims_hash_value:
+            raise ValueError("citation claims dataset hash mismatch")
+        if not isinstance(citation_test_hash, str) or not citation_test_hash:
+            raise ValueError("citation frozen test dataset hash is missing")
+        if not isinstance(snapshot, dict) or snapshot.get("public_index") != public_index or snapshot.get("private_index") != private_index:
+            raise ValueError("citation index identity is missing or ambiguous")
+        if not isinstance(counts, dict) or not isinstance(counts.get("claims"), int) or counts["claims"] < 0:
+            raise ValueError("citation claims count is missing or invalid")
+    citation_kind = str(citation_kind or "claims")
+    citation_hash = str(claims_hash_value or citation_hash_value or "")
+    citation_test_hash = str(citation_test_hash) if citation_test_hash is not None else None
+    if citation_test_hash and citation_test_hash != expected_hash:
+        raise ValueError("citation test dataset hash mismatch")
     for name in ("claims", "evidence_links", "invalid_annotations"):
         if name in counts and (not isinstance(counts[name], int) or counts[name] < 0):
             raise ValueError("citation counts invalid")
-    threshold_path = Path(threshold_result) if threshold_result else None
-    threshold = _read(threshold_path) if threshold_path else None
     if threshold:
         threshold_meta = threshold.get("run_meta", threshold)
         if threshold_meta.get("public_index") and threshold_meta.get("public_index") != public_index:
@@ -256,7 +271,19 @@ def build_report(
             "pre": pre_config or {},
             "post": {**selected, "rejection": selected_rejection},
         },
-        "citation": {**citation, "identity": {"dataset_kind": citation_kind, "dataset_sha256": citation_hash or None, "test_dataset_sha256": citation_test_hash or None}},
+        "citation": {
+            **citation,
+            "dataset_kind": "claims",
+            "claims_dataset_sha256": citation_hash or None,
+            "test_dataset_sha256": citation_test_hash or None,
+            "identity": {
+                "dataset_kind": "claims",
+                "claims_dataset_sha256": citation_hash or None,
+                "claims_count": counts.get("claims") if isinstance(counts, dict) else None,
+                "index_snapshot": snapshot,
+                "test_dataset_sha256": citation_test_hash or None,
+            },
+        },
         "threshold": threshold,
         "failure_attribution": attribution,
         "source_gap_audit": source_gaps,
@@ -313,6 +340,8 @@ def _markdown(report: dict[str, object]) -> str:
             "",
             "## 引用",
             "",
+            f"- 引用数据集：`claims`；claims_dataset_sha256：`{citation.get('claims_dataset_sha256')}`",
+            f"- 并列评估的冻结 test_dataset_sha256：`{citation.get('test_dataset_sha256')}`",
             f"- 标注陈述数：{citation.get('counts', {}).get('claims')}",
             f"- Citation validity：{citation.get('metrics', {}).get('citation_validity')}",
             f"- Citation accuracy：{citation.get('metrics', {}).get('citation_accuracy')}",

@@ -25,7 +25,7 @@ SYNONYM_EXPANSIONS: dict[str, tuple[str, ...]] = {
 
 
 class NormalizeStep:
-    """Replace colloquial/typo/shortened terms with standard medical terms."""
+    """把口语化/错别字/简写术语替换为标准医学术语。"""
 
     def process(self, ctx: QueryContext) -> QueryContext:
         normalized = ctx.current

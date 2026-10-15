@@ -1,2 +1,2 @@
-"""HTTP route modules."""
+"""HTTP 路由模块。"""
 

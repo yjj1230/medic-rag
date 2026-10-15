@@ -33,7 +33,7 @@ class DocumentResponse(BaseModel):
     filename: str
     content_type: str
     status: str
-    # Task 7: read-time derived quality signal (additive).
+    # Task 7：读取时派生的质量信号（增量式）。
     quality_status: str
     failure_reason_code: str | None
     failure_reason_label: str | None

@@ -1,2 +1,2 @@
-"""Object storage and upload policy boundaries."""
+"""对象存储与上传策略边界。"""
 

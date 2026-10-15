@@ -1,1 +1,1 @@
-"""Provider-neutral model contracts and governed gateway."""
+"""提供方中立的模型契约与受治理的网关。"""

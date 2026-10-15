@@ -7,6 +7,7 @@ import pytest
 from scripts.retrieval_threshold_sweep import (
     _aggregate_round_rows,
     _real_runner,
+    _select_lowest_risk,
     run_threshold_sweep,
 )
 
@@ -156,3 +157,69 @@ def test_injected_runner_rejects_non_cosine_score_space() -> None:
             1,
             runner=fake_runner,
         )
+
+
+def test_lowest_risk_uses_false_reject_then_false_accept_before_thresholds() -> None:
+    rows = [
+        {
+            "base_threshold": 0.76,
+            "vector_only_threshold": 0.80,
+            "rejection": {"false_reject_rate": 0.1, "false_accept_rate": 0.0},
+            "quality": {"recall_at_k": 0.99},
+            "latency": {"p95_ms": 1.0},
+            "safety": {"all_zero": True},
+        },
+        {
+            "base_threshold": 0.70,
+            "vector_only_threshold": 0.72,
+            "rejection": {"false_reject_rate": 0.1, "false_accept_rate": 0.0},
+            "quality": {"recall_at_k": 0.80},
+            "latency": {"p95_ms": 99.0},
+            "safety": {"all_zero": True},
+        },
+        {
+            "base_threshold": 0.68,
+            "vector_only_threshold": 0.70,
+            "rejection": {"false_reject_rate": 0.1, "false_accept_rate": 0.2},
+            "quality": {"recall_at_k": 1.0},
+            "latency": {"p95_ms": 0.1},
+            "safety": {"all_zero": True},
+        },
+    ]
+
+    selected = _select_lowest_risk(rows)
+
+    assert (selected["base_threshold"], selected["vector_only_threshold"]) == (0.70, 0.72)
+
+
+def test_run_meta_uses_measured_identity_and_dataset_hash(tmp_path: Path) -> None:
+    cases_file = tmp_path / "cases.jsonl"
+    cases_file.write_text("{}\n", encoding="utf-8")
+
+    def fake_runner(*_args: object, **_kwargs: object) -> dict[str, object]:
+        return {
+            "score_space": "cosinesimil",
+            "score_space_identity": {
+                "expected": "cosinesimil",
+                "mapping": "cosinesimil",
+                "match": True,
+            },
+            "calibration_context": {
+                "embedding_model": "measured-model",
+                "public_index": "measured-public",
+                "private_index": "measured-private",
+                "mapping_score_space": "cosinesimil",
+            },
+            "safety": {"all_zero": True},
+            "cases": [],
+        }
+
+    result = run_threshold_sweep(
+        [0.70], [0.70], cases_file, "arg-public", "arg-private", 1, runner=fake_runner
+    )
+
+    assert result["run_meta"]["dataset_sha256"]
+    assert result["run_meta"]["embedding_model"] == "measured-model"
+    assert result["run_meta"]["public_index"] == "measured-public"
+    assert result["run_meta"]["private_index"] == "measured-private"
+    assert result["run_meta"]["mapping_score_space"] == "cosinesimil"

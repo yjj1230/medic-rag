@@ -90,7 +90,7 @@ class EmbeddingModel(Protocol):
 
 
 class EmbeddingPipeline:
-    """Batching, validation, and bounded-retry seam around an embedding model."""
+    """包裹向量化模型的批处理、校验与有界重试接缝。"""
 
     def __init__(
         self,
@@ -133,15 +133,15 @@ class EmbeddingPipeline:
                     raise ValueError("embedding vector dimension mismatch")
                 normalized.append([float(value) for value in vector])
             return normalized
-        if last_error is None:  # pragma: no cover - the retry loop always sets one
+        if last_error is None:  # pragma: no cover - 重试循环总会设置一个
             raise RuntimeError("embedding request produced neither a result nor an error")
         raise last_error
 
     def embed_records(self, texts: list[str], model_version: str) -> list[tuple[float, ...]]:
         if not isinstance(model_version, str) or not model_version.strip():
             raise ValueError("embedding model version cannot be empty")
-        # Keep the version observable for tracing/index metadata.  Callers also
-        # persist it on each index record because this method returns vectors.
+        # 保持版本可观测，用于链路追踪/索引元数据。调用方也
+        # 会把它持久化到每条索引记录上，因为该方法返回向量。
         self.model_version = model_version
         if not texts:
             return []

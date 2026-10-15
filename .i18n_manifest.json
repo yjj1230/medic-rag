@@ -1,0 +1,58 @@
+[
+ {
+  "file": "src/medical_rag/chat/citations.py",
+  "kind": "comment",
+  "start": 1013,
+  "end": 1019,
+  "row": 29,
+  "text": "# UUID"
+ },
+ {
+  "file": "src/medical_rag/quality/documents.py",
+  "kind": "comment",
+  "start": 1255,
+  "end": 1292,
+  "row": 48,
+  "text": "# READY | NEEDS_REVIEW | FAILED_PARSE"
+ },
+ {
+  "file": "src/medical_rag/quality/gate.py",
+  "kind": "comment",
+  "start": 10031,
+  "end": 10044,
+  "row": 279,
+  "text": "# QualityGate"
+ },
+ {
+  "file": "src/medical_rag/retrieval/opensearch_writer.py",
+  "kind": "comment",
+  "start": 11687,
+  "end": 11754,
+  "row": 275,
+  "text": "# ``illegal_argument_exception: unknown parameter [doc_as_upsert]``"
+ },
+ {
+  "file": "src/medical_rag/retrieval/service.py",
+  "kind": "comment",
+  "start": 6218,
+  "end": 6260,
+  "row": 135,
+  "text": "#   artifact                  → CALIBRATED"
+ },
+ {
+  "file": "src/medical_rag/retrieval/service.py",
+  "kind": "comment",
+  "start": 6331,
+  "end": 6381,
+  "row": 137,
+  "text": "#   fused_score_threshold     → EXPLICIT_THRESHOLD"
+ },
+ {
+  "file": "src/medical_rag/retrieval/service.py",
+  "kind": "comment",
+  "start": 6390,
+  "end": 6431,
+  "row": 138,
+  "text": "#   rank_gate                 → RANK_GATE"
+ }
+]

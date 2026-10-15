@@ -84,6 +84,9 @@ def _citation(tmp_path: Path) -> Path:
     return _write(
         tmp_path / "citation.json",
         {
+            "dataset_kind": "claims",
+            "claims_dataset_sha256": "c",
+            "test_dataset_sha256": "d",
             "index_snapshot": {"public_index": "public", "private_index": "private"},
             "metrics": {"citation_accuracy": 1.0},
             "counts": {"claims": 1},
@@ -132,6 +135,48 @@ def test_missing_attribution_fails(tmp_path: Path) -> None:
     threshold = _threshold(tmp_path)
     with pytest.raises(ValueError, match="attribution"):
         build_report(_retrieval(tmp_path, threshold), _citation(tmp_path), _assets(tmp_path), threshold)
+
+
+@pytest.mark.parametrize(
+    "mutation, message",
+    [
+        (lambda value: value.pop("dataset_kind"), "citation dataset identity"),
+        (lambda value: value.pop("claims_dataset_sha256"), "claims dataset hash"),
+        (lambda value: value.pop("test_dataset_sha256"), "frozen test dataset hash"),
+    ],
+)
+def test_missing_citation_identity_fails_closed(
+    tmp_path: Path, mutation, message: str
+) -> None:
+    citation = json.loads(_citation(tmp_path).read_text(encoding="utf-8"))
+    mutation(citation)
+    citation_path = _write(tmp_path / "citation-mutated.json", citation)
+    threshold = _threshold(tmp_path)
+
+    with pytest.raises(ValueError, match=message):
+        build_report(
+            _retrieval(tmp_path, threshold),
+            citation_path,
+            _assets(tmp_path),
+            threshold,
+            failure_attribution=_attribution(tmp_path),
+        )
+
+
+def test_claims_hash_must_not_be_used_as_frozen_test_hash(tmp_path: Path) -> None:
+    citation = json.loads(_citation(tmp_path).read_text(encoding="utf-8"))
+    citation["test_dataset_sha256"] = citation["claims_dataset_sha256"]
+    citation_path = _write(tmp_path / "citation-ambiguous.json", citation)
+    threshold = _threshold(tmp_path)
+
+    with pytest.raises(ValueError, match="citation test dataset hash mismatch"):
+        build_report(
+            _retrieval(tmp_path, threshold),
+            citation_path,
+            _assets(tmp_path),
+            threshold,
+            failure_attribution=_attribution(tmp_path),
+        )
 
 
 def test_selected_threshold_identity_mismatch_fails(tmp_path: Path) -> None:
@@ -206,6 +251,10 @@ def test_valid_combined_artifacts_preserve_labels_and_denominators(tmp_path: Pat
     assert report["failure_attribution"]["counts"]["total"] == 2
     assert report["failure_attribution"]["unresolved_manual_review"] == ["q", "r"]
     assert report["identities"]["mapping_score_space"] == "cosinesimil"
+    assert report["citation"]["dataset_kind"] == "claims"
+    assert report["citation"]["claims_dataset_sha256"] == "c"
+    assert report["citation"]["test_dataset_sha256"] == "d"
+    assert report["citation"]["identity"]["claims_count"] == 1
 
 
 def test_committed_artifacts_are_privacy_safe() -> None:

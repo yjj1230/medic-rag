@@ -1,4 +1,4 @@
-"""Small, dependency-free observability helpers."""
+"""小而零依赖的可观测辅助工具。"""
 
 from .metrics import (
     CalibrationArtifact,

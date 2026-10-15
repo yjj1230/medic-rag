@@ -72,18 +72,17 @@ _ANSWER_DIAGNOSTIC_KEYS = (
 
 
 def _json_value(column, key: str):
-    """Portable ``json_extract(column, '$.key')`` expression for a JSON column.
+    """可移植的 ``json_extract(column, '$.key')`` 表达式，用于 JSON 列。
 
-    SQLAlchemy's generic ``JSON`` type exposes dialect-specific accessors
-    (``.astext`` is PostgreSQL-only), so the path is built from the dialect's own
-    JSON extractor.  That lets the same predicate run on PostgreSQL in
-    production and SQLite in tests.
+    SQLAlchemy 的通用 ``JSON`` 类型暴露的是方言相关的访问器（``.astext`` 仅
+    PostgreSQL 支持），因此这里用方言自带的 JSON 提取器来构造路径。这样同一个
+    谓词既能在生产环境的 PostgreSQL 上运行，也能在测试的 SQLite 上运行。
     """
     return column[key].as_string() if hasattr(column[key], "as_string") else column[key].astext
 
 
 def _answer_diagnostics(diagnostics: dict[str, object] | None) -> dict[str, object]:
-    """Whitelist retrieval diagnostics for the response/trace surface."""
+    """为响应/链路追踪接口白名单化的检索诊断字段。"""
 
     return {
         key: value
@@ -115,9 +114,9 @@ class ChatOrchestrator:
         total_timeout_seconds: float = 60.0,
         # 注入外发模型名：请求载荷与合规白名单都必须与配置的 MODEL_NAME 一致。
         model_name: str = "gpt-5.5",
-        # Task 9: parent/child context expansion.  ``expansion_index`` is the
-        # sibling-lookup seam (the same search index holding child-blocks).
-        # When None, evidence passes through unchanged (legacy behavior).
+        # Task 9：父/子上下文扩展。``expansion_index`` 就是
+        # 兄弟块查找接缝（同一个持有子块的检索索引）。
+        # 为 None 时，证据原样透传（旧有行为）。
         expansion_index: object | None = None,
         context_token_budget: int | None = None,
     ) -> None:
@@ -236,12 +235,12 @@ class ChatOrchestrator:
             db.add(chat_session)
             db.flush()
         if client_request_id is not None:
-            # ``-`` / ``.astext`` are PostgreSQL-only operators that the generic
-            # ``JSON`` type does not provide, so the lookup builds the JSON path
-            # expression explicitly.  This keeps the predicate index-compatible
-            # with ``ix_chat_messages_client_request_id`` on PostgreSQL while
-            # still working on SQLite, where ``.astext`` raised AttributeError
-            # and silently disabled idempotency.
+            # ``-`` / ``.astext`` 是仅 PostgreSQL 支持的运算符，通用的
+            # ``JSON`` 类型并不提供，因此这里显式构造 JSON 路径
+            # 表达式。这既让该谓词在 PostgreSQL 上与
+            # ``ix_chat_messages_client_request_id`` 索引兼容，
+            # 又能在 SQLite 上正常工作 —— 在 SQLite 上 ``.astext`` 会抛 AttributeError
+            # 并静默禁用幂等性。
             already_persisted = db.execute(
                 select(ChatMessage.id)
                 .where(
@@ -384,14 +383,12 @@ class ChatOrchestrator:
         include_public: bool,
         include_private: bool,
     ) -> list:
-        """Apply Task 9 parent/child context expansion.
+        """应用 Task 9 的父/子上下文扩展。
 
-        Returns the evidence set to feed the model and the citation validator.
-        Sibling child-blocks are pulled through the shared index's
-        ``search_by_parent`` seam, scoped to this request's tenant/patient so
-        sibling context never crosses patients.  When the orchestrator has no
-        ``expansion_index`` configured, evidence passes through unchanged so
-        legacy behavior is preserved.
+        返回要喂给模型和引用校验器的证据集。兄弟子块通过共享索引的
+        ``search_by_parent`` 接缝拉取，并限定在本请求的租户/患者范围内，因此兄弟
+        上下文绝不会跨患者。当编排器未配置 ``expansion_index`` 时，证据原样透传，
+        以保留旧有行为。
         """
         if self.expansion_index is None:
             return evidence
@@ -501,9 +498,9 @@ class ChatOrchestrator:
             remaining = self.total_timeout_seconds - (perf_counter() - started)
             if remaining <= _MIN_MODEL_BUDGET_SECONDS:
                 return self._degraded("请求处理超时，未生成回答。请稍后重试。")
-            # Task 9: expand child-block hits with sibling context so the model
-            # sees the surrounding parent reading window.  Both the request and
-            # the citation validator operate on the same expanded set.
+            # Task 9：用兄弟上下文扩展子块命中，让模型
+            # 看到其所在的父级阅读窗口。请求侧与
+            # 引用校验器操作的是同一个扩展后的集合。
             # 补检索注入公共证据后，兄弟块查找也必须放开公共库，否则公共证据
             # 的上下文扩展会被静默关闭。
             evidence_for_model = self._expand_evidence(

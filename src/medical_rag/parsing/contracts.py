@@ -5,6 +5,7 @@ from io import BytesIO
 from typing import BinaryIO, Literal, Protocol
 
 from medical_rag.domain.enums import EvidenceKind
+from medical_rag.provenance.contracts import SourceLocator
 
 
 @dataclass(frozen=True, slots=True)
@@ -131,9 +132,12 @@ class EvidenceUnitDraft:
     chunker_version: str | None = None
     quality_flags: tuple[str, ...] = ()
     retrieval_eligible: bool = True
+    # 结构化源溯源。上方遗留字段仍可用于
+    # 兼容，但新代码应从该定位器推导它们。
+    locator: SourceLocator | None = None
 
     def to_dict(self) -> dict[str, object]:
-        """JSON-safe writer payload (tuples serialized as lists)."""
+        """JSON 安全的写入器载荷（元组序列化为列表）。"""
         return {
             "text": self.text,
             "kind": self.kind.value if isinstance(self.kind, str) else str(self.kind),
@@ -153,6 +157,7 @@ class EvidenceUnitDraft:
             "chunker_version": self.chunker_version,
             "quality_flags": list(self.quality_flags),
             "retrieval_eligible": self.retrieval_eligible,
+            "locator": self.locator.to_dict() if self.locator is not None else None,
         }
 
 

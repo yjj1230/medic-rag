@@ -42,6 +42,7 @@ from medical_rag.parsing.contracts import (
     ParsedDocument,
     SourceOffset,
 )
+from medical_rag.provenance.contracts import SourceLocator
 from medical_rag.quality.contracts import QualityDecision
 from medical_rag.quality.gate import QualityGate, QualityPolicy
 from medical_rag.parsing.filetypes import IMAGE_FILE_TYPES as SUPPORTED_IMAGE_TYPES
@@ -73,17 +74,17 @@ def _normalise_number(value: str) -> str:
 
 
 def _fail_error_code(quality: QualityDecision) -> str:
-    """Stable machine-parseable error code for a FAIL quality decision.
+    """FAIL 质量判定的稳定、机器可解析错误码。
 
-    ``quality_fail:<first_reason>`` is deterministic so operators and
-    reconcilers can key off it without coupling to the enum label.
+    ``quality_fail:<first_reason>`` 是确定性的，因此运维和对账器可以依据它，
+    而不必耦合到枚举标签。
     """
     primary = quality.reasons[0] if quality.reasons else "unknown"
     return f"quality_fail:{primary}"
 
 
 class RuleBasedMedicalFactExtractor:
-    """Deterministic baseline extractor; production can replace it with a governed adapter."""
+    """确定性基线抽取器；生产可将其替换为受治理的适配器。"""
 
     _patterns = (
         re.compile(
@@ -201,15 +202,15 @@ class ParsingService:
         self.text_parser = getattr(configured, "text", None) if configured else None
         self.ocr_parser = getattr(configured, "ocr", None) if configured else None
         self.table_parser = getattr(configured, "table", None) if configured else None
-        # Task 11 per-page OCR backend (optional; drives per-page backfill).
+        # Task 11 逐页 OCR 后端（可选；驱动逐页回填）。
         self.per_page_ocr = getattr(configured, "per_page_ocr", None) if configured else None
-        # Remote per-PDF OCR backend *factory* (callable pdf_bytes -> backend),
-        # built lazily per document.  Additive; deterministic backend untouched.
+        # 远端逐 PDF OCR 后端*工厂*（可调用 pdf_bytes -> 后端），
+        # 按文档惰性构建。增量式；确定性后端不受影响。
         self.remote_ocr = getattr(configured, "remote_ocr", None) if configured else None
         self.extractor = extractor or RuleBasedMedicalFactExtractor()
-        # The parser only owns the persistence seam.  Actual index writes are
-        # performed by IndexWorker, which keeps parsing decoupled from any
-        # OpenSearch/client implementation.
+        # 解析器只拥有持久化接缝。实际的索引写入
+        # 由 IndexWorker 执行，这使解析与任何
+        # OpenSearch/客户端实现保持解耦。
         self.private_index_writer = private_index_writer
         self.index_job_factory = index_job_factory
         self.index_version = index_version
@@ -218,14 +219,14 @@ class ParsingService:
         self.audit_service = audit_service
         self.audit_context = audit_context
         self.outbox_service = outbox_service
-        # Task 11: optional bounded observability recorder (no-op when None).
+        # Task 11：可选的有界可观测记录器（为 None 时为空操作）。
         self.metrics = metrics
         # 患者链路与公共知识链路共用同一套清洗/分块组件（设计 §3）：可注入，
         # 便于按部署调整 token 预算、overlap 与指标名清单；默认语义不变。
         self.cleaner = cleaner or DocumentCleaner()
         self.chunker = chunker or SemanticChunker()
-        # Single QualityPolicy / QualityGate for the whole parse path; no
-        # scattered threshold literals in Parser/IndexJob code.
+        # 整条解析路径使用单一的 QualityPolicy / QualityGate；Parser/IndexJob 代码中
+        # 不再散落阈值字面量。
         self.gate = QualityGate(QualityPolicy())
         if self.audit_service is not None and self.audit_context is None:
             raise ValueError("audit_context is required when audit_service is configured")
@@ -236,7 +237,7 @@ class ParsingService:
 
     @staticmethod
     def _record(metrics: object | None, name: str, **kwargs: object) -> None:
-        """Emit one metric onto the optional recorder (no-op when None)."""
+        """向可选记录器发出一个指标（为 None 时为空操作）。"""
         if metrics is None:
             return
         method = getattr(metrics, name, None)
@@ -255,6 +256,15 @@ class ParsingService:
         cell_range: str | None = None,
     ) -> EvidenceUnitDraft:
         anchor = source_anchor or (f"p{page_number}:text" if page_number is not None else "text:0")
+        locator = None
+        if page_number is not None or sheet_name or cell_range or source_anchor:
+            locator = SourceLocator(
+                locator_type="xlsx_cell_range" if sheet_name else "pdf_text",
+                page_number=page_number,
+                sheet_name=sheet_name,
+                cell_range=cell_range,
+                source_anchor=source_anchor,
+            )
         return EvidenceUnitDraft(
             text=text,
             kind=kind,
@@ -264,19 +274,19 @@ class ParsingService:
             source_anchor=anchor,
             language=detect_language(text),
             confidence=confidence,
+            locator=locator,
         )
 
     def extract_facts(self, evidence: list[EvidenceUnitDraft]) -> FactExtractionResult:
         return self.extractor.extract(evidence)
 
     def _cleaned_from_parse(self, result: ParseResult) -> CleanedDocument:
-        """Synthesize a :class:`CleanedDocument` from legacy parse evidence.
+        """从遗留解析证据合成一个 :class:`CleanedDocument`。
 
-        The patient parse path currently produces EvidenceUnitDraft values
-        directly (no cleaner/chunker pass), so the gate needs a block view of
-        the same content.  Each evidence unit maps 1:1 to a cleaned block
-        (raw==clean for the legacy path); anchor/confidence/table metrics all
-        read the identical fields the gate needs.
+        患者解析路径当前直接产出 EvidenceUnitDraft 值（没有 cleaner/chunker
+        环节），因此门禁需要同一内容的块视图。每条证据单元与一个清洗后块 1:1
+        对应（对遗留路径而言 raw==clean）；锚点/置信度/表格各项度量读取的都是
+        门禁所需的同一批字段。
         """
         source_offsets: list[SourceOffset] = []
         blocks: list[ParsedBlock] = []
@@ -309,22 +319,21 @@ class ParsingService:
         )
 
     def eligibility_decision(self, result: ParseResult) -> QualityDecision:
-        """Derive the quality decision in ONE place via the real QualityGate.
+        """通过真实 QualityGate 在**一处**推导质量判定。
 
-        This is the single seam every consumer reads eligibility from.  Task 6
-        replaces the placeholder with a real ``QualityGate(...).evaluate(...)``.
-        Legacy extractor review reasons (``result.needs_review`` /
-        ``result.review_reasons``) are merged additively so existing review
-        signals are never dropped.  The ``__post_init__`` invariant of
-        :class:`QualityDecision` enforces PASS→True / NEEDS_REVIEW/FAIL→False.
+        这是所有消费方读取资格的唯一接缝。Task 6 用真实的
+        ``QualityGate(...).evaluate(...)`` 替换占位实现。遗留抽取器的复核原因
+        （``result.needs_review`` / ``result.review_reasons``）以增量方式合并，
+        因此既有复核信号绝不丢失。:class:`QualityDecision` 的 ``__post_init__``
+        不变量强制 PASS→True / NEEDS_REVIEW/FAIL→False。
         """
         document = result.cleaned or self._cleaned_from_parse(result)
         decision = self.gate.evaluate(document, result.evidence, result.facts)
         extra = tuple(dict.fromkeys(result.review_reasons))
         combined = tuple(dict.fromkeys((*decision.reasons, *extra)))
         if result.needs_review and decision.status == QualityStatus.PASS:
-            # Legacy extractor flagged a review even though the gate passed;
-            # stay conservative and promote to NEEDS_REVIEW.
+            # 遗留抽取器标记了复核，尽管门禁已通过；
+            # 保持保守，提升为 NEEDS_REVIEW。
             return QualityDecision(
                 status=QualityStatus.NEEDS_REVIEW,
                 reasons=combined or ("manual_review",),
@@ -341,11 +350,11 @@ class ParsingService:
         return decision
 
     def _apply_eligibility(self, result: ParseResult) -> tuple[ParseResult, QualityDecision]:
-        """Fold the single-sourced eligibility decision into the frozen drafts.
+        """把单一来源的资格判定折叠进冻结的草稿中。
 
-        Transforming happens through :func:`dataclasses.replace` on the frozen
-        :class:`EvidenceUnitDraft` values.  NEEDS_REVIEW/FAIL never discards an
-        evidence unit; it only marks it non-retrievable.
+        转换通过对冻结的 :class:`EvidenceUnitDraft` 值调用
+        :func:`dataclasses.replace` 完成。NEEDS_REVIEW/FAIL 绝不丢弃证据单元；
+        它只是把它标记为不可检索。
         """
         decision = self.eligibility_decision(result)
         if not decision.retrieval_eligible:
@@ -358,14 +367,12 @@ class ParsingService:
         return result, decision
 
     def _version_bundle(self, evidence: EvidenceUnit) -> VersionBundle:
-        """Build the VersionBundle for one persisted evidence row.
+        """为某一条已持久化的证据行构建 VersionBundle。
 
-        This is the single construction site for the private indexing path:
-        parser/cleaner/chunker come from the persisted evidence row (so per-block
-        cleaner/chunker provenance is preserved), the extractor version from the
-        configured extractor, and embedding metadata from the configured model.
-        ``embedding_dimensions`` is None until a successful embedding run reveals
-        the actual vector width (Step 3 preserves that).
+        这是私有索引路径的唯一构造处：parser/cleaner/chunker 来自已持久化的证据行
+        （因此逐块的 cleaner/chunker 溯源得以保留），抽取器版本来自已配置的抽取器，
+        向量化元数据来自已配置的模型。``embedding_dimensions`` 在一次成功的向量化
+        运行揭示真实向量宽度之前为 None（Step 3 保留这一点）。
         """
         return VersionBundle(
             parser_version=evidence.parser_version or self.parser_version,
@@ -379,7 +386,7 @@ class ParsingService:
 
     @staticmethod
     def _reference_bounds(reference_range: str | None) -> tuple[float | None, float | None]:
-        """Parse ``low-high`` from a reference-range string; non-numeric → (None, None)."""
+        """从参考区间字符串解析 ``low-high``；非数字 → (None, None)。"""
         if not reference_range:
             return None, None
         parts = re.split(r"[-–—]", reference_range.strip())
@@ -392,7 +399,7 @@ class ParsingService:
 
     @staticmethod
     def _value_number(value: str) -> float | None:
-        """Parse the numeric reading from a fact value string; non-numeric → None."""
+        """从事实值字符串解析数值读数；非数字 → None。"""
         text = re.sub(r"\s", "", value)
         if not text:
             return None
@@ -409,7 +416,7 @@ class ParsingService:
         version: DocumentVersion,
         quality: QualityDecision,
     ) -> MedicalFact:
-        """Build a durable MedicalFact row from a draft, single-sourcing review state."""
+        """从草稿构建持久化的 MedicalFact 行，并单一来源化复核状态。"""
         reference_low, reference_high = self._reference_bounds(fact.reference_range)
         return MedicalFact(
             tenant_id=document.tenant_id,
@@ -433,8 +440,8 @@ class ParsingService:
             unit_raw=fact.unit,
             unit_normalized=fact.unit,
             extractor_version=getattr(self.extractor, "version", None),
-            # Gate-passing facts are ACCEPTED; NEEDS_REVIEW/FAIL are flagged
-            # with a DISTINCT status so FAIL is never conflated with NEEDS_REVIEW.
+            # 通过门禁的事实为 ACCEPTED；NEEDS_REVIEW/FAIL 会被标记
+            # 一个*不同*的状态，使 FAIL 绝不会与 NEEDS_REVIEW 混为一谈。
             review_status=(
                 "ACCEPTED"
                 if quality.retrieval_eligible
@@ -459,10 +466,10 @@ class ParsingService:
         elif normalized in {".pdf", "application/pdf"}:
             parser = self.text_parser or PdfTextParser()
             parsed = parser.parse(file, normalized)
-            # Task 11: enter the per-page fallback when either a whole-doc OCR
-            # adapter, the per-page OCR backend, or the remote per-PDF backend
-            # factory is configured.  The per-page backend alone must be able to
-            # recover blank/scanned pages.
+            # Task 11：当配置了整文档 OCR
+            # 适配器、逐页 OCR 后端、或远端逐 PDF 后端
+            # 工厂中的任一时，进入逐页兜底。仅凭逐页后端
+            # 就必须能够恢复空白/扫描页。
             if self.ocr_parser is not None or self.per_page_ocr is not None or self.remote_ocr is not None:
                 parsed = self._apply_pdf_ocr_fallback(file, parsed, language_hints)
         elif self.text_parser is not None:
@@ -515,12 +522,12 @@ class ParsingService:
             return parsed
         if len(deficient_pages) == total_pages:
             return self._whole_doc_ocr(file, language_hints)
-        # Task 11 seam: when a per-page OCR backend is configured (either a fixed
-        # deterministic instance or the remote per-PDF backend factory), backfill
-        # the deficient pages in-place instead of deferring.  Page identity and
-        # p{page} anchors are preserved and the result is OCR-labelled.  The
-        # remote backend is built lazily from the document's own bytes so one
-        # PdfPageRenderer is bound to this PDF.
+        # Task 11 接缝：配置了逐页 OCR 后端时（无论是固定的
+        # 确定性实例还是远端逐 PDF 后端工厂），就地回填
+        # 有缺陷的页，而不是延后处理。页标识与
+        # p{page} 锚点被保留，结果会被标记为 OCR。远端
+        # 后端从文档自身字节惰性构建，这样一个
+        # PdfPageRenderer 就绑定到该 PDF。
         backend = self.per_page_ocr
         if backend is None and self.remote_ocr is not None:
             backend = self.remote_ocr(self._read_bytes(file))
@@ -544,7 +551,7 @@ class ParsingService:
 
     @staticmethod
     def _read_bytes(file: BinaryIO) -> bytes:
-        """Return the full raw bytes of a seekable stream, resetting to ``0``."""
+        """返回可寻址流的全部原始字节，并复位到 ``0``。"""
         if hasattr(file, "seek"):
             file.seek(0)
         data = file.read()
@@ -698,15 +705,15 @@ class ParsingService:
         try:
             content = self.object_store.get(document.storage_key)
             result = self.process_file(content, document.content_type)
-            # Task 11: parse-stage observability (no-op when metrics is None).
+            # Task 11：解析阶段可观测（metrics 为 None 时为空操作）。
             self._record(
                 self.metrics, "record_parse", outcome="success",
                 file_type=document.content_type, parser_version=result.parser_version,
             )
-            # Single-sourced eligibility fold: evidence drafts and fact
-            # review_status both derive from one QualityDecision.
+            # 单一来源的资格折叠：证据草稿与事实
+            # review_status 都从同一个 QualityDecision 推导。
             result, quality = self._apply_eligibility(result)
-            # Task 11: review/chunk/fact/anchor-coverage stage observability.
+            # Task 11：复核/分块/事实/锚点覆盖率阶段可观测。
             if quality.status != QualityStatus.PASS:
                 self._record(
                     self.metrics, "record_review",
@@ -730,16 +737,16 @@ class ParsingService:
                 self.metrics, "record_anchor_coverage", coverage=coverage,
                 file_type=document.content_type, parser_version=result.parser_version,
             )
-            # A reparse replaces all derived evidence for this version.  Keep
-            # the transition durable and identifier/hash-only so a
-            # reconciler can remove residual records without receiving text.
+            # 重新解析会替换该版本的全部派生证据。让状态迁移
+            # 保持持久化且仅含标识符/哈希，这样
+            # 对账器可以在不接收文本的情况下移除残留记录。
             replacement_hash = sha256(
                 "|".join(item.text for item in result.evidence).encode("utf-8")
             ).hexdigest()
             outbox = self.outbox_service or OutboxService(self.session)
-            # A reparse supersedes all derived rows and their outbox jobs.  The
-            # new rows receive fresh IDs, while the composite IndexJob key
-            # keeps retries of one parse/version idempotent.
+            # 重新解析会取代全部派生行及其 outbox 作业。
+            # 新行会获得全新的 ID，而复合 IndexJob 键
+            # 使同一次 parse/version 的重试保持幂等。
             self.session.execute(delete(IndexJob).where(IndexJob.document_version_id == version.id))
             self.session.execute(
                 delete(OutboxEvent).where(OutboxEvent.aggregate_id == str(version.id))
@@ -764,8 +771,8 @@ class ParsingService:
                     patient_id=document.patient_id,
                     document_version_id=version.id,
                     kind=item.kind,
-                    # Retrieval text is always the clean text for new rows;
-                    # raw_text/clean_text are preserved separately for provenance.
+                    # 新行的检索文本始终是清洗后文本；
+                    # raw_text/clean_text 为溯源而分别保留。
                     text=item.clean_text if item.clean_text is not None else item.text,
                     page_number=item.page_number,
                     sheet_name=item.sheet_name,
@@ -775,16 +782,17 @@ class ParsingService:
                     raw_text=item.raw_text,
                     clean_text=item.clean_text,
                     section_path=list(item.section_path) if item.section_path else None,
+                    locator=item.locator.to_dict() if item.locator is not None else None,
                     parent_block_id=item.parent_block_id,
                     chunk_index=item.chunk_index,
-                    # Drafts from a chunker come back with parser_version=None;
-                    # populate from the actual parser for the Task 8 rebuild identity.
+                    # 来自分块器的草稿返回时 parser_version=None；
+                    # 从实际解析器填充它，以满足 Task 8 的重建标识。
                     parser_version=item.parser_version or result.parser_version,
                     cleaner_version=item.cleaner_version,
                     chunker_version=item.chunker_version,
-                    # Forward the gate's decision reasons per evidence row so
-                    # the persisted column is the single source of truth for
-                    # index-side eligibility and reconciliation (Task 6 A4).
+                    # 按证据行转发门禁的判定原因，使
+                    # 持久化的列成为索引侧资格与
+                    # 对账的唯一真值来源（Task 6 A4）。
                     quality_flags=tuple(
                         dict.fromkeys((*(item.quality_flags or ()), *quality.reasons))
                     )
@@ -803,10 +811,10 @@ class ParsingService:
             self.session.add_all(facts)
             self.session.flush()
             index_jobs = []
-            # IndexJobs are created for every evidence row (write-but-flag):
-            # ineligible rows are still written to the index marked
-            # ``retrieval_eligible=False`` (never searchable at query time),
-            # and IndexWorker/reconciliation trust the persisted column.
+            # 为每条证据行创建 IndexJobs（写但标记）：
+            # 不合格的行仍会被写入索引，并标记
+            # ``retrieval_eligible=False``（查询时永不可检索），
+            # 且 IndexWorker/reconciliation 信任该持久化列。
             for evidence in evidence_rows:
                 bundle = self._version_bundle(evidence)
                 values = {
@@ -847,8 +855,8 @@ class ParsingService:
                             "embedding_dimensions": None,
                         },
                     )
-                    # Keep the payload identifier-only and make the durable
-                    # Outbox event directly traceable to its IndexJob.
+                    # 保持载荷仅含标识符，并让持久化
+                    # Outbox 事件可直接追溯到其 IndexJob。
                     dispatch.event.payload = {
                         **dispatch.event.payload,
                         "job_id": str(dispatch.job.id),
@@ -860,8 +868,8 @@ class ParsingService:
                     try:
                         index_jobs.append(factory(**values))
                     except TypeError:
-                        # Permit small test factories that accept the mapping
-                        # as one argument while keeping the public seam simple.
+                        # 允许那些把映射作为单个参数接收的小型测试工厂，
+                        # 同时保持公开接缝简单。
                         index_jobs.append(factory(values))
             self.session.add_all(index_jobs)
             finished_at = datetime.now(UTC)
@@ -888,7 +896,7 @@ class ParsingService:
                         "reason_count": len(quality.reasons),
                     },
                 )
-            else:  # FAIL: stable error code, original object preserved for reprocessing.
+            else:  # FAIL：稳定的错误码，原始对象为重新处理而保留。
                 job.status = ParseJobStatus.FAILED
                 job.error_code = _fail_error_code(quality)
                 document.status = DocumentStatus.FAILED
@@ -919,11 +927,11 @@ class ParsingService:
             self.session.commit()
             raise
 
-        # Explicitly supplied writers are useful for synchronous callers and
-        # tests; production callers can omit one and let an asynchronous
-        # IndexWorker consume the durable pending jobs instead.  Keep this
-        # outside the parse transaction/error handler so a writer outage does
-        # not falsely turn an already-committed parse into ParseJob.FAILED.
+        # 显式提供的写入器对同步调用方和测试很有用；
+        # 生产调用方可以省略，转而让异步
+        # IndexWorker 消费持久化的待处理作业。把这段代码
+        # 放在解析事务/错误处理之外，这样写入器故障
+        # 不会把一次已提交的解析错误地变成 ParseJob.FAILED。
         if self.private_index_writer is not None:
             from medical_rag.retrieval.indexing import IndexWorker
 

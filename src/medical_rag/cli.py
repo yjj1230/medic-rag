@@ -1,4 +1,4 @@
-"""Admin CLI for managing pilot patient accounts."""
+"""用于管理试点患者账号的管理 CLI。"""
 from __future__ import annotations
 import secrets
 from pathlib import Path
@@ -29,17 +29,14 @@ def create_patient(tenant_id: str, phone: str, display_name: str, password: str 
         print(f"初始密码: {password_value}")
 
 def evaluate_document_quality(fixtures_dir: str, *, update_baseline: bool = False) -> None:
-    """Release-gate over the synthetic golden set (Task 10).
+    """基于合成黄金集的发布门禁（Task 10）。
 
-    Exits 0 on pass and 1 when any required metric is below the stored golden-set
-    baseline or any permission/deletion safety check is non-zero.  Evaluation is
-    entirely in-memory over the fixtures; no production index is touched.
+    通过时退出码为 0，当任一必需指标低于存储的黄金集基线、或任一权限/删除安全
+    检查非零时退出码为 1。评测完全在内存中基于 fixture 进行；不触碰任何生产索引。
 
-    ``baseline.json`` is a reviewed, checked-in artifact.  It is never rewritten
-    on a FAIL, and no longer rewritten on a PASS either: silently re-baselining
-    on every pass would erase exactly the regressions the gate exists to catch.
-    Pass ``update_baseline=True`` (CLI: ``--update-baseline``) to author a new
-    baseline deliberately.
+    ``baseline.json`` 是一份经评审、已入库的工件。它绝不在 FAIL 时被重写，在 PASS
+    时同样不再被重写：每次通过都静默重建基线，恰好会抹掉这道门禁本就用来捕捉的那些
+    回归。要刻意编写新基线，请传 ``update_baseline=True``（CLI 为 ``--update-baseline``）。
     """
     import json
 
@@ -49,7 +46,7 @@ def evaluate_document_quality(fixtures_dir: str, *, update_baseline: bool = Fals
     fixture_data, load_errors = golden.load_fixture_data(directory)
     baseline_path = directory / golden.BASELINE_FILE
 
-    # Compare a FRESH run against the LOADED stored baseline when one exists.
+    # 存在已存储基线时，用一次全新运行与*加载的*存储基线比较。
     stored = golden.load_baseline_from(baseline_path)
     if load_errors:
         print("Golden-set report could not be produced:")
@@ -65,8 +62,8 @@ def evaluate_document_quality(fixtures_dir: str, *, update_baseline: bool = Fals
             print(f"stored baseline {baseline_path} is invalid: {exc}")
             raise SystemExit(1) from exc
 
-    # Single deterministic run feeds the fresh set; compared against the stored
-    # baseline (which may be from an earlier PASS), so regressions are real.
+    # 单次确定性运行产出全新结果集；与存储的
+    # 基线（可能来自更早的一次 PASS）比较，因此回归是真实的。
     results, run_errors = golden.run_fixtures(fixture_data)
     if not results:
         print("Golden-set report could not be produced:")

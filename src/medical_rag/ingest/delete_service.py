@@ -31,14 +31,14 @@ class NoopDerivedDataDeleter:
 class DeletionReceipt:
     completed_layers: list[str] = field(default_factory=list)
     failed_layers: list[str] = field(default_factory=list)
-    # Keep failure diagnostics machine-readable without persisting exception
-    # messages (which may contain object keys or patient data).  The layer
-    # name is the key and the exception class is the value.
+    # 让失败诊断保持机器可读，同时不持久化异常
+    # 消息（其中可能含对象键或患者数据）。以层名
+    # 为键、异常类为值。
     failure_details: dict[str, str] = field(default_factory=dict)
 
     @property
     def retryable_layers(self) -> tuple[str, ...]:
-        """Layers that should be retried by a subsequent deletion attempt."""
+        """应由后续删除尝试重试的各层。"""
 
         return tuple(self.failed_layers)
 
@@ -54,8 +54,8 @@ class DeleteService:
         outbox_service: OutboxService | None = None,
         metrics: object | None = None,
     ) -> None:
-        # Preserve the original third-positional-argument shape while making
-        # it convenient to pass a PrivateIndexWriter directly.
+        # 保留原先第三个位置参数的形态，同时让
+        # 直接传入 PrivateIndexWriter 更便利。
         if (
             private_index_writer is None
             and derived_data_deleter is not None
@@ -70,7 +70,7 @@ class DeleteService:
         self.audit = audit_service or AuditService(session)
         self.private_index_writer = private_index_writer
         self.outbox = outbox_service or OutboxService(session)
-        # Task 11: optional bounded observability recorder (no-op when None).
+        # Task 11：可选的有界可观测记录器（为 None 时为空操作）。
         self.metrics = metrics
 
     @staticmethod
@@ -121,9 +121,9 @@ class DeleteService:
             )
             self.session.commit()
         else:
-            # A retry is an observable operation in its own right.  This keeps
-            # failed external cleanup from becoming invisible after the
-            # database tombstone has already been committed.
+            # 重试本身就是一个可观测操作。这样可以避免
+            # 失败的对外清理在数据库墓碑
+            # 已经提交之后变得不可见。
             self.audit.record(
                 context,
                 AuditAction.DELETION_REQUESTED,
@@ -132,14 +132,14 @@ class DeleteService:
                 payload_metadata={"retry": True},
             )
             self.session.commit()
-        # Even an already-deleted document needs each external layer retried;
-        # a previous private-index/object-store failure must not become
-        # permanently invisible behind an early return.
+        # 即便文档已被删除，每个外部层仍需重试；
+        # 此前的私有索引/对象存储失败不得因为
+        # 一次提前返回而永久不可见。
         receipt.completed_layers.append("database")
 
-        # The source tombstone is committed before any external cleanup.  The
-        # lifecycle event is therefore retryable independently of object/index
-        # deletion and never carries patient text.
+        # 源墓碑在任何外部清理之前就已提交。因此
+        # 生命周期事件可以与对象/索引删除相互独立地重试，
+        # 且绝不携带患者文本。
         try:
             versions = self.session.scalars(
                 select(DocumentVersion).where(DocumentVersion.document_id == document.id)
@@ -182,8 +182,8 @@ class DeleteService:
             except Exception as exc:
                 receipt.failed_layers.append("private_index")
                 receipt.failure_details["private_index"] = type(exc).__name__[:100]
-        # Task 11: a successful private-index cleanup leaves zero residuals; a
-        # failed one leaves a potential residual (non-zero, gate-blocking).
+        # Task 11：成功的私有索引清理留下零残留项；失败的一次
+        # 留下潜在残留项（非零，会阻塞门禁）。
         self._record_residual(
             self.metrics,
             0 if "private_index" in receipt.completed_layers else int(
@@ -198,9 +198,9 @@ class DeleteService:
             "retryable_layers": list(receipt.retryable_layers),
         }
         if receipt.failed_layers:
-            # A tombstone is durable, but external cleanup is incomplete.
-            # Keep the operation in a retryable requested state instead of
-            # claiming deletion completed.
+            # 墓碑是持久的，但外部清理尚未完成。
+            # 让该操作保持在可重试的已请求状态，而不是
+            # 声称删除已完成。
             self.audit.record(
                 context,
                 AuditAction.DELETION_REQUESTED,

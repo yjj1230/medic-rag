@@ -18,11 +18,11 @@ class ChatAnswerRequest(BaseModel):
     question: str = Field(min_length=1, max_length=20_000)
     document_ids: list[UUID] = Field(default_factory=list, max_length=20)
     session_id: UUID | None = None
-    # Retry key.  The orchestrator has always supported idempotent persistence,
-    # but the request model had no field to carry the key, so HTTP callers could
-    # not use it and a client retry stored the exchange twice (and paid for the
-    # model call twice).  Clients that resend the same key get the original
-    # session back instead of a duplicate turn.
+    # 重试键。编排器一直支持幂等持久化，
+    # 但请求模型没有字段承载这个键，因此 HTTP 调用方
+    # 用不上它，客户端重试会把这段对话存两遍（并付两次
+    # 模型调用费用）。重发同一个键的客户端
+    # 会拿回原来的会话，而不是多出一轮。
     client_request_id: UUID | None = None
 
 
@@ -32,6 +32,11 @@ class ChatCitationResponse(BaseModel):
     version: str
     location: str | None
     url: str | None
+    chunk_id: str | None = None
+    document_id: str | None = None
+    document_version_id: str | None = None
+    evidence_unit_id: str | None = None
+    locator: dict[str, object] | None = None
 
 
 class ChatAnswerResponse(BaseModel):
@@ -41,10 +46,10 @@ class ChatAnswerResponse(BaseModel):
     safety_notice: str | None = None
     trace_id: str | None = None
     session_id: UUID | None = None
-    # Retrieval diagnostics (gate policy and how many candidates passed it, stage
-    # timings, index version, whether embedding degraded).  Without this the HTTP
-    # surface could not distinguish a cluster outage from "no evidence found",
-    # and the gate behaviour the service reports was invisible to operators.
+    # 检索诊断信息（门禁策略、有多少候选通过它、各阶段
+    # 耗时、索引版本、向量化是否降级）。没有这些，HTTP
+    # 接口无法区分集群故障与"没找到证据"，
+    # 服务上报的门禁行为对运维也是不可见的。
     diagnostics: dict[str, object] = Field(default_factory=dict)
 
 

@@ -17,8 +17,8 @@ class DocumentStatus(StrEnum):
     UPLOADED = "uploaded"
     PROCESSING = "processing"
     READY = "ready"
-    # Parsing completed, but one or more evidence/fact checks require manual
-    # review before the document can be used as retrieval evidence.
+    # 解析已完成，但有一项或多项证据/事实检查需要人工
+    # 复核，之后该文档才能用作检索证据。
     NEEDS_REVIEW = "needs_review"
     FAILED = "failed"
     DELETED = "deleted"
@@ -33,23 +33,23 @@ class ParseJobStatus(StrEnum):
 
 
 class QualityStatus(StrEnum):
-    """Runtime-validated QualityDecision status (Task 6, Absorbed Req 1).
+    """运行期校验的 QualityDecision 状态（Task 6，吸收需求 1）。
 
-    A StrEnum (not a bare Literal) so a mistyped status cannot silently
-    construct a :class:`~medical_rag.quality.contracts.QualityDecision`.
-    Values match the legacy labels so ``status == "PASS"`` comparisons and
-    ``status="PASS"`` construction keep working.
+    用 StrEnum（而非裸 Literal），这样拼错的 status 无法静默构造出
+    :class:`~medical_rag.quality.contracts.QualityDecision`。
+    取值与旧标签一致，因此 ``status == "PASS"`` 的比较和
+    ``status="PASS"`` 的构造照常可用。
     """
 
-    # The name is fixed by the legacy wire values; it is a quality verdict label,
-    # not a credential.
+    # 该名称由旧有的线上取值固定；它是质量判定的标签，
+    # 不是凭据。
     PASS = "PASS"  # noqa: S105
     NEEDS_REVIEW = "NEEDS_REVIEW"
     FAIL = "FAIL"
 
 
 class IndexJobStatus(StrEnum):
-    """Lifecycle states for durable private-index write jobs."""
+    """持久化私有索引写入作业的生命周期状态。"""
 
     PENDING = "pending"
     RUNNING = "running"
@@ -65,8 +65,8 @@ class IndexJobStatus(StrEnum):
 class OutboxEventStatus(StrEnum):
     PENDING = "pending"
     PUBLISHED = "published"
-    # DELIVERED is retained as a readable compatibility alias for consumers
-    # that use delivery-oriented terminology.
+    # DELIVERED 作为可读的兼容别名保留，供使用
+    # 面向投递术语的消费方使用。
     DELIVERED = "published"
     FAILED = "failed"
 

@@ -175,28 +175,27 @@ class ParserAdapters:
     text: TextParser | None = None
     ocr: OCRParser | None = None
     table: object | None = None
-    # Task 11 seam: per-page OCR backend.  When present, mixed PDFs are backfilled
-    # page-by-page instead of raising MixedPdfOcrDeferredError (see
-    # medical_rag.parsing.per_page_ocr.ocr_backfill_pdf).  Additive and optional.
+    # Task 11 接缝：逐页 OCR 后端。存在时，混合型 PDF 会逐页回填，
+    # 而不是抛出 MixedPdfOcrDeferredError（见
+    # medical_rag.parsing.per_page_ocr.ocr_backfill_pdf）。增量且可选。
     per_page_ocr: object | None = None
-    # Remote per-PDF OCR backend *factory* (from build_remote_ocr).  When present
-    # it must be a callable ``factory(pdf_bytes) -> RemotePerPageOCRBackend`` and
-    # is built lazily inside the service per document.  Additive and optional; the
-    # deterministic ``per_page_ocr`` fixture backend is untouched.
+    # 远端逐 PDF OCR 后端*工厂*（来自 build_remote_ocr）。存在时
+    # 必须是可调用的 ``factory(pdf_bytes) -> RemotePerPageOCRBackend``，
+    # 并在服务内按文档惰性构建。增量且可选；
+    # 确定性的 ``per_page_ocr`` fixture 后端不受影响。
     remote_ocr: object | None = None
 
 
 def build_parser_adapters(settings: object) -> ParserAdapters:
-    """Composition glue: ``Settings`` → :class:`ParserAdapters` for ParsingService.
+    """组合胶水：``Settings`` → :class:`ParserAdapters`，供 ParsingService 使用。
 
-    When ``ocr_service_url`` is set, wires the remote PaddleOCR-VL backend: the
-    whole-doc :class:`RemoteOCRParser` as ``ocr`` (image path) plus the per-PDF
-    backend *factory* as ``remote_ocr`` (scanned-PDF backfill).  When the URL is
-    empty (the default), returns an empty adapter set so ``ParsingService`` uses
-    only its deterministic native parsers and the remote backend stays disabled.
+    设置 ``ocr_service_url`` 时，接线远端 PaddleOCR-VL 后端：整文档的
+    :class:`RemoteOCRParser` 作为 ``ocr``（图像路径），外加逐 PDF 后端*工厂*
+    作为 ``remote_ocr``（扫描 PDF 回填）。URL 为空（默认）时，返回空适配器集，
+    这样 ``ParsingService`` 只用其确定性的原生解析器，远端后端保持关闭。
 
-    This is deliberately a lazy import of ``remote_ocr`` so wireing remote OCR
-    never forces ``pypdfium2``/``httpx`` side effects at module import time.
+    这里有意对 ``remote_ocr`` 做惰性导入，因此接线远端 OCR 永远不会在模块导入时
+    强制引入 ``pypdfium2``/``httpx`` 的副作用。
     """
     from medical_rag.parsing.remote_ocr import build_remote_ocr
 
@@ -726,9 +725,9 @@ class ExcelParser:
         else:
             from openpyxl import load_workbook
 
-            # read_only=False + data_only=True: data_only keeps the cached formula
-            # results while the non-read-only book is what exposes
-            # ``cell.number_format`` and ``sheet.merged_cells`` (the P1.2 gaps).
+            # read_only=False + data_only=True：data_only 保留缓存的公式
+            # 结果，而非只读工作簿才暴露
+            # ``cell.number_format`` 和 ``sheet.merged_cells``（P1.2 的缺口）。
             workbook = load_workbook(as_bytes_io(file), data_only=True)
             grids = [
                 grid

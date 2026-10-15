@@ -6,6 +6,8 @@ from enum import StrEnum
 from typing import TYPE_CHECKING, Any, Protocol
 from uuid import UUID
 
+from medical_rag.provenance.contracts import SourceLocator
+
 if TYPE_CHECKING:
     from medical_rag.parsing.contracts import EvidenceUnitDraft
 
@@ -15,17 +17,24 @@ def _serialize_index_value(value: Any) -> Any:
         return str(value) if isinstance(value, UUID) else value.isoformat()
     if isinstance(value, StrEnum):
         return value.value
+    if isinstance(value, SourceLocator):
+        return value.to_dict()
+    if isinstance(value, tuple):
+        return [_serialize_index_value(item) for item in value]
+    if isinstance(value, list):
+        return [_serialize_index_value(item) for item in value]
+    if isinstance(value, dict):
+        return {str(key): _serialize_index_value(item) for key, item in value.items()}
     return value
 
 
 @dataclass(frozen=True, slots=True)
 class IndexRecord:
-    """Normalized payload shared by public and private index writers.
+    """公开与私有索引写入器共享的规范化载荷。
 
-    The broad, additive shape lets each index retain its existing source
-    metadata while exposing one stable lifecycle and version contract to
-    writers.  Lifecycle flags are intentionally explicit and public records
-    are only valid when all four public-safe defaults are present.
+    宽泛、增量的形态让每个索引保留其既有源元数据，同时向写入器暴露一个稳定的
+    生命周期与版本契约。生命周期标志有意显式化，且公开记录只有在四个公开安全
+    默认值全部具备时才有效。
     """
 
     id: str
@@ -36,6 +45,7 @@ class IndexRecord:
     document_id: UUID | str | None = None
     document_version_id: UUID | str | None = None
     evidence_unit_id: UUID | str | None = None
+    locator: SourceLocator | None = None
     source_id: str | None = None
     source_title: str | None = None
     source_version: str | None = None
@@ -60,7 +70,7 @@ class IndexRecord:
     deleted: bool = False
     created_at: datetime | None = None
     updated_at: datetime | None = None
-    # --- Task 5: provenance mirrors (additive, JSON-safe via _serialize_index_value) ---
+    # --- Task 5：溯源镜像（增量式，经 _serialize_index_value 保证 JSON 安全）---
     raw_text: str | None = None
     clean_text: str | None = None
     section_path: tuple[str, ...] | None = None
@@ -92,7 +102,7 @@ class IndexRecord:
             raise ValueError("public index records must be active, eligible, and not deleted")
 
     def to_dict(self) -> dict[str, Any]:
-        """Return an explicit, JSON-friendly writer payload."""
+        """返回显式、JSON 友好的写入器载荷。"""
 
         return {
             name: _serialize_index_value(getattr(self, name))
@@ -107,14 +117,24 @@ class Citation:
     version: str
     location: str | None = None
     url: str | None = None
+    chunk_id: str | None = None
+    document_id: str | None = None
+    document_version_id: str | None = None
+    evidence_unit_id: str | None = None
+    locator: SourceLocator | None = None
 
-    def to_dict(self) -> dict[str, str | None]:
+    def to_dict(self) -> dict[str, object]:
         return {
             "source_id": self.source_id,
             "title": self.title,
             "version": self.version,
             "location": self.location,
             "url": self.url,
+            "chunk_id": self.chunk_id,
+            "document_id": self.document_id,
+            "document_version_id": self.document_version_id,
+            "evidence_unit_id": self.evidence_unit_id,
+            "locator": self.locator.to_dict() if self.locator is not None else None,
         }
 
 
@@ -150,6 +170,7 @@ class KnowledgeChunkDraft:
     page_number: int | None = None
     section: str | None = None
     url: str | None = None
+    locator: SourceLocator | None = None
 
     @classmethod
     def from_evidence(
@@ -172,10 +193,14 @@ class KnowledgeChunkDraft:
             content_hash=content_hash,
             source_version=source.source_version,
             language=source.language,
-            location=source.location or section,
+            location=(
+                source.location
+                or (draft.locator.display_location() if draft.locator is not None else section)
+            ),
             page_number=draft.page_number,
             section=section,
             url=source.url,
+            locator=draft.locator,
         )
 
     def citation(self, source_id: str, title: str) -> Citation:
@@ -185,6 +210,7 @@ class KnowledgeChunkDraft:
             version=self.source_version,
             location=self.location,
             url=self.url,
+            locator=self.locator,
         )
 
 
@@ -205,8 +231,8 @@ class PublicIndexRecord:
     embedding_model: str | None = None
     embedding_dimensions: int | None = None
     index_version: str | None = None
-    # Explicit lifecycle/visibility markers are required by the fail-closed
-    # retrieval mapping; defaults preserve existing construction sites.
+    # fail-closed 检索映射要求显式的生命周期/可见性标记；
+    # 默认值保留既有构造处的行为。
     visibility: str = "public"
     retrieval_eligible: bool = True
     source_active: bool = True
@@ -218,10 +244,11 @@ class PublicIndexRecord:
     embedding_version: str | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None
-    # Public source identity is not a document identity.  Callers with a
-    # document-level identifier may provide it explicitly; legacy callers do
-    # not have one and remain represented by ``None``.
+    # 公开源标识不是文档标识。持有文档级
+    # 标识的调用方可以显式提供它；遗留调用方没有
+    # 该标识，仍以 ``None`` 表示。
     document_id: UUID | str | None = None
+    locator: SourceLocator | None = None
 
     def __post_init__(self) -> None:
         if self.visibility != "public":
@@ -233,13 +260,14 @@ class PublicIndexRecord:
             raise ValueError("public index records must be active, eligible, and not deleted")
 
     def to_index_record(self) -> IndexRecord:
-        """Normalize the legacy public record into the shared contract."""
+        """把遗留公开记录规范化为共享契约。"""
 
         return IndexRecord(
             id=self.id,
             text=self.text,
             visibility=self.visibility,
             document_id=self.document_id,
+            locator=self.locator,
             source_id=self.source_id,
             source_title=self.source_title,
             source_version=self.source_version,
@@ -250,6 +278,9 @@ class PublicIndexRecord:
             url=self.url,
             content_hash=self.content_hash,
             parser_version=self.parser_version,
+            section_path=self.locator.section_path if self.locator is not None else None,
+            parent_block_id=self.locator.block_id if self.locator is not None else None,
+            chunk_index=self.locator.chunk_index if self.locator is not None else None,
             cleaner_version=self.cleaner_version,
             chunker_version=self.chunker_version,
             extractor_version=self.extractor_version,
@@ -266,7 +297,7 @@ class PublicIndexRecord:
         )
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialize through the normalized contract with explicit lifecycle flags."""
+        """通过带显式生命周期标志的规范化契约进行序列化。"""
 
         return self.to_index_record().to_dict()
 
@@ -282,5 +313,5 @@ class IngestReceipt:
 class PublicIndexWriter(Protocol):
     def upsert(self, records: list[IndexRecord]) -> None: ...
 
-    # Legacy single-record seam retained for existing adapters/callers.
+    # 为既有适配器/调用方保留的遗留单记录接缝。
     def index_public_chunk(self, record: PublicIndexRecord) -> None: ...

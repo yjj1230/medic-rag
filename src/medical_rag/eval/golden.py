@@ -1,25 +1,21 @@
-"""One reusable golden-set runner + baseline report + release gate (Task 10).
+"""唯一一个可复用的黄金集运行器 + 基线报告 + 发布门禁（Task 10）。
 
-Design principles honoured here
--------------------------------
-* **Single runner.** ``run_golden_fixture`` is the only place the
-  parse→clean→chunk→extract→gate pipeline is invoked.  Both
-  ``tests/eval/test_document_quality.py`` and the CLI release-gate command call
-  it; no duplicate assembly anywhere.
-* **Data-driven, validated fixture schema.** Every fixture is validated for the
-  six required ``expected_*`` keys plus a well-formed ``parsed.blocks`` payload;
-  a malformed fixture fails loudly instead of silently producing a bogus pass.
-* **Fail-closed anchors.** ``anchor_accuracy`` is driven by the fixture's
-  ``expected_anchors``: missing anchors and **invented** anchors (anchors the
-  fixture never declared) both count against it.
-* **Fully in-memory / test-local.** No parser persistence, no index writer, no
-  OpenSearch — the pipeline operates on the synthetic fixture blocks only.
-* **Error-code reuse.** ``expected_review_reasons`` are validated against and
-  compared through the canonical ``QualityFailureCode`` slugs
-  (:mod:`medical_rag.quality.codes`); ``QualityGate``/``QualityPolicy`` are
-  consumed directly, never re-declared.
-* **Synthetic / de-identified.** Fixtures are fictional, medically plausible
-  content (no real patients, filenames, or ID numbers).
+此处遵循的设计原则
+------------------
+* **单一运行器。** ``run_golden_fixture`` 是唯一调用
+  parse→clean→chunk→extract→gate 管线的地方。``tests/eval/test_document_quality.py``
+  与 CLI 发布门禁命令都调用它；任何地方都没有重复组装。
+* **数据驱动、经校验的 fixture schema。** 每个 fixture 都会针对六个必需的
+  ``expected_*`` 键以及格式良好的 ``parsed.blocks`` 载荷做校验；
+  格式错误的 fixture 会大声失败，而不是静默产出一个虚假的通过。
+* **fail-closed 锚点。** ``anchor_accuracy`` 由 fixture 的 ``expected_anchors`` 驱动：
+  缺失的锚点与**凭空捏造**的锚点（fixture 从未声明的锚点）都计入扣分。
+* **完全在内存中 / 测试本地。** 无解析器持久化、无索引写入器、无 OpenSearch ——
+  管线只对合成 fixture 块操作。
+* **复用错误码。** ``expected_review_reasons`` 通过规范的 ``QualityFailureCode`` slug
+  校验并比较（:mod:`medical_rag.quality.codes`）；``QualityGate``/``QualityPolicy``
+  直接消费，绝不重新声明。
+* **合成 / 脱敏。** fixture 是虚构但医学上合理的内容（无真实患者、文件名或 ID 号）。
 """
 
 from __future__ import annotations
@@ -42,20 +38,20 @@ from medical_rag.quality.contracts import QualityDecision
 from medical_rag.quality.gate import QualityGate, QualityPolicy
 
 if TYPE_CHECKING:
-    # Annotated only; imported under TYPE_CHECKING to keep this module's runtime
-    # import graph free of the parsing contracts it merely describes.
+    # 仅用于类型标注；在 TYPE_CHECKING 下导入，以让本模块的运行期
+    # 导入图不必依赖它仅仅用来描述的那些解析契约。
     from medical_rag.parsing.contracts import CleanedDocument
 
-# Global release-gate thresholds — conservative synthetic cold-start values
+# 全局发布门禁阈值 —— 保守的合成冷启动取值，
 # (设计 §9). The per-document fixture expectations (expected_*) are the primary
-# contract; these globals back-stop short parses/scans.
+# 契约；这些全局值为短解析/短扫描兜底。
 MIN_ANCHOR_ACCURACY = 0.99
 MIN_TEXT_COVERAGE = 0.95
 
-# Baseline file name that is excluded from fixture discovery.
+# 从 fixture 发现中排除的基线文件名。
 BASELINE_FILE = "baseline.json"
 
-# The six RAG baselines stored in the baseline report (design Step 2).
+# 存储在基线报告中的六项 RAG 基线（设计 Step 2）。
 RAG_BASELINE_KEYS = (
     "chunk_recall_at_k",
     "mrr",
@@ -77,16 +73,16 @@ _BLOCK_REQUIRED = {"block_id", "block_type", "raw_text"}
 
 
 class FixtureSchemaError(ValueError):
-    """Raised when a golden fixture is malformed (fail-loud)."""
+    """黄金 fixture 格式错误时抛出（fail-loud）。"""
 
 
 # ---------------------------------------------------------------------------
-# Fixture loading / schema validation
+# fixture 加载 / schema 校验
 # ---------------------------------------------------------------------------
 
 
 def load_fixture(path: str | Path | Mapping[str, object]) -> Mapping[str, object]:
-    """Load and validate one fixture from a path or inline mapping."""
+    """从路径或内联映射加载并校验一个 fixture。"""
     if isinstance(path, Mapping):
         fixture = dict(path)
     else:
@@ -99,7 +95,7 @@ def load_fixture(path: str | Path | Mapping[str, object]) -> Mapping[str, object
 
 
 def fixture_paths(fixtures_dir: str | Path) -> list[Path]:
-    """Discover ``*.json`` fixtures in a directory, skipping the baseline file."""
+    """在目录中发现 ``*.json`` fixture，跳过基线文件。"""
     directory = Path(fixtures_dir)
     if not directory.is_dir():
         raise FixtureSchemaError(f"fixtures directory not found: {directory}")
@@ -111,7 +107,7 @@ def fixture_paths(fixtures_dir: str | Path) -> list[Path]:
 
 
 def validate_fixture_schema(fixture: Mapping[str, object]) -> Mapping[str, object]:
-    """Validate required keys and return the fixture (fail-closed on malformed)."""
+    """校验必需键并返回该 fixture（格式错误即 fail-closed）。"""
     missing = [key for key in MISSING_KEYS if key not in fixture]
     if missing:
         raise FixtureSchemaError(
@@ -137,13 +133,13 @@ def validate_fixture_schema(fixture: Mapping[str, object]) -> Mapping[str, objec
             raise FixtureSchemaError(
                 f"parsed.blocks[{index}] invalid block_type {block['block_type']!r}"
             )
-        # Fail-closed: a block's anchor (if any) must be derivable from declared
-        # geometry/struct, never an arbitrary literal that skips the derivation.
+        # fail-closed：块的锚点（若有）必须能从声明的
+        # 几何/结构信息推导出来，绝不能是跳过推导的任意字面量。
         if _derive_anchor(block) is None and any(
             key in block for key in ("bbox", "sheet_name", "cell_range", "page_number", "anchor")
         ):
-            # one of the anchor determinants is present but malformed -> let the
-            # derive/type checks surface the exact problem below.
+            # 某个锚点决定因素存在但格式错误 -> 让下方的
+            # 推导/类型检查暴露出确切问题。
             if "bbox" in block:
                 bbox = block["bbox"]
                 if not isinstance(bbox, (list, tuple)) or len(bbox) != 4:
@@ -177,23 +173,22 @@ def validate_fixture_schema(fixture: Mapping[str, object]) -> Mapping[str, objec
 
 
 # ---------------------------------------------------------------------------
-# Parse-level block reconstruction (the "parser" step for synthetic fixtures)
+# 解析级块重建（合成 fixture 的"解析器"步骤）
 # ---------------------------------------------------------------------------
 
 
 def _derive_anchor(raw: Mapping[str, object]) -> str | None:
-    """Derive a ``source_anchor`` from declared geometric/structural ground truth.
+    """从声明的几何/结构真值推导 ``source_anchor``。
 
-    This is the single anchor-derivation rule so a fixture cannot smuggle in an
-    anchor that its declared geometry does not support (FIX 4 — no tautology).
-    Precedence matches how the real adapters produce anchors:
+    这是唯一的锚点推导规则，因此一个 fixture 无法夹带其声明几何并不支持的锚点
+    （FIX 4 —— 不做同义反复）。优先级与真实适配器产出锚点的方式一致：
 
-    * ``bbox`` (OCR coordinates ``[x, y, w, h]``) -> ``x{x}:y{y}:w{w}:h{h}``
+    * ``bbox``（OCR 坐标 ``[x, y, w, h]``）-> ``x{x}:y{y}:w{w}:h{h}``
     * ``sheet_name`` + ``cell_range`` -> ``sheet:{sheet}!{cell_range}``
     * ``page_number`` -> ``p{page}:text``
-    * ``anchor`` (explicit structural anchor, e.g. DOCX ``doc:paragraph:N``)
-      is accepted as a *normalized* anchor where no geometry exists.
-    * otherwise ``None`` (fail-closed: no invented anchor).
+    * ``anchor``（显式结构锚点，如 DOCX 的 ``doc:paragraph:N``）
+      在没有几何信息时被接受为*规范化*锚点。
+    * 否则 ``None``（fail-closed：不发明锚点）。
     """
     bbox = raw.get("bbox")
     if bbox:
@@ -213,12 +208,11 @@ def _derive_anchor(raw: Mapping[str, object]) -> str | None:
 
 
 def _make_block(raw: Mapping[str, object], index: int) -> ParsedBlock:
-    """Build a :class:`ParsedBlock` from a fixture payload dict.
+    """从 fixture 载荷字典构建一个 :class:`ParsedBlock`。
 
-    ``source_anchor`` is always **derived** from the declared geometry via
-    :func:`_derive_anchor` (never copied from a fixture literal), so a block with
-    wrong page/coordinate/range data produces a wrong anchor that fails the
-    golden expectation instead of passing by construction.
+    ``source_anchor`` 总是通过 :func:`_derive_anchor` 从声明的几何信息**推导**而来
+    （绝不从 fixture 字面量复制），因此一个带错误 page/坐标/范围数据的块会产生错误
+    的锚点，从而未通过黄金期望，而不是靠构造本身通过。
     """
     bbox_raw = raw.get("bbox")
     bbox: tuple[float, float, float, float] | None = None
@@ -243,13 +237,13 @@ def _make_block(raw: Mapping[str, object], index: int) -> ParsedBlock:
 
 
 # ---------------------------------------------------------------------------
-# Result value object
+# 结果值对象
 # ---------------------------------------------------------------------------
 
 
 @dataclass(slots=True)
 class GoldenFixtureResult:
-    """Deterministic measurements for one golden fixture."""
+    """某个黄金 fixture 的确定性度量。"""
 
     fixture_id: str
     file_type: str
@@ -262,21 +256,21 @@ class GoldenFixtureResult:
     produced_sections: tuple[tuple[str, ...], ...]
     produced_review_reasons: tuple[str, ...]
     quality_status: QualityStatus
-    # RAG-side metrics measured off this golden set.
+    # 基于该黄金集测得的 RAG 侧指标。
     chunk_recall_at_k: float
     mrr: float
     citation_accuracy: float
     permission_violations: int
     deletion_residuals: int
     pipeline_latency_ms: float
-    # FIX 5: project QualityGate metrics that were computed but dropped, so Task
-    # 11 observability keys off the same runner.
+    # FIX 5：把已计算却被丢弃的 QualityGate 指标暴露出来，这样 Task
+    # 11 的可观测键就出自同一个运行器。
     anchor_coverage: float
     ocr_confidence: float
     table_column_consistency: float
-    # Per-stage timing (Task 11 stage counters), plus the aggregate latency.
+    # 各阶段耗时（Task 11 阶段计数器），外加聚合延迟。
     stage_timings_ms: dict[str, float] = field(default_factory=dict)
-    # In-memory pipeline artifacts (id-only / anchor-only, PHI-free references).
+    # 内存中的管线工件（仅 id / 仅锚点，不含 PHI 的引用）。
     chunks: list[EvidenceUnitDraft] = field(default_factory=list)
     facts: list = field(default_factory=list)
     decision: QualityDecision | None = None
@@ -288,7 +282,7 @@ class GoldenFixtureResult:
         return "expected_review_reasons" not in self.fails
 
     def as_baseline_dict(self) -> dict[str, object]:
-        """Project the baseline-relevant fields (no raw text / PHI)."""
+        """投影出与基线相关的字段（无原始文本 / 无 PHI）。"""
         return {
             "fixture_id": self.fixture_id,
             "file_type": self.file_type,
@@ -312,12 +306,12 @@ class GoldenFixtureResult:
 
 
 # ---------------------------------------------------------------------------
-# Per-fixture metric helpers
+# 单 fixture 度量辅助函数
 # ---------------------------------------------------------------------------
 
 
 def _anchor_accuracy(expected: Sequence[str], produced: Sequence[str]) -> float:
-    """Fail-closed anchor accuracy against the fixture's expected anchors."""
+    """针对 fixture 期望锚点的 fail-closed 锚点准确率。"""
     expected_set = set(expected)
     produced_set = {anchor for anchor in produced if anchor}
     missing = expected_set - produced_set
@@ -329,7 +323,7 @@ def _anchor_accuracy(expected: Sequence[str], produced: Sequence[str]) -> float:
 
 
 def _table_header_retention(expected_tables: Sequence[Mapping[str, object]], chunks: Sequence[EvidenceUnitDraft]) -> bool:
-    """Every expected table's header cells are preserved in a produced table chunk."""
+    """每个期望表的表头单元格都保留在产出的表块中。"""
     if expected_tables is None or not expected_tables:
         return True
     produced_lines = [
@@ -347,7 +341,7 @@ def _table_header_retention(expected_tables: Sequence[Mapping[str, object]], chu
 
 
 def _fact_match(expected_facts: Sequence[Mapping[str, object]], facts: Sequence[object]) -> list[str]:
-    """Check each expected fact (name+value [optionally unit]) is extracted."""
+    """检查每个期望事实（名称+取值 [可选单位]）都被抽取出来。"""
     failures: list[str] = []
     actual = [
         (getattr(fact, "name", None), getattr(fact, "value", None), getattr(fact, "unit", None))
@@ -376,14 +370,14 @@ def _section_match(expected_sections: Sequence[Sequence[str]], produced_sections
 
 
 def _stable_chunk_anchor(chunk: EvidenceUnitDraft) -> str:
-    """Deterministic anchor key for a produced chunk (anchor or 'none:<idx>')."""
+    """产出块的确定性锚点键（锚点或 'none:<idx>'）。"""
     if chunk.source_anchor:
         return chunk.source_anchor
     return f"none:{chunk.chunk_index}"
 
 
 # ---------------------------------------------------------------------------
-# The single pipeline runner
+# 唯一的管线运行器
 # ---------------------------------------------------------------------------
 
 
@@ -397,16 +391,15 @@ def _run_pipeline(
     float,
     dict[str, float],
 ]:
-    """Run clean→chunk→extract→gate exactly once over the fixture's blocks.
+    """在 fixture 的块上恰好运行一次 clean→chunk→extract→gate。
 
-    NOTE (Task 11 seam / parser-bypass limitation): fixtures inject ``ParsedBlock``
-    rather than a real file transported through an adapters.py parser.  Consequence:
-    ``DocumentCleaner`` is invoked on a block tuple, so ``ocr_source`` is False and
-    the cleaner's OCR-specific branch + ``FLAG_OCR_NOISE_CHECKED`` are NOT
-    exercised, and chunks carry ``parser_version=None``.  Task 11's per-page OCR
-    observability should transport real OCR-backend output through its own
-    ``ParsedDocument``/``blocks`` path instead of relying on these synthetic
-    blocks.  Per-stage timing is returned for Task 11 stage counters.
+    注意（Task 11 接缝 / 绕过解析器的局限）：fixture 注入的是 ``ParsedBlock``，
+    而非经 adapters.py 解析器传输的真实文件。后果：``DocumentCleaner`` 是在一个
+    块元组上被调用，因此 ``ocr_source`` 为 False，cleaner 的 OCR 专用分支 +
+    ``FLAG_OCR_NOISE_CHECKED`` 都**未**被覆盖，且 chunk 携带
+    ``parser_version=None``。Task 11 的逐页 OCR 可观测性应通过它自己的
+    ``ParsedDocument``/``blocks`` 路径传输真实 OCR 后端输出，而不是依赖这些合成块。
+    各阶段耗时会被返回，供 Task 11 阶段计数器使用。
     """
     start_all = perf_counter()
     blocks = tuple(
@@ -443,7 +436,7 @@ def _run_pipeline(
 
 
 def run_golden_fixture(fixture: Mapping[str, object]) -> GoldenFixtureResult:
-    """Run the shared pipeline over one validated fixture and compare to all expectations."""
+    """在某个已校验 fixture 上运行共享管线，并与全部期望做比较。"""
     fixture_id = str(fixture.get("id") or fixture.get("file_type") or "unnamed")
     file_type = str(fixture["file_type"])
 
@@ -479,7 +472,7 @@ def run_golden_fixture(fixture: Mapping[str, object]) -> GoldenFixtureResult:
             f",produced={sorted(produced_reasons)}"
         )
 
-    # RAG metrics measured off this fixture's declared evaluation case.
+    # 基于该 fixture 所声明评测用例测得的 RAG 指标。
     recall, mrr, citation, permission, deletion = _rag_metrics_for_fixture(
         fixture, chunks, anchor_accuracy
     )
@@ -520,14 +513,14 @@ def _rag_metrics_for_fixture(
     chunks: Sequence[EvidenceUnitDraft],
     anchor_accuracy: float,
 ) -> tuple[float, float, float, int, int]:
-    """Deterministic RAG baselines derived from the fixture's declared evaluation case."""
+    """从 fixture 所声明的评测用例推导出的确定性 RAG 基线。"""
     evaluation = fixture.get("evaluation") or {}
     gold_anchors = tuple(str(a) for a in evaluation.get("gold_anchors", ()))
     forbidden_anchors = set(str(a) for a in evaluation.get("forbidden_anchors", ()))
     deleted_anchors = set(str(a) for a in evaluation.get("deleted_anchors", ()))
 
-    # Simulated retrieval: produced chunks ranked in reading order (all of them),
-    # so K == len(produced). Deterministic and honest for a golden baseline.
+    # 模拟检索：产出的块按阅读顺序排序（全部），
+    # 因此 K == len(produced)。对黄金基线而言这既确定又诚实。
     produced = [_stable_chunk_anchor(chunk) for chunk in chunks]
     returned = list(dict.fromkeys(produced))
 
@@ -547,9 +540,9 @@ def _rag_metrics_for_fixture(
         permission = metrics.permission_violations
         deletion = metrics.deletion_residuals
 
-    # Citation accuracy: every produced anchor must resolve to a declared
-    # expected anchor — invented (un-traceable) anchors reduce it, and it is
-    # capped by the fail-closed anchor accuracy.
+    # 引用准确率：每个产出的锚点都必须能落到某个声明的
+    # 期望锚点上 —— 凭空捏造（无法追溯）的锚点会拉低它，而它
+    # 又受 fail-closed 锚点准确率封顶。
     expected_set = set(str(a) for a in fixture.get("expected_anchors", ()))
     produced_set = set(_stable_chunk_anchor(chunk) for chunk in chunks)
     citation_accuracy = 1.0
@@ -560,13 +553,13 @@ def _rag_metrics_for_fixture(
 
 
 # ---------------------------------------------------------------------------
-# Baseline report + release gate
+# 基线报告 + 发布门禁
 # ---------------------------------------------------------------------------
 
 
 @dataclass(slots=True)
 class BaselineReport:
-    """Aggregated, PHI-free baseline metrics measured off the golden set."""
+    """基于黄金集测得的聚合、无 PHI 基线指标。"""
 
     fixtures: list[dict[str, object]]
     chunk_recall_at_k: float
@@ -595,8 +588,8 @@ class BaselineReport:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, object]) -> "BaselineReport":
-        """Rebuild a baseline from a persisted report (used by the release gate
-        to compare a FRESH run against a LOADED stored baseline, FIX 1)."""
+        """从已持久化的报告重建基线（供发布门禁
+        用一次全新运行对比*加载的*存储基线，FIX 1）。"""
         fixtures = data.get("fixtures", ())
         if not isinstance(fixtures, list):
             raise FixtureSchemaError("baseline report 'fixtures' must be a list")
@@ -625,7 +618,7 @@ def compute_baseline(
     fixtures: Iterable[Mapping[str, object]],
     results: Sequence[GoldenFixtureResult] | None = None,
 ) -> BaselineReport:
-    """Compute the measured-off-golden-set baseline (design Step 2)."""
+    """计算基于黄金集测得的基线（设计 Step 2）。"""
     result_list = list(results) if results is not None else [
         run_golden_fixture(f) for f in fixtures
     ]
@@ -651,7 +644,7 @@ def compute_baseline(
 
 
 def _percentile_ms(sorted_ms: Sequence[float]) -> float:
-    """P95 of a sorted latency sample (deterministic)."""
+    """排序后延迟样本的 P95（确定性）。"""
     if not sorted_ms:
         return 0.0
     index = min(len(sorted_ms) - 1, max(0, int(0.95 * len(sorted_ms)) - 1))
@@ -659,11 +652,11 @@ def _percentile_ms(sorted_ms: Sequence[float]) -> float:
 
 
 def load_fixture_data(fixtures_dir: str | Path) -> tuple[list[Mapping[str, object]], list[str]]:
-    """Load all fixtures in a directory robustly.
+    """稳健地加载目录中的全部 fixture。
 
-    Returns ``(valid_fixtures, error_reasons)``.  Missing dirs, malformed JSON and
-    schema-invalid fixtures are collected as reasons (FIX 2) so the release gate
-    can fail cleanly instead of tracebacking.
+    返回 ``(valid_fixtures, error_reasons)``。目录缺失、JSON 格式错误和
+    schema 非法的 fixture 都会被收集为原因（FIX 2），这样发布门禁可以干净地失败，
+    而不是抛栈。
     """
     directory = Path(fixtures_dir)
     errors: list[str] = []
@@ -682,10 +675,10 @@ def run_fixtures(
     fixtures: Iterable[Mapping[str, object]],
     results: Sequence[GoldenFixtureResult] | None = None,
 ) -> tuple[list[GoldenFixtureResult], list[str]]:
-    """Run the shared pipeline over each fixture, isolating per-fixture failures.
+    """在每个 fixture 上运行共享管线，并隔离单个 fixture 的失败。
 
-    Returns ``(results_for_valid_fixtures, error_reasons)`` so an empty set or a
-    malformed fixture becomes a clean ``GateVerdict`` rather than a crash.
+    返回 ``(results_for_valid_fixtures, error_reasons)``，这样空集合或格式错误的
+    fixture 会变成一个干净的 ``GateVerdict``，而不是一次崩溃。
     """
     result_list: list[GoldenFixtureResult] = []
     errors: list[str] = []
@@ -704,7 +697,7 @@ def run_fixtures(
 
 @dataclass(slots=True)
 class GateVerdict:
-    """Result of a release-gate comparison; exit-code semantics 0=pass / 1=fail."""
+    """发布门禁比较的结果；退出码语义 0=通过 / 1=失败。"""
 
     passed: bool
     reasons: list[str] = field(default_factory=list)
@@ -714,9 +707,9 @@ class GateVerdict:
         return 0 if self.passed else 1
 
 
-# P95 latency is wall-clock and jitters at microsecond scale; gate only on a
-# gross regression (default 3x baseline) so timing noise never trips the gate
-# while a real slowdown still fails it.
+# P95 延迟是墙钟时间，会在微秒级抖动；只对
+# 严重回归（默认 3 倍基线）设门禁，这样计时噪声永远不会误触发门禁，
+# 而真实的变慢仍会让它失败。
 P95_REGRESSION_FACTOR = 3.0
 
 
@@ -725,13 +718,13 @@ def release_gate(
     baseline: BaselineReport | None = None,
     results: Sequence[GoldenFixtureResult] | None = None,
 ) -> GateVerdict:
-    """Return the release verdict: 0 passes, 1 if any metric regresses below the
-    STORED baseline or any permission/deletion safety check is non-zero.
+    """返回发布判定：通过为 0；若任一指标低于*存储的*
+    基线、或任一权限/删除安全检查非零则为 1。
 
-    ``baseline`` is the previously stored golden-set baseline (loaded from
-    ``baseline.json`` via :func:`BaselineReport.from_dict`).  The fresh run
-    (``results`` or a new run) is compared against it, so a recall/mrr/citation
-    drop is a real gate input rather than a self-comparison no-op (FIX 1).
+    ``baseline`` 是此前存储的黄金集基线（经 :func:`BaselineReport.from_dict`
+    从 ``baseline.json`` 加载）。全新运行（``results`` 或一次新运行）与它比较，
+    因此 recall/mrr/citation 的下降是真实的门禁输入，而不是自我比较的空操作
+    （FIX 1）。
     """
     base_reasons: list[str] = []
     result_list, run_errors = run_fixtures(fixtures, results)
@@ -743,9 +736,9 @@ def release_gate(
         return GateVerdict(passed=False, reasons=base_reasons or ["empty_golden_set"])
 
     if baseline is None:
-        # No stored baseline: the golden set itself defines the baseline and
-        # passes (first-run behaviour). A caller wanting strict gating passes a
-        # loaded baseline.
+        # 没有存储基线：黄金集本身即定义基线并通过
+        # （首次运行行为）。需要严格门禁的调用方传入一个
+        # 已加载的基线。
         baseline = compute_baseline(fixtures, result_list)
 
     reasons: list[str] = list(base_reasons)
@@ -759,7 +752,7 @@ def release_gate(
         if item.fails:
             reasons.append(f"{item.fixture_id}:{';'.join(item.fails)}")
 
-    # RAG baselines: compare the FRESH aggregate to the stored baseline.
+    # RAG 基线：把全新聚合值与存储基线比较。
     current = compute_baseline(fixtures, result_list)
     for key in ("chunk_recall_at_k", "mrr", "citation_accuracy"):
         current_value = float(getattr(current, key))
@@ -767,7 +760,7 @@ def release_gate(
         if current_value < baseline_value:
             reasons.append(f"{key}:current={current_value:.4f}<baseline={baseline_value:.4f}")
 
-    # P95 latency: tolerate wall-clock jitter, catch gross regression.
+    # P95 延迟：容忍墙钟抖动，捕捉严重回归。
     if baseline.p95_latency_ms > 0 and current.p95_latency_ms > baseline.p95_latency_ms * P95_REGRESSION_FACTOR:
         reasons.append(
             f"p95_latency_ms:current={current.p95_latency_ms:.3f}baseline={baseline.p95_latency_ms:.3f}"
@@ -777,7 +770,7 @@ def release_gate(
         reasons.append(f"permission_violations:current={current.permission_violations}")
     if current.deletion_residuals > baseline.deletion_residuals:
         reasons.append(f"deletion_residuals:current={current.deletion_residuals}")
-    # Safety: any non-zero violation in the current run always fails the gate.
+    # 安全：当前运行中任何非零违规都会让门禁失败。
     if current.permission_violations > 0:
         reasons.append(f"permission_violations_nonzero:{current.permission_violations}")
     if current.deletion_residuals > 0:
@@ -790,7 +783,7 @@ def release_gate(
 
 
 def load_baseline_from(path: str | Path) -> Mapping[str, object] | None:
-    """Load a previously-written baseline report, or None when absent/invalid."""
+    """加载此前写入的基线报告；不存在或非法时为 None。"""
     baseline_path = Path(path)
     if not baseline_path.is_file():
         return None

@@ -1,1 +1,1 @@
-"""Governed public medical knowledge ingestion."""
+"""受治理的公开医学知识摄取。"""

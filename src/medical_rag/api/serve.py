@@ -1,8 +1,8 @@
-"""Console entrypoint for the API process.
+"""API 进程的控制台入口。
 
-Exists because the project previously had no way to start the backend at all:
-no ``[project.scripts]``, no Dockerfile, and no ``api`` service in
-``docker-compose.yml`` even though nginx proxied ``/v1/`` to ``api:8000``.
+之所以存在，是因为本项目此前根本没有启动后端的方式：没有 ``[project.scripts]``、
+没有 Dockerfile，``docker-compose.yml`` 里也没有 ``api`` 服务，尽管 nginx 已经把
+``/v1/`` 反向代理到 ``api:8000``。
 """
 from __future__ import annotations
 
@@ -17,8 +17,8 @@ def main() -> None:
     import uvicorn
 
     settings = Settings.from_env()
-    # Fail before binding a port: an unsafe deployment should never accept a
-    # single request, and the operator should see why immediately.
+    # 在绑定端口之前就失败：不安全的部署绝不应接受
+    # 哪怕一个请求，而且运维应当立刻看到原因。
     settings.validate_runtime()
     for warning in settings.plaintext_phi_egress_warnings():
         logger.warning("%s", warning)
@@ -32,5 +32,5 @@ def main() -> None:
     )
 
 
-if __name__ == "__main__":  # pragma: no cover - manual invocation
+if __name__ == "__main__":  # pragma: no cover - 手动调用
     main()

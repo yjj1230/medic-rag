@@ -18,7 +18,9 @@ SQLite uniqueness semantics, so ordinary history rows are unaffected.
 from alembic import op
 from sqlalchemy import inspect, text
 
-revision = "0009_chat_idempotency_unique_index"
+# Keep the revision within Alembic's PostgreSQL ``version_num`` limit (32
+# characters).  The descriptive migration filename remains unchanged.
+revision = "0009_chat_idem_unique"
 down_revision = "0008_add_chat_message_indexes"
 branch_labels = None
 depends_on = None

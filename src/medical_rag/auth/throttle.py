@@ -1,24 +1,18 @@
-"""Brute-force protection for the password login endpoint.
+"""密码登录端点的暴力破解防护。
 
-``/v1/auth/login`` is the only credential entry point in the system, and it
-authenticates on a phone number plus a password — a low-entropy pair that is
-practical to guess at machine speed.  It previously accepted unlimited attempts
-with no delay and no record.
+``/v1/auth/login`` 是系统中唯一的凭据入口，它以手机号加密码鉴权 —— 这是一对低熵
+组合，以机器速度做猜测是很现实的。它此前接受无限次尝试，既无延迟也无记录。
 
-The defence here is deliberately small and self-contained:
+这里的防护刻意做得小而自洽：
 
-* a per-identifier **and** per-source-address sliding failure window, so neither
-  a single account nor a single host can be hammered;
-* a constant-cost failure path (see ``auth.routes`` — an unknown account still
-  performs a bcrypt comparison) so response content and timing do not disclose
-  whether an account exists;
-* bounded memory: the table is pruned on write and hard-capped, so an attacker
-  cannot turn the throttle itself into an unbounded-memory DoS.
+* 按标识符**且**按来源地址的滑动失败窗口，因此单个账号和单台主机都不会被猛攻；
+* 恒定开销的失败路径（见 ``auth.routes`` —— 账号不存在时仍会执行一次 bcrypt 比较），
+  因此响应内容和耗时都不会泄漏账号是否存在；
+* 内存有界：该表在写入时做裁剪并设硬上限，因此攻击者无法把限流器本身变成一次
+  无界内存 DoS。
 
-Scope note: this is per-process state.  It stops the common single-node
-credential-stuffing pattern and is honest about its limit — a multi-replica
-deployment should back this with the shared cache (Redis), which the project
-already runs.
+范围说明：这是按进程的状态。它能挡住常见的单节点撞库模式，并且诚实地承认其局限 ——
+多副本部署应改为由共享缓存（Redis）承载，本项目已经在跑 Redis。
 """
 from __future__ import annotations
 
@@ -29,7 +23,7 @@ from dataclasses import dataclass, field
 
 @dataclass
 class _AttemptWindow:
-    """Recent failure timestamps for one throttle key."""
+    """某个限流键的近期失败时间戳。"""
 
     failures: list[float] = field(default_factory=list)
 
@@ -40,15 +34,14 @@ class _AttemptWindow:
 
 
 class LoginThrottle:
-    """Sliding-window failure counter keyed by identifier and by client address.
+    """按标识符和按客户端地址分别计数的滑动窗口失败计数器。
 
-    Both keys must be under the limit for a login to be attempted.  Counting the
-    client address as well as the identifier is what stops one host from walking
-    a list of phone numbers, which a per-identifier limit alone allows.
+    两个键都必须低于限制，登录才会被尝试。同时统计客户端地址和标识符，正是为了
+    阻止单台主机遍历一长串手机号 —— 而仅按标识符限流是拦不住的。
     """
 
-    # Hard cap on tracked keys.  Reaching it evicts the oldest entry, so memory
-    # is bounded regardless of how many distinct identifiers an attacker sends.
+    # 被跟踪键数的硬上限。达到上限会淘汰最旧的条目，因此无论
+    # 攻击者发来多少不同的标识符，内存都是有界的。
     MAX_TRACKED_KEYS = 10_000
 
     def __init__(
@@ -68,7 +61,7 @@ class LoginThrottle:
         self._windows: OrderedDict[str, _AttemptWindow] = OrderedDict()
 
     def retry_after(self, *keys: str) -> float:
-        """Seconds until the most-blocked key is allowed again (0 when clear)."""
+        """距离被限制最严的键重新放行还有多少秒（无限制时为 0）。"""
         now = self._clock()
         longest = 0.0
         for key in keys:
@@ -95,7 +88,7 @@ class LoginThrottle:
         self._evict_overflow()
 
     def record_success(self, *keys: str) -> None:
-        """A correct password clears the counters for the keys it proves control of."""
+        """密码正确时，清空它所证明掌控的那些键的计数器。"""
         for key in keys:
             self._windows.pop(key, None)
 
@@ -105,9 +98,9 @@ class LoginThrottle:
 
 
 def throttle_key_pair(identifier: str, client_host: str | None) -> tuple[str, str]:
-    """Throttle keys for one attempt: the account and the calling host.
+    """一次尝试对应的限流键：账号与来源主机。
 
-    The identifier is normalised so ``13800000000`` and `` 13800000000 `` share
-    a counter instead of giving an attacker free attempts through whitespace.
+    标识符会被规范化，因此 ``13800000000`` 与 `` 13800000000 `` 共用一个计数器，
+    而不会因为空白字符让攻击者白捡几次尝试机会。
     """
     return (f"id:{identifier.strip().lower()}", f"ip:{client_host or 'unknown'}")

@@ -1,9 +1,8 @@
-"""Durable index-job orchestration and production composition checks.
+"""持久化索引作业编排与生产组合检查。
 
-The orchestrator is deliberately small: PostgreSQL owns the job state, the
-OutboxService owns leases, and IndexWorker/writers own the actual write.  This
-keeps duplicate delivery safe while making visibility and startup safety
-explicit at one seam.
+编排器刻意做得很小：PostgreSQL 持有作业状态，OutboxService 持有租约，
+IndexWorker/写入器负责实际写入。这样在保证重复投递安全的同时，把可见性与
+启动安全性显式地收敛到一个接缝上。
 """
 
 from __future__ import annotations
@@ -30,11 +29,10 @@ from medical_rag.retrieval.indexing import IndexReceipt, IndexWorker
 
 @dataclass(frozen=True, slots=True)
 class ProductionComposition:
-    """The minimum production dependency graph for indexing.
+    """索引所需的最小生产依赖图。
 
-    Local/test deployments may inject deterministic fakes explicitly.  A
-    production graph cannot silently fall back to an in-memory writer,
-    missing embeddings, consent checks, or an unconfigured audit sink.
+    本地/测试部署可以显式注入确定性的替身。生产依赖图不得静默回落到
+    内存写入器、缺失的向量化、缺失的知情同意检查，或未配置的审计汇。
     """
 
     public_writer: Any | None = None
@@ -85,7 +83,7 @@ class ProductionComposition:
 
 
 class IndexOrchestrator:
-    """Consume leased IndexJobs and route each record to one visibility writer."""
+    """消费已租赁的 IndexJob，并把每条记录路由到一个可见性写入器。"""
 
     def __init__(
         self,
@@ -116,15 +114,15 @@ class IndexOrchestrator:
         self.audit_context = audit_context
         self.lease_seconds = lease_seconds
         self.max_attempts = max_attempts
-        # Optional bounded observability recorder (no-op when None).  Accepts a
-        # ``PipelineMetricsRecorder``-shaped object exposing ``increment``.
+        # 可选的有界可观测记录器（为 None 时为空操作）。接受一个
+        # 形如 ``PipelineMetricsRecorder``、暴露 ``increment`` 的对象。
         self.metrics = metrics
         if audit_service is not None and audit_context is None:
             raise ValueError("audit_context is required when audit_service is configured")
 
     @staticmethod
     def _metric(metrics: object | None, name: str, count: int = 1) -> None:
-        """Emit one bounded counter onto the optional recorder (no-op when unset)."""
+        """向可选记录器发出一个有界计数器（未设置时为空操作）。"""
 
         if metrics is None:
             return
@@ -134,10 +132,10 @@ class IndexOrchestrator:
 
     @staticmethod
     def _classify_visibility(evidence: EvidenceUnit) -> str:
-        """Classify only explicit, unambiguous evidence kinds.
+        """只对明确、无歧义的证据种类做分类。
 
-        Missing ACL fields are not evidence of public visibility; ambiguous
-        records fail closed instead of being routed to the public index.
+        ACL 字段缺失并不构成公开可见的证据；有歧义的记录会 fail closed，
+        而不是被路由到公开索引。
         """
         kind = getattr(evidence.kind, "value", evidence.kind)
         if kind == "knowledge_chunk" and evidence.patient_id is None:
@@ -183,14 +181,12 @@ class IndexOrchestrator:
             self.session.commit()
 
     def _dead_letter(self, job: IndexJob, worker_id: str) -> None:
-        """Record a permanently failed job as durable, alertable dead mail.
+        """把永久失败的作业记录为持久化、可告警的死信。
 
-        ``PERMANENT_FAILED`` is otherwise a silent terminal state: nothing
-        consumes it, so a job that exhausted its retry budget disappears with no
-        operational trace.  One OutboxEvent per job (keyed by job id, so a
-        repeated transition cannot duplicate it) plus one bounded counter give
-        alerting a durable hook.  Only identifiers, versions, and counts are
-        written -- never passage text.
+        ``PERMANENT_FAILED`` 本来是一个静默的终态：没有任何东西消费它，因此一个
+        耗尽重试预算的作业会消失得毫无运维痕迹。每个作业一条 OutboxEvent（以作业 id
+        为键，因此重复的状态迁移不会产生重复），外加一个有界计数器，为告警提供
+        持久化的挂钩。只写入标识符、版本和计数 —— 绝不写正文。
         """
 
         self.outbox.create_lifecycle_event(
@@ -214,9 +210,9 @@ class IndexOrchestrator:
         self._metric(self.metrics, "index_job_dead_letter")
 
     def _retry(self, job: IndexJob, worker_id: str, exc: Exception) -> IndexReceipt:
-        # Prefer an error code the failing stage already recorded: the worker's
-        # codes (``parse_job_not_found``, ``source_not_found``) are more
-        # actionable for on-call than the exception class name.
+        # 优先使用失败阶段已经记录的错误码：worker 的错误码
+        # （``parse_job_not_found``、``source_not_found``）对值班人员
+        # 比异常类名更有可操作性。
         code = job.error_code or type(exc).__name__[:100]
         if job.attempts >= self.max_attempts:
             job.status = IndexJobStatus.PERMANENT_FAILED
@@ -225,8 +221,8 @@ class IndexOrchestrator:
             job.lease_expires_at = None
             job.finished_at = datetime.now(UTC)
         else:
-            # IndexJob.retry increments attempts only for failures occurring
-            # before IndexWorker has already counted the attempt.
+            # IndexJob.retry 只对 IndexWorker 尚未计过
+            # 该次尝试之前发生的失败，才递增尝试次数。
             job.error_code = code
             job.worker_id = None
             job.lease_expires_at = None
@@ -237,7 +233,7 @@ class IndexOrchestrator:
         self.session.commit()
         self._audit(job, worker_id, "retry" if job.status == IndexJobStatus.RETRYABLE_FAILED else "failure")
         if job.status == IndexJobStatus.PERMANENT_FAILED:
-            # Dead mail: durable, deduplicated, and alertable.
+            # 死信：持久化、去重、可告警。
             self._dead_letter(job, worker_id)
         event = self._event_for(job)
         if event is not None and job.status == IndexJobStatus.RETRYABLE_FAILED:
@@ -351,7 +347,7 @@ class IndexOrchestrator:
             ParseJobStatus.SUCCEEDED,
             ParseJobStatus.NEEDS_REVIEW,
         }:
-            # Parser work is not ready; do not call embeddings or a writer.
+            # 解析工作尚未就绪；不要调用向量化或写入器。
             return self._retry(job, worker_id, RuntimeError("parse_not_ready"))
         if visibility == "public":
             return self._process_public(job, worker_id, evidence, version, document)
@@ -376,11 +372,11 @@ class IndexOrchestrator:
                 IndexJobStatus.PERMANENT_FAILED,
                 IndexJobStatus.FAILED,
             }:
-                # The worker returned a terminal failure without surfacing an
-                # exception (missing source metadata, missing parse job).  The
-                # retry policy still belongs to the orchestrator: run it so an
-                # exhausted budget becomes dead mail instead of a silent FAILED
-                # row that nothing observes.
+                # worker 返回了终态失败，却没有抛出
+                # 异常（源元数据缺失、解析作业缺失）。重试
+                # 策略仍属于编排器：运行它，这样耗尽的
+                # 预算会变成死信，而不是一行无人
+                # 观察的静默 FAILED。
                 return self._retry(
                     job, worker_id, RuntimeError(job.error_code or "index worker failed")
                 )

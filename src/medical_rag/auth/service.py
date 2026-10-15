@@ -25,23 +25,20 @@ def current_access_context(
     session: Session = Depends(get_session),
     settings: Settings = Depends(get_settings),
 ) -> AccessContext:
-    """Resolve the caller identity.
+    """解析调用方身份。
 
-    Identity comes from a verified bearer token.  ``X-Tenant-ID`` /
-    ``X-Patient-ID`` / ``X-User-ID`` are **never** trusted on their own: doing so
-    let any caller act as an arbitrary patient (reading and deleting their
-    records, and forging the audit actor).  They are honoured only when the
-    operator has explicitly enabled ``allow_insecure_identity_headers`` in a
-    development environment, and even then the values are validated against the
-    database rather than taken at face value.
+    身份来自经过验证的持有者令牌。``X-Tenant-ID`` / ``X-Patient-ID`` / ``X-User-ID``
+    **绝不**单独信任：那样做会让任何调用方冒充任意患者（读取和删除其记录、伪造审计
+    操作人）。只有当运维在开发环境中显式启用 ``allow_insecure_identity_headers`` 时
+    才会采信它们，而且即便如此，这些值也会与数据库校验而非照单全收。
     """
     if authorization and authorization.startswith("Bearer "):
         token = authorization.removeprefix("Bearer ").strip()
         try:
             claims = verify_access_token(token, settings=settings)
         except ValueError:
-            # Deliberately not chained: the reason a token failed must not leak
-            # to the caller, and an unauthenticated caller is not a bug report.
+            # 有意不做异常链：令牌失败的原因不得泄漏给
+            # 调用方，而且未鉴权的调用方不是一份缺陷报告。
             raise AuthenticationRequired("token 无效或已过期") from None
         return _context_from_claims(claims, session)
 
@@ -62,8 +59,8 @@ def _context_from_claims(claims: dict[str, str], session: Session) -> AccessCont
     patient = session.execute(select(Patient).where(Patient.id == patient_id)).scalar_one_or_none()
     if patient is None:
         raise AuthenticationRequired("患者不存在")
-    # The token must agree with the authoritative record.  A mismatch means a
-    # stale or forged token, so fail closed instead of quietly preferring either.
+    # 令牌必须与权威记录一致。不一致意味着
+    # 令牌过期或被伪造，此时应 fail closed，而不是悄悄偏向任何一方。
     if patient.tenant_id != tenant_id:
         raise AuthenticationRequired("令牌与患者所属租户不一致")
     return AccessContext(tenant_id=patient.tenant_id, patient_id=patient.id, user_id=user_id)
@@ -76,10 +73,9 @@ def _development_context(
     session: Session,
     settings: Settings,
 ) -> AccessContext:
-    """Development-only identity headers, validated against the database.
+    """仅开发环境的身份请求头，会与数据库校验。
 
-    Raises if the flag is somehow enabled outside development, so a
-    misconfiguration can never turn into an open door.
+    若该开关在非开发环境被意外启用则抛错，这样错误配置永远不会变成一扇敞开的门。
     """
     if not settings.is_dev_environment:
         raise AuthenticationRequired("非开发环境不接受请求头身份")

@@ -21,26 +21,26 @@ from medical_rag.domain.models import Consent, Patient
 
 router = APIRouter(prefix="/v1/consents", tags=["consent"])
 
-# One throttle per process, shared by every login attempt.
+# 每进程一个限流器，被每一次登录尝试共享。
 _login_throttle = LoginThrottle()
 
-# Failure response.  Every credential-related rejection — unknown account,
-# account without a password, wrong password, suspended account — returns this
-# exact message.  Distinguishing them let an attacker enumerate registered phone
-# numbers before spending a single guess.  The caller learns only that the
-# attempt failed.
+# 失败响应。所有与凭据相关的拒绝 —— 账号不存在、
+# 账号无密码、密码错误、账号被停用 —— 都返回这
+# 同一条消息。区分它们会让攻击者在花掉哪怕一次猜测之前
+# 就枚举出已注册的手机号。调用方只能得知这次
+# 尝试失败了。
 _INVALID_CREDENTIALS = "手机号或密码错误"
 
-# Password length bounds are validation, not policy: ``max_length`` also caps
-# the amount of data bcrypt is handed.
+# 密码长度上下界属于校验，而非策略：``max_length`` 同时限制了
+# 交给 bcrypt 的数据量。
 _PASSWORD_MIN_LENGTH = 1
 _PASSWORD_MAX_LENGTH = 200
 
-# A bcrypt hash of a fixed value, used to spend the same CPU on an unknown
-# account as on a real one.  Without it, "unknown account" returns in
-# microseconds while "wrong password" takes ~100 ms, which is a trivially
-# measurable account-existence oracle.  The value is a known-answer hash of a
-# random string and is never a valid password for any account.
+# 一个固定值的 bcrypt 哈希，用来在账号不存在时也消耗与真实账号
+# 相同的 CPU。没有它，"账号不存在"会在微秒级返回，
+# 而"密码错误"要花约 100 ms，这就成了可轻松测量
+# 的账号存在性预言机。该值是对一个随机字符串的已知答案哈希，
+# 对任何账号都永远不是有效密码。
 _DUMMY_PASSWORD_HASH = bcrypt.hashpw(b"medical-rag-dummy-password", bcrypt.gensalt())
 
 
@@ -51,7 +51,7 @@ class LoginRequest(BaseModel):
 
 class LoginResponse(BaseModel):
     access_token: str
-    token_type: str = "bearer"  # noqa: S105 - OAuth token *type*, not a credential
+    token_type: str = "bearer"  # noqa: S105 - OAuth 令牌*类型*，不是凭据
     expires_at: datetime
 
 
@@ -59,11 +59,10 @@ _login_router = APIRouter(prefix="/v1/auth", tags=["auth"])
 
 
 def _verify_password(password: str, password_hash: str | None) -> bool:
-    """Constant-cost password check.
+    """恒定开销的密码校验。
 
-    A missing hash still runs a bcrypt comparison against a dummy hash so the
-    timing of the three failure modes (no account / no password / wrong
-    password) is indistinguishable.
+    哈希缺失时仍会对一个哑哈希执行 bcrypt 比较，使三种失败模式（无账号 / 无密码 /
+    密码错误）的耗时无法区分。
     """
     encoded = password.encode("utf-8")
     candidate = password_hash.encode("utf-8") if password_hash else _DUMMY_PASSWORD_HASH
@@ -83,8 +82,8 @@ def login(
     )
     retry_after = _login_throttle.retry_after(*throttle_keys)
     if retry_after > 0:
-        # Refuse before touching the database: a throttled attempt must not cost
-        # a query, and the wait must be unambiguous to the caller.
+        # 在碰数据库之前就拒绝：被限流的尝试不得产生查询开销，
+        # 且等待时间对调用方必须明确无歧义。
         raise HTTPException(
             status_code=http_status.HTTP_429_TOO_MANY_REQUESTS,
             detail="登录尝试过于频繁，请稍后再试",

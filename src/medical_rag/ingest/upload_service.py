@@ -30,7 +30,7 @@ class JobPublishError(MedicalRagError):
 
 
 class AllowAllVirusScanner:
-    """Local adapter; production must replace this with the corporate scanner."""
+    """本地适配器；生产必须用企业级扫描器替换它。"""
 
     def scan(self, content: bytes) -> None:
         return None

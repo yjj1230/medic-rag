@@ -1,22 +1,19 @@
-"""Stage-level counters and latency observations for the document-quality pipeline.
+"""文档质量管线的阶段级计数器与延迟观测。
 
-This module is intentionally **additive and self-contained** with respect to
-``medical_rag.observability.metrics`` (the retrieval-evaluation / rollout-gate
-recorder owned by the parallel Scheme-B session).  It does not import from that
-module and does not reformat/reorder/rename any of its symbols.  It provides the
-Task 11 stage metrics: parse/clean/chunk/extract/gate/embed/write/retrieve
-counters keyed by the real pipeline version identity
-(``file_type``, ``parser_version``, ``cleaner_version``, ``chunker_version``,
-``quality_status``, ``index_version``, ``embedding_model``).
+本模块相对 ``medical_rag.observability.metrics``（由并行的 Scheme-B 会话拥有的
+检索评测 / 发布门禁记录器）有意保持**增量且自洽**。它不从该模块导入，也不重排/
+禁用/重命名其任何符号。它提供 Task 11 阶段指标：按真实管线版本标识
+（``file_type``、``parser_version``、``cleaner_version``、``chunker_version``、
+``quality_status``、``index_version``、``embedding_model``）键入的
+parse/clean/chunk/extract/gate/embed/write/retrieve 计数器。
 
-Privacy contract (matches the rest of observability): only identifiers, version
-strings, counts, and durations are retained — raw passage/evidence text is never
-copied into the recorder.
+隐私契约（与可观测其余部分一致）：只保留标识符、版本字符串、计数和时长 ——
+原始正文/证据文本绝不复制进记录器。
 
-Stage boundaries deliberately mirror the golden runner projections in
-``medical_rag/eval/golden.py`` (``parse_ms/clean_ms/chunk_ms/extract_ms/gate_ms``)
-plus the durable ``embed``/``write``/``retrieve`` stages, so Task 11
-observability keys off the same pipeline stages instead of re-inventing them.
+阶段边界有意与 ``medical_rag/eval/golden.py`` 中的黄金运行器投影保持一致
+（``parse_ms/clean_ms/chunk_ms/extract_ms/gate_ms``），外加持久化的
+``embed``/``write``/``retrieve`` 阶段，这样 Task 11 的可观测键就出自同一批管线
+阶段，而不是重新发明一套。
 """
 
 from __future__ import annotations
@@ -31,7 +28,7 @@ from typing import Any
 
 
 class PipelineStage(StrEnum):
-    """The canonical pipeline stage boundaries (ordered as they execute)."""
+    """规范化的管线阶段边界（按执行顺序排列）。"""
 
     PARSE = "parse"
     CLEAN = "clean"
@@ -43,7 +40,7 @@ class PipelineStage(StrEnum):
     RETRIEVE = "retrieve"
 
 
-# Version dimensions that every stage observation is keyed on (Task 11 Step 1).
+# 每条阶段观测都以其为键的版本维度（Task 11 Step 1）。
 _VERSION_DIMENSIONS = (
     "file_type",
     "parser_version",
@@ -57,15 +54,15 @@ _VERSION_DIMENSIONS = (
 
 @dataclass(frozen=True, slots=True)
 class StageKey:
-    """Compound identity for one stage/outcome observation."""
+    """一次阶段/结果观测的复合标识。"""
 
     stage: PipelineStage
     outcome: str
-    # Deterministic, sortable version tuple (subset of _VERSION_DIMENSIONS).
+    # 确定性、可排序的版本元组（_VERSION_DIMENSIONS 的子集）。
     versions: tuple[tuple[str, str | None], ...] = ()
 
     def as_filename_fragment(self) -> str:
-        """Stable path-safe fragment for per-stage reporting/tagging."""
+        """用于按阶段上报/打标签的稳定、路径安全片段。"""
         base = f"{self.stage.value}__{self.outcome}"
         parts = [f"{name}={_safe_tag(value)}" for name, value in self.versions]
         return base if not parts else f"{base}__{'__'.join(parts)}"
@@ -80,24 +77,23 @@ def _safe_tag(value: str | None) -> str:
 
 @dataclass(slots=True)
 class PipelineMetricsRecorder:
-    """Privacy-safe in-memory recorder for stage counters + latency.
+    """阶段计数器 + 延迟的隐私安全内存记录器。
 
-    ``record_stage`` accepts free-form keyword metadata, extracts the version
-    dimensions into an immutable snapshot, and keeps per-stage latency buckets
-    with their observation count.  Raw text is dropped (never stored).
+    ``record_stage`` 接受自由形式的关键字元数据，把版本维度抽取为不可变快照，
+    并保留各阶段的延迟分桶及其观测计数。原始文本被丢弃（绝不存储）。
     """
 
     stages: list[dict[str, object]] = field(default_factory=list)
-    # (stage, outcome) -> count
+    # (stage, outcome) -> 计数
     _counters: dict[tuple[str, str], int] = field(default_factory=dict)
-    # (stage) -> list of observed latencies (ms)
+    # (stage) -> 已观测延迟列表（毫秒）
     _latency: dict[str, list[float]] = field(default_factory=dict)
-    # named aggregate counters (snapshot-friendly)
+    # 具名聚合计数器（便于快照）
     _named: dict[str, int] = field(default_factory=dict)
-    # named list accumulators (e.g. anchor coverage samples)
+    # 具名列表累加器（例如锚点覆盖率样本）
     _samples: dict[str, list[float]] = field(default_factory=dict)
 
-    # -- generic stage observation -------------------------------------------
+    # -- 通用阶段观测 ---------------------------------------------------------
 
     def record_stage(
         self,
@@ -108,11 +104,10 @@ class PipelineMetricsRecorder:
         latency_ms: float | None = None,
         **kwargs: object,
     ) -> None:
-        """Record one stage observation (outcome: success/failure/pass/etc.).
+        """记录一次阶段观测（outcome：success/failure/pass 等）。
 
-        ``metadata`` and ``**kwargs`` may carry version dimensions; only the
-        allow-listed version keys are retained (raw text is never stored).
-        ``latency_ms`` feeds the per-stage latency bucket when provided.
+        ``metadata`` 与 ``**kwargs`` 可以携带版本维度；只保留白名单内的版本键
+        （原始文本绝不存储）。提供 ``latency_ms`` 时会喂给该阶段的延迟分桶。
         """
         meta = dict(metadata) if metadata is not None else {}
         meta.update(kwargs)
@@ -149,7 +144,7 @@ class PipelineMetricsRecorder:
         index = min(len(values) - 1, round(0.95 * (len(values) - 1)))
         return values[index]
 
-    # -- named pipeline counters (Task 11 Step 1) ----------------------------
+    # -- 具名管线计数器（Task 11 Step 1）------------------------------------
 
     def record_parse(self, outcome: str, **versions: object) -> None:
         self.record_stage(PipelineStage.PARSE, outcome, versions)
@@ -189,19 +184,18 @@ class PipelineMetricsRecorder:
         ) + int(count)
 
     def increment(self, name: str, count: int = 1, **versions: object) -> None:
-        """Generic named counter (lease acquired/rejected, outbox retries, etc.).
+        """通用具名计数器（租约获取/拒绝、outbox 重试等）。
 
-        ``versions`` are accepted for call-site convenience but only the
-        already allow-listed version dimensions are ever retained by
-        :meth:`record_stage`; a bare ``increment`` keeps just the counter name.
+        ``versions`` 为调用点便利而接受，但 :meth:`record_stage` 只会保留已白名单化
+        的版本维度；裸 ``increment`` 只保留计数器名。
         """
         del versions
         self._named[str(name)] = self._named.get(str(name), 0) + int(count)
 
-    # -- snapshot / serialization --------------------------------------------
+    # -- 快照 / 序列化 --------------------------------------------------------
 
     def snapshot(self) -> dict[str, object]:
-        """Flatten to a deterministic mapping (no raw text)."""
+        """扁平化为确定性映射（无原始文本）。"""
         values = dict(self._named)
         values["stage_counters"] = {
             f"{stage}.{outcome}": count
@@ -230,8 +224,8 @@ class PipelineMetricsRecorder:
     def from_json(cls, payload: str) -> PipelineMetricsRecorder:
         data = json.loads(payload)
         recorder = cls()
-        # Rehydrate the stage counters; ``stage_counters`` is authoritative, the
-        # ``stages`` list is the provenance view (never double-counted).
+        # 重建阶段计数器；``stage_counters`` 具有权威性，
+        # ``stages`` 列表是溯源视图（绝不重复计数）。
         stage_counters = data.get("stage_counters")
         if isinstance(stage_counters, dict):
             for compound, count in stage_counters.items():
@@ -284,7 +278,7 @@ def _coerce_version(value: object) -> str | None:
 
 
 def summarize(entries: Iterable[PipelineMetricsRecorder]) -> dict[str, object]:
-    """Merge a series of recorders into one aggregate snapshot (p95-aware)."""
+    """把一系列记录器合并为一个聚合快照（感知 p95）。"""
     merged = PipelineMetricsRecorder()
     for recorder in entries:
         for key, value in recorder._named.items():
@@ -296,7 +290,7 @@ def summarize(entries: Iterable[PipelineMetricsRecorder]) -> dict[str, object]:
     return merged.snapshot()
 
 
-# Deterministic median helper exposed for the release report.
+# 为发布报告暴露的确定性中位数辅助函数。
 def median_ms(values: Iterable[float]) -> float:
     sample = [float(value) for value in values]
     return float(median(sample)) if sample else 0.0

@@ -1,2 +1,2 @@
-"""Patient consent services."""
+"""患者知情同意服务。"""
 

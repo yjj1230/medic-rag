@@ -1,11 +1,9 @@
-"""HTTP application factory.
+"""HTTP 应用工厂。
 
-Startup has to answer one question honestly: *can this process serve a
-retrieval request?*  A process that boots with a half-wired composition and
-returns 503 to every caller is worse than one that refuses to start, because
-orchestrators keep it in rotation while operators chase a "database problem".
-The lifespan therefore fails closed for every non-development environment, and
-readiness probes the retrieval index rather than assuming it.
+启动阶段必须诚实回答一个问题：*本进程能否处理检索请求？* 一个以半接线状态启动、
+对每个调用方都返回 503 的进程，比一个干脆拒绝启动的进程更糟——因为编排器会一直把
+它留在轮转池里，而运维还在追查所谓的"数据库问题"。因此 lifespan 对每个非开发环境
+一律 fail closed，就绪探针会真正探测检索索引，而不是假定它可用。
 """
 import logging
 from collections.abc import AsyncIterator
@@ -30,13 +28,13 @@ from medical_rag.retrieval.contracts import InMemorySearchIndex
 
 logger = logging.getLogger(__name__)
 
-# ``app.state`` attribute holding the built search index, so readiness can probe
-# the dependency instead of trusting a boolean recorded at startup.
+# 存放已构建检索索引的 ``app.state`` 属性，好让就绪探针去探测该依赖，
+# 而不是信任一个启动时记录的布尔值。
 SEARCH_INDEX_STATE = "search_index"
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
-    """Create the HTTP application; external resources are wired in lifespan."""
+    """创建 HTTP 应用；外部资源在 lifespan 中接线。"""
     resolved_settings = settings or Settings.from_env()
 
     @asynccontextmanager
@@ -45,16 +43,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         from medical_rag.db.session import create_session_factory
         from medical_rag.indexing.orchestrator import ProductionComposition
 
-        # Refuse to serve an unsafe deployment, on every path: this sits outside
-        # the try/except so an unsafe configuration always aborts startup.
+        # 在任何路径上都拒绝提供不安全的部署：这段代码位于
+        # try/except 之外，因此不安全的配置一定会在启动时中止。
         resolved_settings.validate_runtime()
         for warning in resolved_settings.plaintext_phi_egress_warnings():
             logger.warning("%s", warning)
 
         try:
-            # One engine per process: the request dependency reads this factory
-            # from ``app.state`` instead of building (and discarding) a pool per
-            # request.  See ``db.session``.
+            # 每进程一个引擎：请求依赖从这个工厂读取，
+            # 而不是每个请求都新建（并丢弃）一个连接池。
+            # 见 ``db.session``。
             session_factory = create_session_factory(resolved_settings)
             setattr(app.state, SESSION_FACTORY_STATE, session_factory)
             composition = getattr(app.state, "production_composition", None)
@@ -65,14 +63,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 if composition.index_orchestrator is not None:
                     app.state.index_orchestrator = composition.index_orchestrator
             elif resolved_settings.is_production:
-                # Indexing and reconciliation belong to the worker process: the
-                # parse -> index graph is wired by ``scripts/run_worker.py``, and
-                # no API route consumes this composition
-                # (``validate_production_composition`` has no callers).  Demanding
-                # it here made every production deployment refuse to start --
-                # including this project's own ``medical-rag-api`` entrypoint --
-                # while guarding nothing.  An injected graph is still validated
-                # above, and api.dependencies still fails closed per request.
+                # 索引与对账属于 worker 进程：
+                # parse -> index 链路由 ``scripts/run_worker.py`` 接线，
+                # 没有任何 API 路由消费这个组合
+                # （``validate_production_composition`` 没有调用方）。在这里强制要求它
+                # 曾让每个生产部署都拒绝启动 ——
+                # 包括本项目自己的 ``medical-rag-api`` 入口 ——
+                # 却什么也没守住。注入的组合图仍会在上方被校验，
+                # 且 api.dependencies 仍会按请求 fail closed。
                 logger.warning(
                     "未注入生产索引组装：索引、对账与死信由 worker 进程负责"
                     "（scripts/run_worker.py）"
@@ -85,11 +83,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             )
         except Exception:
             logger.exception("failed to compose chat orchestrator at startup")
-            # Swallowing this outside development started a process whose every
-            # request failed.  ``is_production`` is the exact complement of the
-            # environment predicate ``validate_runtime`` uses, so ``staging`` /
-            # ``uat`` / a misspelled environment can no longer take the
-            # permissive branch.
+            # 在非开发环境吞掉这个异常，会让进程启动后每个请求都失败。
+            # ``is_production`` 与 ``validate_runtime`` 使用的环境判定
+            # 恰好互补，因此 ``staging`` / ``uat`` /
+            # 拼错的环境名再也不能走
+            # 宽松分支。
             if resolved_settings.is_production:
                 raise
 
@@ -127,22 +125,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.get("/health")
     def health() -> dict[str, str]:
-        """Liveness only: the process is up.  Says nothing about dependencies."""
+        """仅存活探针：进程还活着。不涉及任何依赖。"""
         return {"status": "ok"}
 
     @app.get("/health/ready")
     def readiness(request: Request) -> JSONResponse:
-        """Readiness: the application can actually serve retrievals.
+        """就绪探针：应用确实能提供检索服务。
 
-        ``/health`` returning ``ok`` while the search index silently degraded to
-        an empty in-memory index was actively misleading during review, and a
-        readiness endpoint that only checks that a factory *exists* still reports
-        "ready" while every query fails.  Both dependencies are therefore probed:
+        ``/health`` 返回 ``ok`` 而检索索引却已静默退化为空的内存索引，这在评审时
+        是有误导性的；而一个只检查工厂*是否存在*的就绪端点，也只会在每次查询都
+        失败时依旧报告 "ready"。因此这里会探测两个依赖：
 
-        * the database, because every authenticated route needs it; and
-        * the retrieval index, because a RAG service whose index is unreachable
-          cannot answer anything -- reporting it as bootstrapping-ok sent traffic
-          to an instance that could only return degraded answers.
+        * 数据库，因为每个需要鉴权的路由都要用到它；
+        * 检索索引，因为索引不可达的 RAG 服务回答不了任何问题 —— 把它报告成
+          "引导正常"会把流量导向一个只能返回降级答案的实例。
         """
         problems: list[str] = []
         session_factory = getattr(request.app.state, SESSION_FACTORY_STATE, None)
@@ -152,7 +148,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             try:
                 with session_factory() as session:
                     session.execute(text("SELECT 1"))
-            except Exception as exc:  # noqa: BLE001 - any failure means "not ready"
+            except Exception as exc:  # noqa: BLE001 - 任何失败都意味着"未就绪"
                 problems.append(f"数据库不可用: {type(exc).__name__}")
         if getattr(request.app.state, "chat_orchestrator", None) is None:
             problems.append("聊天编排器未初始化")
@@ -212,13 +208,11 @@ def _assert_configured_gate_is_active(app: FastAPI, settings: Settings) -> None:
 
 
 def _probe_search_index(request: Request) -> list[str]:
-    """Reachability of the retrieval index, in the language of the deployment.
+    """检索索引的可达性，用部署环境的语言表达。
 
-    A degraded (in-memory) index is fatal outside development but expected
-    locally, so the two cases report differently instead of the local case
-    waking people up.  A live cluster is probed for real: the client is asked
-    for its version, which is a single cheap round trip that fails when the
-    cluster is down, unreachable or misconfigured.
+    降级（内存）索引在非开发环境是致命的，但在本地是预期行为，因此两种情况
+    会给出不同的报告，免得本地的情况去惊动别人。真实集群会被真探测：向客户端
+    询问其版本号，这是一次廉价的往返调用，当集群宕机、不可达或配置错误时会失败。
     """
     problems: list[str] = []
     settings = getattr(request.app.state, "settings", None)
@@ -237,6 +231,6 @@ def _probe_search_index(request: Request) -> list[str]:
         return problems
     try:
         client.info()
-    except Exception as exc:  # noqa: BLE001 - any failure means "not ready"
+    except Exception as exc:  # noqa: BLE001 - 任何失败都意味着"未就绪"
         problems.append(f"检索索引不可用: {type(exc).__name__}")
     return problems

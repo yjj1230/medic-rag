@@ -1,1 +1,1 @@
-"""Deterministic medical safety routing."""
+"""确定性的医学安全路由。"""

@@ -6,19 +6,19 @@ from pydantic import Field
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# Environments in which developer conveniences (insecure identity headers, an
-# unset JWT secret) are tolerated.  Anything else is treated as production and
-# must be configured explicitly.
+# 容忍开发便利（不安全的身份请求头、未设置的 JWT 密钥）的环境。
+# 除此之外一律视为生产环境，
+# 必须显式配置。
 _DEV_ENVIRONMENTS = frozenset({"local", "dev", "test"})
 
 _LOOPBACK_HOSTS = frozenset({"localhost", "127.0.0.1", "::1", "[::1]"})
 
-# Dependencies that carry patient data.  A non-development deployment must not
-# send or store PHI across plaintext HTTP to a non-loopback host, so these are
-# fatal rather than advisory:
-#   * OCR receives whole scanned report pages (images and extracted text);
-#   * OpenSearch holds the patient evidence corpus verbatim;
-#   * the object store holds the original uploaded reports.
+# 承载患者数据的依赖。非开发部署不得通过明文 HTTP
+# 向非本机地址发送或存储 PHI，因此这些是
+# 致命错误而非仅作提示：
+#   * OCR 接收整页扫描报告（图像与抽取文本）；
+#   * OpenSearch 逐字保存患者证据语料；
+#   * 对象存储保存原始上传的报告。
 _PHI_EGRESS_SETTINGS = (
     ("OCR_SERVICE_URL", "ocr_service_url"),
     ("OPENSEARCH_URL", "opensearch_url"),
@@ -27,7 +27,7 @@ _PHI_EGRESS_SETTINGS = (
 
 
 class Settings(BaseSettings):
-    """Runtime configuration loaded from environment variables."""
+    """从环境变量加载的运行时配置。"""
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -78,47 +78,57 @@ class Settings(BaseSettings):
     query_pipeline_history_size: int = 4
     query_llm_rewrite_enabled: bool = False
     intent_llm_classify_enabled: bool = True
-    # Remote PaddleOCR-VL backend (empty URL = remote OCR disabled).  ``password``
-    # is Basic-auth-prepped (httpx.BasicAuth) even though the service currently
-    # has no auth, so credentials can be wired without a code change later.
+    # 远端 PaddleOCR-VL 后端（URL 留空 = 关闭远端 OCR）。``password``
+    # 已按 Basic 认证预处理（httpx.BasicAuth），尽管该服务当前
+    # 还没有鉴权，这样日后接入凭据无需改代码。
     ocr_service_url: str = ""
     ocr_username: str | None = None
     ocr_password: SecretStr | None = None
     ocr_timeout_seconds: float = Field(default=90.0, gt=0)
 
-    # --- retrieval ----------------------------------------------------------
+    # --- 检索 ---------------------------------------------------------------
     retrieval_top_k: int = Field(default=8, gt=0)
-    # Left unset, RetrievalService falls back to internal magic numbers
-    # (candidate_limit or max(top_k*5, 50); rerank_limit or len(fused)), which no
-    # operator can see or change.  Set them explicitly in a deployment.
+    # 留空时，RetrievalService 会回落到内部的魔法数字
+    # （candidate_limit 或 max(top_k*5, 50)；rerank_limit 或 len(fused)），
+    # 运维既看不到也改不了。请在部署中显式设置它们。
     retrieval_candidate_limit: int | None = Field(default=None, gt=0)
     retrieval_rerank_limit: int | None = Field(default=None, gt=0)
-    # Cross-encoder reranking is off unless a model is named here.  Previously it
-    # was never wired at all, so the reranking stage silently did nothing.
+    # 除非在此指定模型，否则交叉编码器重排处于关闭状态。此前它
+    # 根本没有接线，所以重排阶段静默地什么也没做。
     rerank_model: str | None = None
-    # Strict calibrated gating is enabled only when an artifact is supplied.
-    # Without one the fused-score gate degenerates (a single retrieval path can
-    # never exceed 0.5 after RRF) and the gate is plain top_k truncation.
+    # 只有提供了工件时才启用严格校准门禁。
+    # 没有工件时融合分数门禁会退化（单条检索路径在 RRF 后
+    # 永远无法超过 0.5），门禁就退化为朴素的 top_k 截断。
     calibration_artifact_path: str | None = None
-    # Token budget for parent/child context expansion; unset falls back to the
-    # expansion module's internal default.
+    # 父/子上下文扩展的 token 预算；未设置则回落到
+    # 扩展模块的内部默认值。
     context_token_budget: int | None = Field(default=None, gt=0)
+    # OpenSearch 的物理索引名。用 RAG_* 别名绑定到 docker-compose/.env，
+    # 允许新数据库使用全新的索引命名空间，避免误读旧 SQLite 对应的残留索引。
+    public_index_name: str = Field(
+        default="medical-rag-public",
+        validation_alias=AliasChoices("RAG_PUBLIC_INDEX_NAME", "public_index_name"),
+    )
+    private_index_name: str = Field(
+        default="medical-rag-private",
+        validation_alias=AliasChoices("RAG_PRIVATE_INDEX_NAME", "private_index_name"),
+    )
 
-    # --- authentication -----------------------------------------------------
-    # Dedicated signing secret.  Previously the database URL was reused as the
-    # HS256 secret, so any leaked (or default) DSN allowed token forgery.
+    # --- 鉴权 ---------------------------------------------------------------
+    # 专用的签名密钥。此前数据库 URL 被复用为
+    # HS256 密钥，于是任何泄漏（或默认）的 DSN 都可用于伪造令牌。
     jwt_secret: SecretStr | None = None
     jwt_issuer: str = "medical-rag"
     jwt_audience: str = "medical-rag-api"
     access_token_ttl_minutes: int = Field(default=60, gt=0)
-    # Trusting X-Tenant-ID / X-Patient-ID / X-User-ID is a complete
-    # authentication bypass.  It is off by default and refused outside dev.
+    # 信任 X-Tenant-ID / X-Patient-ID / X-User-ID 等于
+    # 完全绕过鉴权。它默认关闭，且在非开发环境被拒绝。
     allow_insecure_identity_headers: bool = False
 
-    # --- serving ------------------------------------------------------------
-    # Loopback by default: a developer machine must not expose an API that
-    # handles patient data to the surrounding network.  Containers set
-    # API_HOST=0.0.0.0 explicitly (see the Dockerfile).
+    # --- 服务 ---------------------------------------------------------------
+    # 默认仅回环：开发机不得把处理患者数据的 API
+    # 暴露给周边网络。容器显式设置
+    # API_HOST=0.0.0.0（见 Dockerfile）。
     api_host: str = "127.0.0.1"
     api_port: int = Field(default=8000, gt=0, lt=65536)
     api_log_level: str = "info"
@@ -129,13 +139,13 @@ class Settings(BaseSettings):
 
     @property
     def is_production(self) -> bool:
-        """True when developer conveniences must not be tolerated.
+        """当不得再容忍开发便利时为 True。
 
-        Defined as the exact complement of :attr:`is_dev_environment` so callers
-        can never disagree with :meth:`validate_runtime`.  Matching a literal
-        ``{"prod", "production"}`` set here once meant ``staging``, ``uat`` or a
-        misspelled ``Prodution`` took the permissive branch while
-        ``validate_runtime`` treated them as production.
+        定义为 :attr:`is_dev_environment` 的精确补集，这样调用方
+        永远不会与 :meth:`validate_runtime` 产生分歧。此处曾匹配字面量
+        ``{"prod", "production"}`` 集合，导致 ``staging``、``uat`` 或
+        拼错的 ``Prodution`` 走了宽松分支，而
+        ``validate_runtime`` 却把它们当作生产环境。
         """
         return not self.is_dev_environment
 
@@ -164,10 +174,10 @@ class Settings(BaseSettings):
         return cls()
 
     def validate_runtime(self) -> None:
-        """Refuse to start a non-development deployment that is unsafe.
+        """拒绝启动不安全的非开发部署。
 
-        Raises ``ValueError`` listing every problem so an operator fixes them in
-        one pass instead of discovering them one restart at a time.
+        抛出 ``ValueError`` 并列出全部问题，让运维一次修完，
+        而不是每重启一次才发现一个。
         """
         if self.is_dev_environment:
             return
@@ -192,10 +202,10 @@ class Settings(BaseSettings):
                 f"MODEL_GATEWAY_URL 必须使用 HTTPS（当前 {self.model_gateway_url}）："
                 "患者病历与查询文本会以明文经过公网"
             )
-        # PHI must not leave the host in the clear on any path, not just the
-        # model gateway: OCR, the evidence index and the object store all carry
-        # patient data.  Warning-only handling let a deployment ship with
-        # reports crossing the network unencrypted.
+        # PHI 不得在任何路径上明文离开主机，不只是
+        # 模型网关：OCR、证据索引和对象存储都承载
+        # 患者数据。仅告警式的处理会让部署在报告
+        # 未加密穿越网络的情况下照样上线。
         for name, url in self.phi_egress_targets():
             problems.append(
                 f"{name} 使用明文 HTTP 且指向非本机地址（{url}）："
@@ -205,7 +215,7 @@ class Settings(BaseSettings):
             raise ValueError("配置不安全，拒绝启动：\n- " + "\n- ".join(problems))
 
     def phi_egress_targets(self) -> list[tuple[str, str]]:
-        """Configured PHI-carrying dependencies reachable over plaintext HTTP."""
+        """已配置的、可通过明文 HTTP 到达的承载 PHI 的依赖。"""
         return [
             (name, url)
             for name, attribute in _PHI_EGRESS_SETTINGS
@@ -213,10 +223,10 @@ class Settings(BaseSettings):
         ]
 
     def plaintext_phi_egress_warnings(self) -> list[str]:
-        """Development-only advisory notices for PHI leaving over plaintext.
+        """仅开发环境适用的、PHI 明文外发的提示信息。
 
-        Non-development deployments never reach this point with such a target:
-        :meth:`validate_runtime` refuses to start instead.
+        非开发部署不会带着这样的目标走到这里：
+        此时 :meth:`validate_runtime` 会直接拒绝启动。
         """
         return [
             f"{name} 使用明文 HTTP 且指向非本机地址（{url}）"
@@ -225,15 +235,15 @@ class Settings(BaseSettings):
 
 
 def _is_plaintext_remote(url: str) -> bool:
-    """True when ``url`` is plaintext HTTP to somewhere other than loopback."""
+    """当 ``url`` 是指向非本机地址的明文 HTTP 时为 True。"""
     if not url:
         return False
     lowered = url.strip().lower()
     if not lowered.startswith("http://"):
         return False
     authority = lowered.removeprefix("http://").split("/", 1)[0]
-    host = authority.rsplit("@", 1)[-1]  # drop any userinfo
-    if host.startswith("["):  # IPv6 literal
+    host = authority.rsplit("@", 1)[-1]  # 去掉任何 userinfo
+    if host.startswith("["):  # IPv6 字面量
         host = host.split("]", 1)[0] + "]"
     else:
         host = host.split(":", 1)[0]
@@ -241,10 +251,10 @@ def _is_plaintext_remote(url: str) -> bool:
 
 
 def get_settings() -> Settings:
-    """FastAPI dependency returning the process settings.
+    """返回进程配置的 FastAPI 依赖。
 
-    Lives here (rather than in ``api.dependencies``) so that ``auth`` can depend
-    on it without importing the API layer.
+    放在这里（而不是 ``api.dependencies``），
+    是为了让 ``auth`` 无需导入 API 层就能依赖它。
     """
     return Settings.from_env()
 

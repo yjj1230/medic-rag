@@ -55,3 +55,14 @@ backups/
 # 证据/答案**正文**只落这里（key = sha256），绝不进 eval_out/ 入库产物。
 # 目录名与 scripts/faithfulness_answers.py:PHI_CACHE_DIR 必须一致。
 .faithfulness_phi_cache/
+
+# --- 本地向量模型权重（运行时下载，勿入库）---------------------------
+# .env 的 LOCAL_EMBEDDING_MODEL_PATH=./models/bge-small-zh-v1.5（约 90MB ONNX）。
+# 由 fastembed 的 Qdrant/bge-small-zh-v1.5 仓库下载；下载方法与网络注意事项
+# 见 docs/本地环境搭建-2026-10-12.md。
+models/
+
+# --- local evaluation / translation scratch ---
+.i18n_work/
+eval_out/
+tmp/

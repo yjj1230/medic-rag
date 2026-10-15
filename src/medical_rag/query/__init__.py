@@ -1,1 +1,1 @@
-"""Query understanding and routing pipeline."""
+"""查询理解与路由管线。"""

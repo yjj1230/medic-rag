@@ -8,6 +8,7 @@ from uuid import UUID
 
 from medical_rag.knowledge.contracts import Citation, IndexRecord, PublicIndexRecord
 from medical_rag.auth.policy import AccessContext
+from medical_rag.provenance.contracts import SourceLocator
 
 
 class Visibility(StrEnum):
@@ -16,16 +17,14 @@ class Visibility(StrEnum):
 
 
 class GatePolicy(StrEnum):
-    """How candidates are admitted to the evidence set.
+    """候选如何被纳入证据集。
 
-    The policy is explicit rather than implied by a magic default threshold:
-    ``CALIBRATED`` uses the threshold measured for one physical index build,
-    ``EXPLICIT_THRESHOLD``/``RANK_GATE`` are operator-supplied gates on the
-    *fused* candidate set, ``COSINE_ABSOLUTE`` is a candidate-level gate on the
-    single-path vector score (applied before fusion), and ``TOP_K`` means "no
-    hard gate": admission is bounded by ``top_k`` alone.  An uncalibrated
-    deployment must not silently drop most candidates — that is how a
-    ``top_k=8`` request degenerated into 1-2 evidence items.
+    该策略是显式的，而不是由某个魔法默认阈值隐含：``CALIBRATED`` 使用为某一次
+    物理索引构建测得的阈值，``EXPLICIT_THRESHOLD``/``RANK_GATE`` 是运维在*融合*
+    候选集上提供的门禁，``COSINE_ABSOLUTE`` 是对单路向量分数的候选级门禁
+    （在融合之前施加），而 ``TOP_K`` 意为"无硬门禁"：入选范围仅由 ``top_k``
+    限定。未校准的部署不得静默丢弃大部分候选 —— 那正是 ``top_k=8`` 的请求
+    退化成 1-2 条证据的原因。
     """
 
     CALIBRATED = "calibrated"
@@ -40,11 +39,10 @@ class GatePolicy(StrEnum):
 
 @dataclass(frozen=True, slots=True)
 class PrivateIndexRecord:
-    """A privacy-scoped evidence record written to the private index.
+    """写入私有索引的一条隐私限定作用域的证据记录。
 
-    ``parser_version`` participates in the deterministic idempotency key even
-    though it is not exposed as a searchable field.  Keeping it on the record
-    means a reparse or model change can safely produce a new index version.
+    即便 ``parser_version`` 未作为可搜索字段暴露，它也参与确定性幂等键。
+    把它保留在记录上，意味着重新解析或模型变更都能安全地产生一个新的索引版本。
     """
 
     id: str
@@ -56,6 +54,7 @@ class PrivateIndexRecord:
     evidence_unit_id: UUID
     source_title: str
     source_version: str
+    locator: SourceLocator | None = None
     page_number: int | None = None
     sheet_name: str | None = None
     cell_range: str | None = None
@@ -74,7 +73,7 @@ class PrivateIndexRecord:
     visibility: str = "private"
     created_at: datetime | None = None
     updated_at: datetime | None = None
-    # --- Task 5: provenance mirrors (additive; forwarded via to_index_record) ---
+    # --- Task 5：溯源镜像（增量式；经 to_index_record 转发）---
     raw_text: str | None = None
     clean_text: str | None = None
     section_path: tuple[str, ...] | None = None
@@ -101,7 +100,16 @@ class PrivateIndexRecord:
                 raise ValueError(f"private index record {name} must be a boolean")
 
     def to_index_record(self) -> IndexRecord:
-        """Normalize this privacy-scoped record into the shared contract."""
+        """把这条隐私限定作用域的记录规范化为共享契约。"""
+
+        derived_anchor = self.source_anchor or (
+            self.locator.build_anchor() if self.locator is not None else None
+        )
+        derived_location = derived_anchor or (
+            f"p{self.page_number}" if self.page_number is not None else None
+        )
+        if self.locator is not None and not derived_location:
+            derived_location = self.locator.display_location()
 
         return IndexRecord(
             id=self.id,
@@ -112,24 +120,24 @@ class PrivateIndexRecord:
             document_id=self.document_id,
             document_version_id=self.document_version_id,
             evidence_unit_id=self.evidence_unit_id,
-            # Derived citation identity/locator.  ``RetrievalService._has_citation``
-            # only surfaces records whose citation has a source_id, title,
-            # version *and* location, while this record holds the document
-            # identity and the locator under different names
-            # (``document_id``/``source_anchor``).  Without this derivation
-            # patient evidence is written to the index but can never be
-            # retrieved.  ``source_anchor`` is guaranteed non-empty for every
-            # retrieval-eligible private record, so the page fallback only
-            # covers records that are filtered out earlier anyway.
+            locator=self.locator,
+            # 派生出的引用标识/定位器。``RetrievalService._has_citation``
+            # 只暴露其引用具备 source_id、title、
+            # version *和* location 的记录，而本记录以
+            # 不同的名称持有文档标识和
+            # 定位器（``document_id``/``source_anchor``）。没有这层派生，
+            # 患者证据会被写入索引却永远
+            # 无法被检索。对每条
+            # 可检索的私有记录而言 ``source_anchor`` 都保证非空，因此页面兜底只
+            # 覆盖那些本来就更早被过滤掉的记录。
             source_id=str(self.document_id),
-            location=self.source_anchor
-            or (f"p{self.page_number}" if self.page_number is not None else None),
+            location=derived_location,
             source_title=self.source_title,
             source_version=self.source_version,
             page_number=self.page_number,
             sheet_name=self.sheet_name,
             cell_range=self.cell_range,
-            source_anchor=self.source_anchor,
+            source_anchor=derived_anchor,
             confidence=self.confidence,
             content_hash=self.content_hash,
             parser_version=self.parser_version,
@@ -159,7 +167,7 @@ class PrivateIndexRecord:
 
     @property
     def idempotency_key(self) -> tuple[UUID, UUID, str, str | None]:
-        """Return the stable write key required for safe retries."""
+        """返回安全重试所需的稳定写入键。"""
 
         return (
             self.document_version_id,
@@ -170,7 +178,7 @@ class PrivateIndexRecord:
 
 
 class PrivateIndexWriter(Protocol):
-    """Persistence seam for patient-private index implementations."""
+    """患者私有索引实现的持久化接缝。"""
 
     def upsert(self, records: list[PrivateIndexRecord | IndexRecord]) -> None: ...
 
@@ -196,7 +204,7 @@ class SearchQuery:
 
 @dataclass(frozen=True, slots=True)
 class RetrievalFilters:
-    """Tenant/patient and visibility boundary shared by both candidate paths."""
+    """两条候选路径共享的租户/患者与可见性边界。"""
 
     tenant_id: UUID
     patient_id: UUID
@@ -206,7 +214,7 @@ class RetrievalFilters:
 
 
 class CandidateRetriever(Protocol):
-    """Separate lexical and vector candidate retrieval seam."""
+    """分离的词法与向量候选检索接缝。"""
 
     def search_lexical(
         self, text: str, filters: RetrievalFilters, limit: int
@@ -226,6 +234,9 @@ class SearchRecord:
     tenant_id: UUID | None = None
     patient_id: UUID | None = None
     document_id: UUID | None = None
+    document_version_id: UUID | None = None
+    evidence_unit_id: UUID | None = None
+    locator: SourceLocator | None = None
     bm25_score: float = 0.0
     # P1-5（评审 2026-10-12）：``vector_score`` 的语义**不是余弦相似度**。
     # OpenSearch kNN 索引未声明 ``space_type`` 时默认 L2，``_score`` 实际是
@@ -240,9 +251,9 @@ class SearchRecord:
     deleted: bool = False
     source_active: bool = True
     retrieval_eligible: bool = True
-    # ``fused_score`` is the raw RRF score; ``calibrated_score`` is a
-    # normalized value suitable for thresholding. Both stay separate from
-    # raw BM25/vector scores.
+    # ``fused_score`` 是原始 RRF 分数；``calibrated_score`` 是
+    # 适合做阈值的归一化值。两者都与
+    # 原始 BM25/向量分数保持分离。
     fused_score: float | None = None
     calibrated_score: float | None = None
     index_version: str | None = None
@@ -270,14 +281,15 @@ class Evidence:
     patient_id: UUID | None = None
     document_id: UUID | None = None
     parent_block_id: str | None = None
+    locator: SourceLocator | None = None
 
 
 @dataclass(frozen=True, slots=True)
 class RetrievalResult:
     items: list[Evidence]
     reason: str | None = None
-    # Diagnostics are intentionally additive so existing positional callers
-    # (items, reason) continue to work unchanged.
+    # 诊断信息有意做成增量式，使既有的按位置调用方
+    # （items, reason）保持原样可用。
     diagnostics: dict[str, object] = field(default_factory=dict)
 
 
@@ -360,13 +372,13 @@ def coerce_rerank_order(order: object) -> tuple[int, ...]:
 
 
 class InMemorySearchIndex:
-    """Deterministic test/dev index with the same visibility boundary as OpenSearch."""
+    """确定性的测试/开发索引，其可见性边界与 OpenSearch 相同。"""
 
     def __init__(self, records: list[SearchRecord] | None = None) -> None:
         self.records = list(records or [])
 
     def upsert(self, records: list[IndexRecord | PublicIndexRecord]) -> None:
-        """Accept normalized records while retaining the legacy append seam."""
+        """接受规范化记录，同时保留遗留的 append 接缝。"""
 
         for value in records:
             normalized = value if isinstance(value, IndexRecord) else value.to_index_record()
@@ -378,13 +390,12 @@ class InMemorySearchIndex:
             self.records.append(latest)
 
     def delete_record(self, record_id: str | UUID) -> None:
-        """Idempotently remove one record by index ID.
+        """按索引 ID 幂等地移除一条记录。
 
-        Reconciliation delete seam, mirroring
-        :meth:`OpenSearchIndexWriter.delete_record` (a missing ID is a no-op,
-        not an error).  Without this the in-memory index could ingest and serve
-        public records but never let reconciliation repair a residual, so a
-        deactivated knowledge source stayed retrievable forever in dev/test.
+        对账删除接缝，镜像 :meth:`OpenSearchIndexWriter.delete_record`
+        （ID 缺失是空操作，而非错误）。没有它，内存索引只能摄入并提供公开记录，
+        却永远无法让对账修复一条残留项，因此在开发/测试中一个已停用的知识源
+        会永远保持可检索。
         """
         target = str(record_id)
         self.records[:] = [item for item in self.records if item.id != target]
@@ -400,10 +411,37 @@ class InMemorySearchIndex:
                     source_id=normalized.source_id or normalized.id,
                     title=normalized.source_title or "",
                     version=normalized.source_version or "",
-                    location=normalized.location,
+                    location=(
+                        normalized.location
+                        or (normalized.locator.display_location() if normalized.locator else None)
+                    ),
                     url=normalized.url,
+                    chunk_id=normalized.id,
+                    document_id=str(normalized.document_id) if normalized.document_id else None,
+                    document_version_id=(
+                        str(normalized.document_version_id)
+                        if normalized.document_version_id
+                        else None
+                    ),
+                    evidence_unit_id=(
+                        str(normalized.evidence_unit_id)
+                        if normalized.evidence_unit_id
+                        else None
+                    ),
+                    locator=normalized.locator,
                 ),
                 document_id=normalized.document_id,
+                document_version_id=(
+                    UUID(str(normalized.document_version_id))
+                    if normalized.document_version_id
+                    else None
+                ),
+                evidence_unit_id=(
+                    UUID(str(normalized.evidence_unit_id))
+                    if normalized.evidence_unit_id
+                    else None
+                ),
+                locator=normalized.locator,
                 bm25_score=1.0,
                 vector_score=1.0,
                 deleted=normalized.deleted,
@@ -457,6 +495,9 @@ class InMemorySearchIndex:
                     tenant_id=record.tenant_id,
                     patient_id=record.patient_id,
                     document_id=record.document_id,
+                    document_version_id=record.document_version_id,
+                    evidence_unit_id=record.evidence_unit_id,
+                    locator=record.locator,
                     bm25_score=score / 0.7 if record.bm25_score or record.vector_score else score,
                     vector_score=record.vector_score,
                     deleted=record.deleted,
@@ -486,18 +527,16 @@ class InMemorySearchIndex:
         include_private: bool = True,
         document_id: UUID | None = None,
     ) -> list[SearchRecord]:
-        """Return sibling child-blocks sharing one parent (reading order).
+        """返回共享同一父块的兄弟子块（按阅读顺序）。
 
-        Task 9 parent/child expansion seam.  On the OpenSearch adapter this is
-        performed with a ``parent_block_id`` filter plus the same tenant/patient
-        ACL boundary; here the in-memory index scans its record list.  Records
-        with no ``parent_block_id`` or whose parent does not match are excluded,
-        and ACL/lifecycle gates (deleted, inactive, in-eligible, tenant/patient)
-        are enforced so sibling expansion never leaks across scope.
+        Task 9 父/子扩展接缝。在 OpenSearch 适配器上，这通过 ``parent_block_id``
+        过滤外加相同的租户/患者 ACL 边界完成；这里则由内存索引扫描其记录列表。
+        没有 ``parent_block_id``、或父块不匹配的记录被排除，且 ACL/生命周期门禁
+        （已删除、未激活、不合格、租户/患者）会被强制执行，因此兄弟扩展绝不跨
+        作用域泄漏。
 
-        ``document_id`` (when given) restricts the lookup to one document:
-        ``parent_block_id`` is only unique *within* a document, so two
-        documents' ``blk-0000`` would otherwise be mixed into one context.
+        ``document_id``（给定时）把查找限定在一份文档内：``parent_block_id``
+        只在*一份文档内*唯一，否则两份文档的 ``blk-0000`` 会被混进同一个上下文。
         """
 
         siblings = []
@@ -519,5 +558,5 @@ class InMemorySearchIndex:
             else:
                 continue
             siblings.append(record)
-        # Reading order: deterministic by stable id sort.
+        # 阅读顺序：按稳定 id 排序以保证确定性。
         return sorted(siblings, key=lambda r: r.id)[:limit]

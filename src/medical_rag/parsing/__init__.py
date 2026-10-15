@@ -1,1 +1,1 @@
-"""Document parsing contracts and adapters."""
+"""文档解析契约与适配器。"""

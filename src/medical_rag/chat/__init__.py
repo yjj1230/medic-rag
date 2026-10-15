@@ -1,1 +1,1 @@
-"""Evidence-constrained patient chat orchestration."""
+"""受证据约束的患者对话编排。"""
